@@ -5,9 +5,9 @@ using UnityEngine;
 public class UIControllerScript : MonoBehaviour
 {
     public GameObject loginCanvas;
-    public GameObject createAccountCanvas;
     public GameObject townCanvas;
     public GameObject levelSelectCanvas;
+    public GameObject inventoryCanvas;
     public GameObject shopCanvas;
     public GameObject battleCanvas;
     public GameObject shopScrollView;
@@ -27,24 +27,11 @@ public class UIControllerScript : MonoBehaviour
     }
 
     public void loginButton()
-    {
+    { 
+        //TODO check if login succesful
+
         loginCanvas.SetActive(false);
         townCanvas.SetActive(true);
- 
-    }
-
-    public void gotoCreateAccountButton()
-    {
-        loginCanvas.SetActive(false);
-        createAccountCanvas.SetActive(true);
-
-    }
-
-    public void createAccount()
-    {
-        createAccountCanvas.SetActive(false);
-        townCanvas.SetActive(true);
-
     }
 
     public void OpenLevelSelectButton()
@@ -56,6 +43,18 @@ public class UIControllerScript : MonoBehaviour
     public void CloseLevelSelectButton()
     {
         levelSelectCanvas.SetActive(false);
+        townCanvas.SetActive(true);
+    }
+
+    public void OpenInventoryButton()
+    {
+        townCanvas.SetActive(false);
+        inventoryCanvas.SetActive(true);
+    }
+
+    public void CloseInventoryButton()
+    {
+        inventoryCanvas.SetActive(false);
         townCanvas.SetActive(true);
     }
 
