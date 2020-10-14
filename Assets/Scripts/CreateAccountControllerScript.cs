@@ -54,8 +54,7 @@ public class CreateAccountControllerScript : MonoBehaviour
         {
             string jsonData = "{\"username\":\"" + username + "\",\"password\":\"" + password + "\"}";
 
-            //StartCoroutine(PostRequest("http://localhost:3000/comments", jsonData)); //Change to server url
-            UIController.createAccount();
+            StartCoroutine(PostRequest("http://localhost:3000/comments", jsonData)); //Change to server url
         }
 
     }
