@@ -23,6 +23,8 @@ public class LoginControllerScript : MonoBehaviour
 
     public UIControllerScript UIController;
 
+    public GameObject playerPrefab;
+
     private bool verified = false; //Set as 'false'. Now 'true' for testing purpose
     private string response;
 
@@ -56,8 +58,8 @@ public class LoginControllerScript : MonoBehaviour
 
         string jsonData = "{\"username\":\"" + username + "\",\"password\":\"" + password + "\"}";
 
-        //StartCoroutine(PostRequest("http://localhost:3000/comments", jsonData)); //Change to server url
-        UIController.loginButton();
+        StartCoroutine(PostRequest("http://localhost:3000/comments", jsonData)); //Change to server url
+
     }
 
     public void gotoCreateAccount()
@@ -95,10 +97,11 @@ public class LoginControllerScript : MonoBehaviour
 
             UserData player = JsonUtility.FromJson<UserData>(response);
             Debug.Log(player.getUsername());
-
+ 
 
             //verified = player.getVerified();
             //Debug.Log(player.getUsername());
+
             if (verified == true)
             {
                 
