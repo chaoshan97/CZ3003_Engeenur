@@ -76,7 +76,7 @@ public class BattleControllerScript : MonoBehaviour, INotifyPropertyChanged
 
         if (timer2 >= 1f)
         {
-            MonsterHealth = count--;
+            MonsterHealth--;
             timer2 = 0;
         }
     }
