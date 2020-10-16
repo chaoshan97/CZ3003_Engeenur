@@ -24,6 +24,7 @@ public class BattleControllerScript : MonoBehaviour, INotifyPropertyChanged
     {
         get
         {
+            // check if monsterScript exists
             if (monsterScript)
                 return monsterScript.Health;
             return 0;
@@ -37,6 +38,7 @@ public class BattleControllerScript : MonoBehaviour, INotifyPropertyChanged
 
             monsterScript.Health = value;
 
+            //check if property changed and monsterScript exists
             if (PropertyChanged != null && monsterScript)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs("MonsterHealth"));
@@ -46,26 +48,26 @@ public class BattleControllerScript : MonoBehaviour, INotifyPropertyChanged
 
     private void Awake()
     {
-        //monster = new GameObject();
-        //monster = monsterController.getMonster(1);
+        //instantiate monsterGameObject based on prefab
         monster = Instantiate(monsterPrefab);
+
+        //Set monster to predefined pos by parenting predefined ui element to monster
         monster.transform.SetParent(monsterPos.transform, false);
+        //Get reference of the gameobject monster's monsterscript
         monsterScript = monster.GetComponent<MonsterScript>();
+        // initialize the monster values TODO fetch from firebase
         monsterScript.init(1, 50, 10);
     }
 
+    // call when monster take damage
     public void SetMonsterHealth(int _health)
     {
         monsterScript.Health = _health;
-        //monsterHealth = _health.ToString();
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        //monsterScript = monster.GetComponent<MonsterScript>();
-        // if (monster)
-        //     monster.transform.parent = monsterPos.transform;
         
     }
 
@@ -76,6 +78,7 @@ public class BattleControllerScript : MonoBehaviour, INotifyPropertyChanged
 
         if (timer2 >= 1f)
         {
+            // example of directly modifying monster health
             MonsterHealth--;
             timer2 = 0;
         }
