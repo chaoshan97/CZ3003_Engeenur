@@ -1,8 +1,9 @@
 public class Item
 {
-    public string name { get; set; }
-    public types type { get; set; }
-    public int quantity 
+    public string Name { get; set; }
+    public types Type { get; set; }
+    private int quantity;
+    public int Quantity 
     { 
         get
         {
@@ -11,10 +12,10 @@ public class Item
 
         set 
         {
-            if (value <= 0)
-            {
+            if (value > 0)
                 quantity = value;
-            }
+            else
+                quantity = 0;
         } 
     }
 
