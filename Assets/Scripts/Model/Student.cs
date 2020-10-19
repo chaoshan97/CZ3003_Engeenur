@@ -22,7 +22,7 @@ public class Student
 
     }
 
-    public StudentData(string userName,string email, int level, int experience, int hp, int coin,int verified)
+    public void StudentData(string userName,string email, int level, int experience, int hp, int coin,int verified)
     {
         this.userName = userName;
         this.email = email;
