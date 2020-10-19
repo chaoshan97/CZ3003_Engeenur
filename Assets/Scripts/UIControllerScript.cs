@@ -14,6 +14,11 @@ public class UIControllerScript : MonoBehaviour
     public GameObject inventoryScrollView;
     public GameObject questionUI;
     public GameObject battleMenu;
+    public GameObject courseCanvas;
+    public GameObject specialLevelCanvas;
+    public GameObject trQnCanvas;
+    public GameObject enrollCanvas;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -95,5 +100,37 @@ public class UIControllerScript : MonoBehaviour
     {
         battleCanvas.SetActive(true);
         levelSelectCanvas.SetActive(false);
+    }
+
+    public void OpenSpecialLevelCanvas() 
+    {
+        courseCanvas.SetActive(false);
+        specialLevelCanvas.SetActive(true);
+    }
+
+    public void CloseSpecialLevelCanvas() 
+    {
+        specialLevelCanvas.SetActive(false);
+        courseCanvas.SetActive(true);
+    }
+    public void OpenTrQnCanvas() 
+    {
+        specialLevelCanvas.SetActive(false);
+        trQnCanvas.SetActive(true);
+    }
+    public void CloseTrQnCanvas() 
+    {
+        trQnCanvas.SetActive(false);
+        specialLevelCanvas.SetActive(true);
+    }
+    public void OpenEnrollCanvas() 
+    {
+        trQnCanvas.SetActive(false);
+        enrollCanvas.SetActive(true);
+    }
+     public void CloseEnrollCanvas() 
+    {
+        enrollCanvas.SetActive(false);
+        trQnCanvas.SetActive(true);
     }
 }
