@@ -19,8 +19,8 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
     public GameObject monsterPos;
     private GameObject monster;
     private MonsterScript monsterScript;
-    private float timer2 = 0;
-    private int count = 100;
+    public TimerBarScript timerBarScript;
+
     private Question questionScript = new Question(0, "");
     public Text answerInput;
 
@@ -197,21 +197,22 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
         monsterScript = monster.GetComponent<MonsterScript>();
         playerScript = player.GetComponent<PlayerScript>();
         // initialize the monster values TODO fetch from firebase
-        monsterScript.init(1, 50, 10);
+
+        MonsterHealth = 30;
+
+        monsterScript.init(1, MonsterHealth, 10, 20, 30);
         PlayerName = "tanbp";
         PlayerHealth = 100;
-        playerScript.init(PlayerName, PlayerHealth, 1, 1, 1, 1);
+        playerScript.init(PlayerName, PlayerHealth, 30, 1, 1, 1);
         
-
-        Question tempQuestion;
         //Fetch questions
-        for (int i = 0; i < 3; ++i)
+        for (int i = 1; i <= 3; ++i)
         {
             listOfQuestions.Add(new Question(i+i, i +"+"+ i));
         }
         Debug.Log(listOfQuestions[0].Questions);
-        questionScript = listOfQuestions[0];
         QuestionString = listOfQuestions[0].Questions;
+        questionScript = listOfQuestions[0];
         Answer = listOfQuestions[0].Answer;
     }
 
@@ -220,9 +221,31 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
 
     }
 
+    private bool setNewQuestion()
+    {
+        listOfQuestions.RemoveAt(0);
+        if (listOfQuestions.Count != 0)
+        {
+            QuestionString = listOfQuestions[0].Questions;
+            Answer = listOfQuestions[0].Answer;
+            questionScript = listOfQuestions[0];
+            return true;
+        }
+        return false;
+    }
+
     public void checkAnswer()
     {
-        if (int.Parse(answerInput.text) == Answer)
+        if (listOfQuestions.Count == 0)
+        {
+            Debug.Log("no more questions");
+            return;
+        }
+        if (answerInput.text == "")
+        {
+            PlayerHealth -= monsterScript.Damage;
+        }
+        else if (int.Parse(answerInput.text) == Answer)
         {
             MonsterHealth -= playerScript.Damage;
         }
@@ -230,25 +253,36 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
         {
             PlayerHealth -= monsterScript.Damage;
         }
+
+        if (!setNewQuestion())
+        {
+            //goto result page
+            if (PlayerHealth == 0)
+            {
+                //play player death animation
+            }
+            else
+            {
+                //play monster death animation
+            }
+            
+        }
     }
 
-    // Start is called before the first frame update
+        // Start is called before the first frame update
     void Start()
     {
-        
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        timer2 += Time.deltaTime;
-
-        if (timer2 >= 1f)
+        if (timerBarScript.barDisplay <= 0)
         {
-            // example of directly modifying monster health
-            MonsterHealth--;
-            timer2 = 0;
+            timerBarScript.barDisplay = 1;
+            answerInput.text = "";
+            checkAnswer();
         }
     }
 }
