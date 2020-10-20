@@ -135,30 +135,29 @@ public class LoginDbHandler: MonoBehaviour
         });
     }
 
-    private void GetLocalId()
-    {
-        RestClient.Get(databaseURL + "/" +".json?auth=" + idToken).Then(response =>
-        {
-            var username = response.Text;
-            fsData studentData = fsJsonParser.Parse(response.Text);
-            Dictionary<string, Student> students = null;
-            serializer.TryDeserialize(studentData, ref students);
+    // private void GetLocalId()
+    // {
+    //     RestClient.Get(databaseURL + "/" +".json?auth=" + idToken).Then(response =>
+    //     {
+    //         var username = response.Text;
+    //         fsData studentData = fsJsonParser.Parse(response.Text);
+    //         Dictionary<string, Student> students = null;
+    //         serializer.TryDeserialize(studentData, ref students);
 
-            foreach (var student in students.Values)
-            {
-                if (student.userName == username)
-                {
-                    getLocalId = student.localId;
-                    RetrieveFromDatabase();
-                    break;
-                }
-            }
-        }).Catch(error =>
-        {
-            Debug.Log(error);
-        });
-    }
+    //         foreach (var student in students.Values)
+    //         {
 
-
-
+    //             if (student.userName == username)
+    //             {
+    //                 getLocalId = student.localId;
+    //                 RetrieveFromDatabase();
+    //                 break;
+    //             }
+    //         }
+    //     }).Catch(error =>
+    //     {
+    //         Debug.Log(error);
+    //     });
+    // }
 }
+
