@@ -7,30 +7,27 @@ using UnityEngine;
 public class Student
 {
     public string userName;
-    public string email;
-    public string password ;
+   // public string email;
+    //public string password ;
     public int level;
     public int experience;
     public int hp;
     public int coin;
-    public int verified;
+    public bool verified;
 
-    public Student(string email, string password)
+    public string localId;
+
+    public Student()
     {
-        this.email = email;
-        this.password = password;
-
-    }
-
-    public StudentData(string userName,string email, int level, int experience, int hp, int coin,int verified)
-    {
+        //this.email = email;
         this.userName = userName;
-        this.email = email;
-        this.level = level;
-        this.experience = experience;
-        this.hp = hp;
-        this.coin = coin;
+        //this.password = password;
+        this.level = 1;
+        this.experience = 100;
+        this.hp = 1000;
+        this.coin = 0;
         this.verified = verified;
+        this.localId=localId;
 
     }
 
