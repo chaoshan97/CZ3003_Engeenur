@@ -96,4 +96,9 @@ public class UIControllerScript : MonoBehaviour
         battleCanvas.SetActive(true);
         levelSelectCanvas.SetActive(false);
     }
+    public void CloseBattleCanvas()
+    {
+        battleCanvas.SetActive(false);
+        townCanvas.SetActive(true);
+    }
 }

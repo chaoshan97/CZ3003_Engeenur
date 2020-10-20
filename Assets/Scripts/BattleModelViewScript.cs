@@ -23,9 +23,11 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
 
     private Question questionScript = new Question(0, "");
     public Text answerInput;
+    public ResultUIScript resultUIScript;
+    public GameObject questionUI;
 
     private List<Question> listOfQuestions = new List<Question>();
-
+    private int score = 0;
    [Binding]
     public int MonsterHealth
     {
@@ -234,6 +236,20 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
         return false;
     }
 
+    private void toggleResultScreen()
+    {
+        questionUI.SetActive(false);
+        resultUIScript.gameObject.SetActive(true);
+        if (PlayerHealth <= 0)
+        {
+            resultUIScript.setResults(score, 0, 0);
+        }
+        else
+        {
+            resultUIScript.setResults(score, monsterScript.Coin, monsterScript.Experience);
+        }
+    }
+
     public void checkAnswer()
     {
         if (listOfQuestions.Count == 0)
@@ -247,14 +263,19 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
         }
         else if (int.Parse(answerInput.text) == Answer)
         {
-            MonsterHealth -= playerScript.Damage;
+            if (MonsterHealth - playerScript.Damage < 0)
+                MonsterHealth = 0;
+            else
+                MonsterHealth -= playerScript.Damage;
+
+            ++score;
         }
         else
         {
             PlayerHealth -= monsterScript.Damage;
         }
 
-        if (!setNewQuestion())
+        if (!setNewQuestion() || MonsterHealth <= 0)
         {
             //goto result page
             if (PlayerHealth == 0)
@@ -264,8 +285,10 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
             else
             {
                 //play monster death animation
+
             }
-            
+            toggleResultScreen();
+            //reset battle
         }
     }
 
@@ -278,11 +301,11 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
     // Update is called once per frame
     void Update()
     {
-        if (timerBarScript.barDisplay <= 0)
+        if (timerBarScript.barDisplay <= 0 ||  Input.GetKeyUp(KeyCode.Return))
         {
-            timerBarScript.barDisplay = 1;
-            answerInput.text = "";
             checkAnswer();
+            answerInput.text = "";
+            timerBarScript.barDisplay = 1;
         }
     }
 }

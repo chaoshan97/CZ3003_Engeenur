@@ -25,6 +25,8 @@ public class MonsterScript : MonoBehaviour
     public int Health { get => health; set => health = value; }
     public int Damage { get => damage; set => damage = value; }
     public string MonsterName { get => monsterName; set => monsterName = value; }
+    public int Coin { get => coin; set => coin = value; }
+    public int Experience { get => experience; set => experience = value; }
 
     public void init(int _id, int _health, int _damage, int _coin, int _experience)
     {
