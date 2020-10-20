@@ -133,12 +133,6 @@ public class UIControllerScript : MonoBehaviour
         leadershipBoardCanvas.SetActive(true);
     }
 
-    public void CloseLeadershipBoardButton()
-    {
-        townCanvas.SetActive(false);
-        leadershipBoardCanvas.SetActive(true);
-    }
-
     public void OpenTeacherLeadershipBoardButton()
     {
         teacherTownCanvas.SetActive(false);
