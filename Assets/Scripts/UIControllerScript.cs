@@ -161,7 +161,6 @@ public class UIControllerScript : MonoBehaviour
         battleCanvas.SetActive(true);
         levelSelectCanvas.SetActive(false);
     }
-
     public void OpenCreateLevelCanvas()
     {
         questionCanvas.SetActive(true);
@@ -205,5 +204,11 @@ public class UIControllerScript : MonoBehaviour
     {
         enrollCanvas.SetActive(false);
         trQnCanvas.SetActive(true);
+    }
+
+    public void CloseBattleCanvas()
+    {
+        battleCanvas.SetActive(false);
+        townCanvas.SetActive(true);
     }
 }
