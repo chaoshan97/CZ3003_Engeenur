@@ -9,7 +9,7 @@ using UnityEngine.Networking;
 using System.Text;
 
 
-public class LoginControllerScript : MonoBehaviour
+public class TeacherLoginControllerScript : MonoBehaviour
 {
 
     [SerializeField]
@@ -30,7 +30,7 @@ public class LoginControllerScript : MonoBehaviour
     private string response;
 
 
-       
+
     // Start is called before the first frame update
     void Start()
     {
@@ -46,26 +46,11 @@ public class LoginControllerScript : MonoBehaviour
     {
         string username = Username.text.Trim().ToLower();
         string password = Password.text;
-        
-        /*
-         * const int workFactor = 12;
-        var hashedPassword = BCrypt.Net.BCrypt.HashPassword(password, workFactor);
-
-        Debug.LogFormat("Hash length is {0} chars", hashedPassword.Length);
-        Debug.LogFormat("Hashed password: {0} ", hashedPassword);
-        Debug.LogFormat("Correct password {0}", BCrypt.Net.BCrypt.Verify("PASSWORD", hashedPassword));
-        Debug.LogFormat("Incorrect password {0}", BCrypt.Net.BCrypt.Verify("PASSWORd", hashedPassword));
-        */
 
         string jsonData = "{\"username\":\"" + username + "\",\"password\":\"" + password + "\"}";
 
-        StartCoroutine(PostRequest("http://localhost:3000/this/1", jsonData)); //Change to server url
+        StartCoroutine(PostRequest("http://localhost:3000/teacher/1", jsonData)); //Change to server url
 
-    }
-
-    public void gotoCreateAccount()
-    {
-        UIController.gotoCreateAccountButton();
     }
 
     IEnumerator ShowWrongMessage()
@@ -96,18 +81,17 @@ public class LoginControllerScript : MonoBehaviour
             Debug.Log("Received: " + uwr.downloadHandler.text);
             response = uwr.downloadHandler.text;
 
-            UserData player = JsonUtility.FromJson<UserData>(response);
-            Debug.Log(player.getUserName());
-            Debug.Log(player.id);
-            verified = player.getVerified();
-          
+            TeacherData teacher = JsonUtility.FromJson<TeacherData>(response);
+ 
+            verified = teacher.getVerified();
+
 
             if (verified == true)
             {
-                
-                UIController.loginButton();
-                MainMenuController.setUserData(player);
-                MainMenuController.loadMainMenu();
+
+                UIController.teacherLoginButton();
+                MainMenuController.setTeacherData(teacher);
+                MainMenuController.loadTeacherMainMenu();
             }
             else
             {
