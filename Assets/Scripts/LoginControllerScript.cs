@@ -23,7 +23,8 @@ public class LoginControllerScript : MonoBehaviour
 
     public UIControllerScript UIController;
 
-    public GameObject playerPrefab;
+    public MainMenuControllerScript MainMenuController;
+
 
     private bool verified = false; //Set as 'false'. Now 'true' for testing purpose
     private string response;
@@ -58,7 +59,7 @@ public class LoginControllerScript : MonoBehaviour
 
         string jsonData = "{\"username\":\"" + username + "\",\"password\":\"" + password + "\"}";
 
-        StartCoroutine(PostRequest("http://localhost:3000/comments", jsonData)); //Change to server url
+        StartCoroutine(PostRequest("http://localhost:3000/this/1", jsonData)); //Change to server url
 
     }
 
@@ -77,7 +78,7 @@ public class LoginControllerScript : MonoBehaviour
 
     IEnumerator PostRequest(string url, string json)
     {
-        var uwr = new UnityWebRequest(url, "POST");
+        var uwr = new UnityWebRequest(url, "GET"); //Should be POST
         byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
         uwr.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonToSend);
         uwr.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
@@ -96,18 +97,17 @@ public class LoginControllerScript : MonoBehaviour
             response = uwr.downloadHandler.text;
 
             UserData player = JsonUtility.FromJson<UserData>(response);
-            Debug.Log(player.getUsername());
- 
-
-            //verified = player.getVerified();
-            //Debug.Log(player.getUsername());
+            Debug.Log(player.getUserName());
+            Debug.Log(player.id);
+            verified = player.getVerified();
+          
 
             if (verified == true)
             {
                 
                 UIController.loginButton();
-
-
+                MainMenuController.setUserData(player);
+                MainMenuController.loadMainMenu();
             }
             else
             {

@@ -7,6 +7,7 @@ public class UIControllerScript : MonoBehaviour
     public GameObject loginCanvas;
     public GameObject createAccountCanvas;
     public GameObject townCanvas;
+    public GameObject inventoryCanvas;
     public GameObject levelSelectCanvas;
     public GameObject shopCanvas;
     public GameObject battleCanvas;
@@ -14,6 +15,16 @@ public class UIControllerScript : MonoBehaviour
     public GameObject inventoryScrollView;
     public GameObject questionUI;
     public GameObject battleMenu;
+    public GameObject friendCanvas;
+    public GameObject leadershipBoardCanvas;
+    public GameObject teacherTownCanvas;
+    public GameObject questionCanvas;
+    public GameObject viewResultsCanvas;
+    public GameObject courseCanvas;
+    public GameObject specialLevelCanvas;
+    public GameObject trQnCanvas;
+    public GameObject enrollCanvas;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +44,13 @@ public class UIControllerScript : MonoBehaviour
  
     }
 
+    public void teacherLoginButton()
+    {
+        loginCanvas.SetActive(false);
+        teacherTownCanvas.SetActive(true);
+
+    }
+
     public void gotoCreateAccountButton()
     {
         loginCanvas.SetActive(false);
@@ -45,6 +63,18 @@ public class UIControllerScript : MonoBehaviour
         createAccountCanvas.SetActive(false);
         townCanvas.SetActive(true);
 
+    }
+
+    public void OpenIntentoryButton()
+    {
+        townCanvas.SetActive(false);
+        inventoryCanvas.SetActive(true);
+    }
+
+    public void CloseIntentoryButton()
+    {
+        inventoryCanvas.SetActive(false);
+        townCanvas.SetActive(true);
     }
 
     public void OpenLevelSelectButton()
@@ -73,6 +103,61 @@ public class UIControllerScript : MonoBehaviour
         townCanvas.SetActive(true);
     }
 
+    public void OpenFriendListButton()
+    {
+        townCanvas.SetActive(false);
+        friendCanvas.SetActive(true);
+    }
+
+    public void CloseFriendListButton()
+    {
+        friendCanvas.SetActive(false);
+        townCanvas.SetActive(true);
+    }
+
+    public void OpenTeacherFriendListButton()
+    {
+        teacherTownCanvas.SetActive(false);
+        friendCanvas.SetActive(true);
+    }
+
+    public void CloseTeacherFriendListButton()
+    {
+        friendCanvas.SetActive(false);
+        teacherTownCanvas.SetActive(true);
+    }
+
+    public void OpenLeadershipBoardButton()
+    {
+        townCanvas.SetActive(false);
+        leadershipBoardCanvas.SetActive(true);
+    }
+
+    public void CloseLeadershipBoardButton()
+    {
+        townCanvas.SetActive(false);
+        leadershipBoardCanvas.SetActive(true);
+    }
+
+    public void OpenTeacherLeadershipBoardButton()
+    {
+        teacherTownCanvas.SetActive(false);
+        leadershipBoardCanvas.SetActive(true);
+    }
+
+    public void CloseTeacherLeadershipBoardButton()
+    {
+        leadershipBoardCanvas.SetActive(false);
+        teacherTownCanvas.SetActive(true);
+    }
+
+    public void CloseLeadershipBoardButton()
+    {
+        leadershipBoardCanvas.SetActive(false);
+        townCanvas.SetActive(true);
+        
+    }
+
     public void OpenShopScrollView()
     {
         inventoryScrollView.SetActive(false);
@@ -95,5 +180,56 @@ public class UIControllerScript : MonoBehaviour
     {
         battleCanvas.SetActive(true);
         levelSelectCanvas.SetActive(false);
+    }
+
+    public void OpenCreateLevelCanvas()
+    {
+        questionCanvas.SetActive(true);
+        teacherTownCanvas.SetActive(false);
+    }
+
+    public void OpenViewResultsCanvas()
+    {
+        viewResultsCanvas.SetActive(true);
+        teacherTownCanvas.SetActive(false);
+    }
+
+    public void OpenSpecialLevelCanvas()
+    {
+        questionCanvas.SetActive(true);
+        teacherTownCanvas.SetActive(false);
+    }
+
+    public void CloseSpecialLevelCanvas()
+    {
+        specialLevelCanvas.SetActive(false);
+        courseCanvas.SetActive(true);
+    }
+    public void OpenTrQnCanvas()
+    {
+        specialLevelCanvas.SetActive(false);
+        trQnCanvas.SetActive(true);
+    }
+    public void CloseTrQnCanvas()
+    {
+        trQnCanvas.SetActive(false);
+        specialLevelCanvas.SetActive(true);
+    }
+    public void OpenEnrollCanvas()
+    {
+        trQnCanvas.SetActive(false);
+        enrollCanvas.SetActive(true);
+    }
+
+    public void CloseEnrollCanvas()
+    {
+        enrollCanvas.SetActive(false);
+        trQnCanvas.SetActive(true);
+    }
+
+    public void CloseBattleCanvas()
+    {
+        battleCanvas.SetActive(false);
+        townCanvas.SetActive(true);
     }
 }

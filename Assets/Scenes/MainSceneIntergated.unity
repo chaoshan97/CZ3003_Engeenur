@@ -2056,6 +2056,198 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 808730728}
   m_CullTransparentMesh: 0
+--- !u!1 &817774366
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 817774367}
+  - component: {fileID: 817774370}
+  - component: {fileID: 817774369}
+  - component: {fileID: 817774368}
+  m_Layer: 5
+  m_Name: PlayerHealth
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &817774367
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 817774366}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 882925887}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 50}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &817774368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 817774366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1670825535, guid: 1be97bcc42cf9a442ba458d0ba508062, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  viewAdapterTypeName: UnityWeld.Binding.Adapters.IntToStringAdapter
+  viewAdapterOptions: {fileID: 0}
+  viewModelPropertyName: BattleControllerScript.PlayerHealth
+  viewPropertyName: UnityEngine.UI.Text.text
+--- !u!114 &817774369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 817774366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 40
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 4
+    m_MaxSize: 40
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 1
+    m_VerticalOverflow: 1
+    m_LineSpacing: 1
+  m_Text: Monster health
+--- !u!222 &817774370
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 817774366}
+  m_CullTransparentMesh: 0
+--- !u!1 &834384895
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 834384896}
+  - component: {fileID: 834384899}
+  - component: {fileID: 834384898}
+  - component: {fileID: 834384897}
+  m_Layer: 5
+  m_Name: PlayerName
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &834384896
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 834384895}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 882925887}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 105}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &834384897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 834384895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1670825535, guid: 1be97bcc42cf9a442ba458d0ba508062, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  viewAdapterTypeName: 
+  viewAdapterOptions: {fileID: 0}
+  viewModelPropertyName: BattleControllerScript.PlayerName
+  viewPropertyName: UnityEngine.UI.Text.text
+--- !u!114 &834384898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 834384895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 40
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 4
+    m_MaxSize: 40
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 1
+    m_VerticalOverflow: 1
+    m_LineSpacing: 1
+  m_Text: Player name
+--- !u!222 &834384899
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 834384895}
+  m_CullTransparentMesh: 0
 --- !u!1 &839051905
 GameObject:
   m_ObjectHideFlags: 0
@@ -2131,6 +2323,16 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 839051905}
   m_CullTransparentMesh: 0
+--- !u!1 &882925886 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4571398149724792019, guid: d34f95789881c4b4aa7d32700620ec6b, type: 3}
+  m_PrefabInstance: {fileID: 956255427}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &882925887 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 4571398149724792018, guid: d34f95789881c4b4aa7d32700620ec6b, type: 3}
+  m_PrefabInstance: {fileID: 956255427}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &956255427
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2142,6 +2344,18 @@ PrefabInstance:
       propertyPath: monsterController
       value: 
       objectReference: {fileID: 1913499196}
+    - target: {fileID: 448889084, guid: d34f95789881c4b4aa7d32700620ec6b, type: 3}
+      propertyPath: playerPos
+      value: 
+      objectReference: {fileID: 882925886}
+    - target: {fileID: 448889084, guid: d34f95789881c4b4aa7d32700620ec6b, type: 3}
+      propertyPath: playerPrefab
+      value: 
+      objectReference: {fileID: 6933010602754479373, guid: de5b73cdad679d949b078afd99cd2251, type: 3}
+    - target: {fileID: 1979342507, guid: d34f95789881c4b4aa7d32700620ec6b, type: 3}
+      propertyPath: m_Text
+      value: Monster health
+      objectReference: {fileID: 0}
     - target: {fileID: 4571398149637447218, guid: d34f95789881c4b4aa7d32700620ec6b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2233,6 +2447,10 @@ PrefabInstance:
     - target: {fileID: 4571398149637447222, guid: d34f95789881c4b4aa7d32700620ec6b, type: 3}
       propertyPath: m_Name
       value: BattleCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 4571398149839822121, guid: d34f95789881c4b4aa7d32700620ec6b, type: 3}
+      propertyPath: m_Text
+      value: Monster name
       objectReference: {fileID: 0}
     - target: {fileID: 4571398150514944429, guid: d34f95789881c4b4aa7d32700620ec6b, type: 3}
       propertyPath: m_AnchorMax.y

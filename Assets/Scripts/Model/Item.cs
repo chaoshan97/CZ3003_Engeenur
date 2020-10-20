@@ -1,27 +1,55 @@
+using System;
+
+[Serializable]
 public class Item
 {
+    public static string WEAPON = "weapon";
+    public static string HEALINGPOTION = "healingPotion";
+    public static string FREEZINGPOTION = "freezingPotion";
+
     public string Name { get; set; }
-    public types Type { get; set; }
+    private string type;
+    public string Type 
+    { 
+        get
+        {
+            return this.type;
+        } 
+        set
+        {
+            if (value.Equals(WEAPON) || value.Equals(HEALINGPOTION) || value.Equals(FREEZINGPOTION))
+                this.type = value;
+        }
+    }
     private int quantity;
     public int Quantity 
     { 
         get
         {
-            return quantity;
+            return this.quantity;
         } 
 
         set 
         {
+            // minimum is 1 item else shouldn't even add the item into inventory
             if (value > 0)
-                quantity = value;
+                this.quantity = value;
             else
-                quantity = 0;
+                this.quantity = 1;
         } 
     }
 
-    public enum types
+    private int valueOfItem = 0;
+    public int ValueOfItem
     {
-        potion,
-        weapon
+        get
+        {
+            return this.valueOfItem;
+        }
+        set
+        {
+            if (value >= 0)
+                this.valueOfItem = value;
+        }
     }
 }
