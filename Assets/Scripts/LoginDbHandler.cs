@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Proyecto26;
@@ -173,7 +173,7 @@ public static class LoginDbHandler
                 email = _email;
                 password = _password;
 
-                RestClient.Put($"{databaseURL}student/" + userName + ".json", student).(response =>
+                RestClient.Put($"{databaseURL}student/" + userName + ".json", student).Then(response =>
                 {
                     email = response.email;
                     password = response.password;
@@ -189,4 +189,4 @@ public static class LoginDbHandler
 
     }
    
-}
+}*/
