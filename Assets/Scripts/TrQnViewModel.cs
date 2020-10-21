@@ -47,7 +47,7 @@ public class TrQnViewModel : MonoBehaviour
                 Debug.Log("here item name: " + tmp_item.name);
                 tmp_item.transform.GetChild(0).GetComponent<Text>().text = number.ToString();
                 tmp_item.transform.GetChild(1).GetComponent<Text>().text = courseLvlQn.qns[i];
-                tmp_item.transform.GetChild(2).GetComponent<Text>().text = (courseLvlQn.ans[i]).ToString();
+                tmp_item.transform.GetChild(2).GetComponent<Text>().text = courseLvlQn.ans[i];
                 number++;
             }
         });
@@ -149,9 +149,8 @@ public class TrQnViewModel : MonoBehaviour
     //Creating qn in DB
     public async Task PostingQn(string qn, string ans)
     {
-        int intAns = int.Parse(ans,System.Globalization.NumberStyles.Integer);
         (courseLvlQnCreate.qns).Add(qn);
-        (courseLvlQnCreate.ans).Add(intAns);
+        (courseLvlQnCreate.ans).Add(ans);
         DatabaseQAHandler.PutCourseLvlQn(key, courseLvlQnCreate, () => { });
         Stopwatch sw = Stopwatch.StartNew();
         var delay = Task.Delay(1000).ContinueWith(_ =>
@@ -204,9 +203,8 @@ public class TrQnViewModel : MonoBehaviour
         editName = int.Parse(item.name, System.Globalization.NumberStyles.Integer);
         Debug.Log("CHECK EDIT name: " + editName);
         formUpdate.transform.GetChild(1).GetComponent<InputField>().text = courseLvlQnCreate.qns[editName];
-        formUpdate.transform.GetChild(2).GetComponent<InputField>().text = (courseLvlQnCreate.ans[editName]).ToString();
+        formUpdate.transform.GetChild(2).GetComponent<InputField>().text = courseLvlQnCreate.ans[editName];
     }
-    
     // Edit qn basic check
     public async void EditQn()
     {
@@ -215,7 +213,7 @@ public class TrQnViewModel : MonoBehaviour
         bool handler = Check(qn, ans);
         if (handler == true)
         {
-            if (qn == courseLvlQnCreate.qns[editName] && ans == courseLvlQnCreate.ans[editName].ToString())
+            if (qn == courseLvlQnCreate.qns[editName] && ans == courseLvlQnCreate.ans[editName])
             {
                 messageBox.SetActive(true);
                 messageBox.transform.GetChild(1).GetComponent<Text>().text = "No changes in question and answer.";
@@ -234,7 +232,7 @@ public class TrQnViewModel : MonoBehaviour
     {
         loader.SetActive(true);
         courseLvlQnCreate.qns[editName] = qn;
-        courseLvlQnCreate.ans[editName] = int.Parse(ans,System.Globalization.NumberStyles.Integer);
+        courseLvlQnCreate.ans[editName] = ans;
         DatabaseQAHandler.PutCourseLvlQn(key, courseLvlQnCreate, () => { });
         Stopwatch sw = Stopwatch.StartNew();
         var delay = Task.Delay(1000).ContinueWith(_ =>
