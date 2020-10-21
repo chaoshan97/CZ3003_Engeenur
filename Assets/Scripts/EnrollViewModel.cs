@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -49,10 +49,10 @@ public class EnrollViewModel : MonoBehaviour
         });
         Stopwatch sw = Stopwatch.StartNew();
         var delay = Task.Delay(1000).ContinueWith(_ =>
-                                   {
-                                       sw.Stop();
-                                       return sw.ElapsedMilliseconds;
-                                   });
+        {
+            sw.Stop();
+            return sw.ElapsedMilliseconds;
+        });
         await delay;
         int sec = (int)delay.Result;
         Debug.Log("Read elapsed milliseconds: {0}" + sec);
@@ -122,10 +122,10 @@ public class EnrollViewModel : MonoBehaviour
         });
         Stopwatch sw = Stopwatch.StartNew();
         var delay = Task.Delay(500).ContinueWith(_ =>
-                                   {
-                                       sw.Stop();
-                                       return sw.ElapsedMilliseconds;
-                                   });
+        {
+            sw.Stop();
+            return sw.ElapsedMilliseconds;
+        });
         await delay;
         int sec = (int)delay.Result;
         Debug.Log("check qn exist elapsed milliseconds: {0}" + sec + ", Chk is " + chk);
@@ -139,10 +139,10 @@ public class EnrollViewModel : MonoBehaviour
         DatabaseQAHandler.PutCourseLvlQn(key, courseLvlQnCreate, () => { });
         Stopwatch sw = Stopwatch.StartNew();
         var delay = Task.Delay(1000).ContinueWith(_ =>
-                                   {
-                                       sw.Stop();
-                                       return sw.ElapsedMilliseconds;
-                                   });
+        {
+            sw.Stop();
+            return sw.ElapsedMilliseconds;
+        });
         await delay;
         int sec = (int)delay.Result;
         Debug.Log("Creating Qn Elapsed milliseconds: {0}" + sec);
@@ -166,10 +166,10 @@ public class EnrollViewModel : MonoBehaviour
         DatabaseQAHandler.PutCourseLvlQn(key, courseLvlQnCreate, () => { });
         Stopwatch sw = Stopwatch.StartNew();
         var delay = Task.Delay(1000).ContinueWith(_ =>
-                                   {
-                                       sw.Stop();
-                                       return sw.ElapsedMilliseconds;
-                                   });
+        {
+            sw.Stop();
+            return sw.ElapsedMilliseconds;
+        });
         await delay;
         int sec = (int)delay.Result;
         Debug.Log("Delete Stud Elapsed milliseconds: {0}" + sec);

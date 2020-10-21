@@ -1,4 +1,4 @@
-﻿/**using System.Collections;
+/**using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,7 +22,8 @@ public class Course
 {
     public string userName;
 
-    public Course(string userName) {
+    public Course(string userName)
+    {
         this.userName = userName;
     }
 }

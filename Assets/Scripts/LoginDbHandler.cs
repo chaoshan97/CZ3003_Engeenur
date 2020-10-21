@@ -1,192 +1,163 @@
-﻿/*using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Proyecto26;
-using FirebaseAuth.DefaultInstance;
-using BCrypt.Net;
-using Firebase;
-using System.Diagnostics;
+//using BCrypt.Net;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
+using FullSerializer;
+using LitJson;
 
-public static class LoginDbHandler
+public class LoginDbHandler: MonoBehaviour
 {
-    [Header("Firebase")]
-    public DependencyStatus dependencyStatus;
-    public FirebaseAuth auth;
-    public FirebaseUser Student;
-
+    private string AuthKey = "AIzaSyAM0B744pa-v9FjU69DmlfQGMqiZAHJpUo";
+    public static fsSerializer serializer = new fsSerializer();
     public string userName;
-    public string password;
-    public string email;
-    public int level;
-    public int experience;
-    public int hp;
-    public int coin;
-    public int verified;
-    Student student = new Student();
-    private string databaseURL = "https://engeenur-17baa.firebaseio.com/";
-    public LoginControllerScript loginControllerScript;
+  //  public string password;
+   // public string email;
+    private string idToken;
+    public static string localId;
+    private string getLocalId;
 
-    void Awake()
+    Student student = new Student();
+
+    private string databaseURL = "https://engeenur-17baa.firebaseio.com/students/";
+    private LoginControllerScript loginControllerScript;
+
+   
+    
+   // public void FetchUserSignInInfo(string jsonData)
+     public void FetchUserSignInInfo(string email, string password)
     {
-        //Check that all of the necessary dependencies for Firebase are present on the system
-        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
+       
+        // JsonData json = JsonMapper.ToObject(jsonData);
+        // string password = json["password"].ToString();
+        // string email = json["email"].ToString();
+        //password = JsonUtility.FromJson<Student>(obj.password);
+        // const int workFactor = 12;
+        // string pwdToHash = password + "^Y8~JK";
+        // string hashedPassword = BCrypt.Net.BCrypt.HashPassword(pwdToHash, workFactor);
+        SignInUser(email, password);
+    }
+    public void FetchUserSignUpInfo(string email, string password)
+    {
+        // LoginControllerScript data = GetComponent<LoginControllerScript>();
+        // email= data.email;
+        // password=data.password;
+
+        // JsonData json = JsonMapper.ToObject(jsonData);
+        // string password = json["password"].ToString();
+        // string email = json["email"].ToString();
+        
+        // const int workFactor = 12;
+        // string pwdToHash = password + "^Y8~JK";
+        // string hashedPassword = BCrypt.Net.BCrypt.HashPassword(pwdToHash, workFactor);
+        
+        string username = "sg";
+        SignUpStudent(email,username,password);
+    }
+    // public void verify(){
+    //     loginControllerScript.ShowSuccessfulLogin();
+    // }
+    private void PostToDatabase(bool verified = false, string username= null)
+    {
+        Student student = new Student();
+        Debug.Log("1");
+        if (verified)
         {
-            dependencyStatus = task.Result;
-            if (dependencyStatus == DependencyStatus.Available)
-            {
-                //If they are avalible Initialize Firebase
-                InitializeFirebase();
-            }
-            else
-            {
-                Debug.LogError("Could not resolve all Firebase dependencies: " + dependencyStatus);
-            }
+            student.level = 1;
+            student.experience = 100;
+            student.hp = 1000;
+            student.coin = 0;
+            student.verified=true;
+            student.localId=localId;
+            student.userName=username;
+            
+        }
+        Debug.Log("2");
+        //verify();
+
+        RestClient.Put(databaseURL + "/" + localId + ".json?auth=" + idToken, student);
+       
+    }
+
+    private void RetrieveFromDatabase()
+    {
+        
+        RestClient.Get<Student>(databaseURL + "/" + getLocalId + ".json?auth=" + idToken).Then(response =>
+        {
+            student = response;
+            //loginControllerScript.
         });
     }
-    private void InitializeFirebase()
-    {
-        Debug.Log("Setting up Firebase Auth");
-        //Set the authentication instance object
-        auth = FirebaseAuth.DefaultInstance;
-    }
-    public void FetchUserSignInInfo(string jsonData)
-    {
-        //string json = GameObject.Find("jsonData").GetComponent<loginControllerScript>().jsonData;
-        string json = jsonData;
-        dynamic obj = JsonConvert.DeserializeObject(json);
-        password = JsonUtility.FromJson<Student>(obj.password);
-        const int workFactor = 12;
-        string pwdToHash = password + "^Y8~JK";
-        string hashedPassword = BCrypt.Net.BCrypt.HashPassword(pwdToHash, workFactor);
-        string email = JsonUtility.FromJson<Student>(obj.email);
-        StartCoroutine(Login(email, hashedPassword));
-    }
-    public void FetchUserSignUpInfo()
-    {
-        string json = GameObject.Find("jsonData").GetComponent<loginControllerScript>().jsonData;
-        dynamic obj = JsonConvert.DeserializeObject(json);
-        password = JsonUtility.FromJson<Student>(obj.password);
-        const int workFactor = 12;
-        string pwdToHash = password + "^Y8~JK";
-        string hashedPassword = BCrypt.Net.BCrypt.HashPassword(pwdToHash, workFactor);
-        string email = JsonUtility.FromJson<Student>(obj.email);
-        string username = JsonUtility.FromJson<Student>(obj.username);
-        StartCoroutine(Register(email,hashedPassword,username));
-    }
-    private IEnumerator Login(string _email, string _password)
-    {
-        //Call the Firebase auth signin function passing the email and password
-        var LoginTask = auth.SignInWithEmailAndPasswordAsync(_email, _password);
-        //Wait until the task completes
-        yield return new WaitUntil(predicate: () => LoginTask.IsCompleted);
 
-        if (LoginTask.Exception != null)
-        {
-            //If there are errors handle them
-            Debug.LogWarning(message: $"Failed to register task with {LoginTask.Exception}");
-            FirebaseException firebaseEx = LoginTask.Exception.GetBaseException() as FirebaseException;
-            AuthError errorCode = (AuthError)firebaseEx.ErrorCode;
-
-            //string message = "Login Failed!";
-            //switch (errorCode)
-            //{
-            //    case AuthError.MissingEmail:
-            //        message = "Missing Email";
-            //        break;
-            //    case AuthError.MissingPassword:
-            //        message = "Missing Password";
-            //        break;
-            //    case AuthError.WrongPassword:
-            //        message = "Wrong Password";
-            //        break;
-            //    case AuthError.InvalidEmail:
-            //        message = "Invalid Email";
-            //        break;
-            //    case AuthError.UserNotFound:
-            //        message = "Account does not exist";
-            //        break;
-            //}
-            
-            verified = 0;
-            console.write(verified);
-        }
-        else
-        {
-            //User is now logged in
-            //Now get the result
-            fsData Student = fsJsonParser.Parse(LoginTask.Result);
-            Dictionary<string, Student> student = null;
-            serializer.TryDeserialize(Student, ref student);
-
-            foreach (var studentData in student.Values)
+    private void SignUpStudent(string email, string username, string password)
+    {
+        string studentData = "{\"email\":\"" + email + "\",\"password\":\"" + password + "\",\"returnSecureToken\":true}";
+        RestClient.Post<SignResponse>("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=" + AuthKey, studentData).Then(
+            response =>
             {
-               
-                userName = studentData.userName;
-                level = studentData.level;
-                experience = studentData.experience;
-                hp = studentData.hp;
-                coin = studentData.coin;
-                verified =1;
-                break;
+                idToken = response.idToken;
+                localId = response.localId;
+                userName = username;
+                PostToDatabase(true,userName);
+
+            }).Catch(error =>
+            {
+                //verified = false;
+                Debug.Log(error);
+
+            });
+    }
+
+    private void SignInUser(string email, string password)
+    {
+        string studentData = "{\"email\":\"" + email + "\",\"password\":\"" + password + "\",\"returnSecureToken\":true}";
+        RestClient.Post<SignResponse>("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=" + AuthKey, studentData).Then(
+            response =>
+            {
+                idToken = response.idToken;
+                localId = response.localId;
+                GetUsername();
+                Debug.Log("here1");
+            }).Catch(error =>
+            {
                 
-            }
-            console.write("successfully Login");
-        }
+                Debug.Log(error);
+            });
     }
-    public void FailedLogin(int verified)
+    private void GetUsername()
     {
-        loginControllerScript.getFaildLogin();
-    }
-
-    private IEnumerable Register(string _email, string _password, string _username)
-    {
-        var RegisterTask = auth.CreateUserWithEmailAndPasswordAsync(_email, _password);
-        //Wait until the task completes
-        yield return new WaitUntil(predicate: () => RegisterTask.IsCompleted);
-        if (RegisterTask.Exception != null)
+        RestClient.Get<Student>(databaseURL + "/" + localId + ".json?auth=" + idToken).Then(response =>
         {
-            //If there are errors handle them
-            Debug.LogWarning(message: $"Failed to register task with {RegisterTask.Exception}");
-            FirebaseException firebaseEx = RegisterTask.Exception.GetBaseException() as FirebaseException;
-            AuthError errorCode = (AuthError)firebaseEx.ErrorCode;
-            int verified = 0;
-            FailedLogin(verified);
-
-
+            userName = response.userName;
+            //Debug.Log("here2");
+        });
     }
-        else
-        {
-            //User has now been created
-            //Now get the result
-            Student = RegisterTask.Result;
 
-            if (Student != null)
-            {
-                //Create a user profile and set the username
-                Student student = new student {userName=_username};
+    // private void GetLocalId()
+    // {
+    //     RestClient.Get(databaseURL + "/" +".json?auth=" + idToken).Then(response =>
+    //     {
+    //         var username = response.Text;
+    //         fsData studentData = fsJsonParser.Parse(response.Text);
+    //         Dictionary<string, Student> students = null;
+    //         serializer.TryDeserialize(studentData, ref students);
 
-                //Call the Firebase auth update user profile function passing the profile with the username
-                var ProfileTask = Student.UpdateUserProfileAsync(profile);
-                //Wait until the task completes
-                yield return new WaitUntil(predicate: () => ProfileTask.IsCompleted);
-                userName = _username;
-                email = _email;
-                password = _password;
+    //         foreach (var student in students.Values)
+    //         {
 
-                RestClient.Put($"{databaseURL}student/" + userName + ".json", student).Then(response =>
-                {
-                    email = response.email;
-                    password = response.password;
-                    level = response.level;
-                    experience = response.experience;
-                    hp = response.hp;
-                    coin = response.coin;
-                    verified = 1;
+    //             if (student.userName == username)
+    //             {
+    //                 getLocalId = student.localId;
+    //                 RetrieveFromDatabase();
+    //                 break;
+    //             }
+    //         }
+    //     }).Catch(error =>
+    //     {
+    //         Debug.Log(error);
+    //     });
+    // }
+}
 
-                });
-            }
-        }
-
-    }
-   
-}*/

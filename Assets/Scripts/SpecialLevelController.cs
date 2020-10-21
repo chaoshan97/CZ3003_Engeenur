@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,11 +22,11 @@ public class SpecialLevelController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       /* Debug.Log("Course Name In Special Levels: " + courseName);
-        Debug.Log("Username In Special Levels: " + userName);
-        loader.SetActive(true);
-        await Read();
-        loader.SetActive(false);*/
+        /* Debug.Log("Course Name In Special Levels: " + courseName);
+         Debug.Log("Username In Special Levels: " + userName);
+         loader.SetActive(true);
+         await Read();
+         loader.SetActive(false);*/
     }
 
     public async Task Read()
@@ -54,10 +54,10 @@ public class SpecialLevelController : MonoBehaviour
         });
         Stopwatch sw = Stopwatch.StartNew();
         var delay = Task.Delay(1000).ContinueWith(_ =>
-                                   {
-                                       sw.Stop();
-                                       return sw.ElapsedMilliseconds;
-                                   });
+        {
+            sw.Stop();
+            return sw.ElapsedMilliseconds;
+        });
         await delay;
         int sec = (int)delay.Result;
         Debug.Log("Read elapsed milliseconds: {0}" + sec);
@@ -141,10 +141,10 @@ public class SpecialLevelController : MonoBehaviour
         });
         Stopwatch sw = Stopwatch.StartNew();
         var delay = Task.Delay(500).ContinueWith(_ =>
-                                   {
-                                       sw.Stop();
-                                       return sw.ElapsedMilliseconds;
-                                   });
+        {
+            sw.Stop();
+            return sw.ElapsedMilliseconds;
+        });
         await delay;
         int sec = (int)delay.Result;
         Debug.Log("check level exist elapsed milliseconds: {0}" + sec);
@@ -156,10 +156,10 @@ public class SpecialLevelController : MonoBehaviour
         DatabaseQAHandler.PostCourseLvlQn(courseLvlQn, () => { });
         Stopwatch sw = Stopwatch.StartNew();
         var delay = Task.Delay(1000).ContinueWith(_ =>
-                                   {
-                                       sw.Stop();
-                                       return sw.ElapsedMilliseconds;
-                                   });
+        {
+            sw.Stop();
+            return sw.ElapsedMilliseconds;
+        });
         await delay;
         int sec = (int)delay.Result;
         Debug.Log("Creating Level Elapsed milliseconds: {0}" + sec);
@@ -183,10 +183,10 @@ public class SpecialLevelController : MonoBehaviour
         DatabaseQAHandler.DeleteCourseLvlQn(key, () => { });
         Stopwatch sw = Stopwatch.StartNew();
         var delay = Task.Delay(1000).ContinueWith(_ =>
-                                   {
-                                       sw.Stop();
-                                       return sw.ElapsedMilliseconds;
-                                   });
+        {
+            sw.Stop();
+            return sw.ElapsedMilliseconds;
+        });
         await delay;
         int sec = (int)delay.Result;
         Debug.Log("Delete elapsed milliseconds: {0}" + sec);
@@ -197,14 +197,15 @@ public class SpecialLevelController : MonoBehaviour
         key = null;
     }
 
-    
+
     //Click a course button
-    public void ClickCourse(GameObject item){
+    public void ClickCourse(GameObject item)
+    {
         trQnViewModel.key = item.name;
         trQnViewModel.courseName = courseName;
         trQnViewModel.userName = userName;
         trQnViewModel.WakeUp();
-        Debug.Log("CLICK COURSE ITEM NAME: "+item.name);
+        Debug.Log("CLICK COURSE ITEM NAME: " + item.name);
         UIController.OpenTrQnCanvas();
     }
 
