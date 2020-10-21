@@ -99,7 +99,7 @@ public class SpecialLevelController : MonoBehaviour
     }
 
     public List<string> qns = new List<string>();
-    public List<string> ans = new List<string>();
+    public List<int> ans = new List<int>();
     public List<string> students = new List<string>();
     public async Task InvokeLvlCheckExist(int lvlNo)
     {

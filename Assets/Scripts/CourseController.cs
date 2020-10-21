@@ -4,12 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using Proyecto26;
 using System.Text.RegularExpressions;
-using UnityWeld.Binding;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using Debug = UnityEngine.Debug;
 
-[Binding]
 public class CourseController : MonoBehaviour
 {
     public GameObject itemParent, item, formCreate, messageBox, delMsgBox, loader, specialLevelCanvas;
@@ -186,16 +184,18 @@ public class CourseController : MonoBehaviour
     }
 
     //Click a course button
-    public void ClickCourse(GameObject item){
+    public void ClickCourse(GameObject item)
+    {
         specialLevelController.courseName = item.name;
         specialLevelController.userName = userName;
         specialLevelController.WakeUp();
-        Debug.Log("CLICK COURSE ITEM NAME: "+item.name);
+        Debug.Log("CLICK COURSE ITEM NAME: " + item.name);
         UIController.OpenSpecialLevelCanvas();
     }
 
     //wake up 
-    public async void WakeUp(){
+    public async void WakeUp()
+    {
         loader.SetActive(true);
         await Read();
         loader.SetActive(false);
