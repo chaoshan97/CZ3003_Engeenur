@@ -13,47 +13,21 @@ public class LoginDbHandler: MonoBehaviour
     private string AuthKey = "AIzaSyAM0B744pa-v9FjU69DmlfQGMqiZAHJpUo";
     public static fsSerializer serializer = new fsSerializer();
     public string userName;
-  //  public string password;
-   // public string email;
     private string idToken;
     public static string localId;
     private string getLocalId;
-
-    Student student = new Student();
-
+    public string verified;
+    UserData userData = new UserData();
     private string databaseURL = "https://engeenur-17baa.firebaseio.com/students/";
     private LoginControllerScript loginControllerScript;
-
-   
     
-   // public void FetchUserSignInInfo(string jsonData)
-     public void FetchUserSignInInfo(string email, string password)
+    public void FetchUserSignInInfo(string email, string password)
     {
-       
-        // JsonData json = JsonMapper.ToObject(jsonData);
-        // string password = json["password"].ToString();
-        // string email = json["email"].ToString();
-        //password = JsonUtility.FromJson<Student>(obj.password);
-        // const int workFactor = 12;
-        // string pwdToHash = password + "^Y8~JK";
-        // string hashedPassword = BCrypt.Net.BCrypt.HashPassword(pwdToHash, workFactor);
         SignInUser(email, password);
     }
-    public void FetchUserSignUpInfo(string email, string password)
+    public void FetchUserSignUpInfo(string email, string username, string password)
     {
-        // LoginControllerScript data = GetComponent<LoginControllerScript>();
-        // email= data.email;
-        // password=data.password;
-
-        // JsonData json = JsonMapper.ToObject(jsonData);
-        // string password = json["password"].ToString();
-        // string email = json["email"].ToString();
-        
-        // const int workFactor = 12;
-        // string pwdToHash = password + "^Y8~JK";
-        // string hashedPassword = BCrypt.Net.BCrypt.HashPassword(pwdToHash, workFactor);
-        
-        string username = "sg";
+        Debug.Log("ENTER FETCH1");
         SignUpStudent(email,username,password);
     }
     // public void verify(){
@@ -61,45 +35,52 @@ public class LoginDbHandler: MonoBehaviour
     // }
     private void PostToDatabase(bool verified = false, string username= null)
     {
-        Student student = new Student();
+        UserData userData = new UserData();
         Debug.Log("1");
         if (verified)
         {
-            student.level = 1;
-            student.experience = 100;
-            student.hp = 1000;
-            student.coin = 0;
-            student.verified=true;
-            student.localId=localId;
-            student.userName=username;
-            
+            userData.localId=localId;
+            userData.userName=username;
+            userData.level = 1;
+            userData.experience = 0;
+            userData.maxExperience=100;
+            userData.hp = 100;
+            userData.coin = 0;
+            userData.verified=true;  
         }
         Debug.Log("2");
         //verify();
 
-        RestClient.Put(databaseURL + "/" + localId + ".json?auth=" + idToken, student);
+        RestClient.Put(databaseURL + "/" + localId + ".json?auth=" + idToken, userData);
        
     }
 
     private void RetrieveFromDatabase()
     {
-        
-        RestClient.Get<Student>(databaseURL + "/" + getLocalId + ".json?auth=" + idToken).Then(response =>
+        RestClient.Get(databaseURL + "/" + getLocalId + ".json?auth=" + idToken).Then(response =>
         {
-            student = response;
+            var responseJson = response.Text;
+            var data = fsJsonParser.Parse(responseJson);
+            object deserialized = null;
+            serializer.TryDeserialize(data, typeof(Dictionary<string, UserData>), ref deserialized);
+            var userData  = deserialized as Dictionary<string, UserData>;
+            Debug.Log(userData);
             //loginControllerScript.
         });
     }
 
     private void SignUpStudent(string email, string username, string password)
     {
-        string studentData = "{\"email\":\"" + email + "\",\"password\":\"" + password + "\",\"returnSecureToken\":true}";
-        RestClient.Post<SignResponse>("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=" + AuthKey, studentData).Then(
+        Debug.Log("signup");
+        string userData = "{\"email\":\"" + email + "\",\"password\":\"" + password + "\",\"returnSecureToken\":true}";
+        Debug.Log("userData");
+        RestClient.Post<SignResponse>("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=" + AuthKey, userData).Then(
             response =>
             {
                 idToken = response.idToken;
                 localId = response.localId;
                 userName = username;
+                Debug.Log("bp");
                 PostToDatabase(true,userName);
 
             }).Catch(error =>
@@ -122,42 +103,41 @@ public class LoginDbHandler: MonoBehaviour
                 Debug.Log("here1");
             }).Catch(error =>
             {
-                
                 Debug.Log(error);
             });
     }
     private void GetUsername()
     {
-        RestClient.Get<Student>(databaseURL + "/" + localId + ".json?auth=" + idToken).Then(response =>
+        RestClient.Get<UserData>(databaseURL + "/" + localId + ".json?auth=" + idToken).Then(response =>
         {
             userName = response.userName;
-            //Debug.Log("here2");
+            GetLocalId();
+            Debug.Log("here2");
         });
     }
+    private void GetLocalId()
+    {
+        RestClient.Get(databaseURL + "/" +".json?auth=" + idToken).Then(response =>
+        {
+            var username = userName;
+            
+            fsData userData = fsJsonParser.Parse(response.Text);
+            Dictionary<string, UserData> users = null;
+            serializer.TryDeserialize(userData, ref users);
 
-    // private void GetLocalId()
-    // {
-    //     RestClient.Get(databaseURL + "/" +".json?auth=" + idToken).Then(response =>
-    //     {
-    //         var username = response.Text;
-    //         fsData studentData = fsJsonParser.Parse(response.Text);
-    //         Dictionary<string, Student> students = null;
-    //         serializer.TryDeserialize(studentData, ref students);
-
-    //         foreach (var student in students.Values)
-    //         {
-
-    //             if (student.userName == username)
-    //             {
-    //                 getLocalId = student.localId;
-    //                 RetrieveFromDatabase();
-    //                 break;
-    //             }
-    //         }
-    //     }).Catch(error =>
-    //     {
-    //         Debug.Log(error);
-    //     });
-    // }
+            foreach (var user in users.Values)
+            {
+                if (user.userName == username)
+                {
+                    getLocalId = user.localId;
+                    RetrieveFromDatabase();
+                    break;
+                }
+            }
+            }).Catch(error =>
+            {
+                Debug.Log(error);
+            });
+    }
 }
 

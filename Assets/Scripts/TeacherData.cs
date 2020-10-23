@@ -4,21 +4,20 @@ using UnityEngine;
 
 public class TeacherData
 {
-    
-    public string id;
-    public string userName; //Email
-    public string name;
+    public string localId;
+    public string userName;
     public bool verified;
 
-    public string getUserName()
+    public TeacherData()
     {
-        return userName;
+        this.userName = userName;
+        this.verified = verified;
+        this.localId = localId;
     }
-
 
     public string getName()
     {
-        return name;
+        return userName;
     }
 
     public bool getVerified()
