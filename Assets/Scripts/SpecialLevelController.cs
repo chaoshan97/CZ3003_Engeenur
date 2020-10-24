@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using Proyecto26;
 using System.Text.RegularExpressions;
-using UnityWeld.Binding;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using Debug = UnityEngine.Debug;
@@ -14,7 +13,7 @@ public class SpecialLevelController : MonoBehaviour
     public GameObject itemParent, item, formCreate, messageBox, delMsgBox, loader;
     public string courseName;
     public string userName;
-    public bool chk = false;
+    private bool chk = false;
     public CourseController courseController;
     public UIControllerScript UIController;
     public TrQnViewModel trQnViewModel;
@@ -22,11 +21,6 @@ public class SpecialLevelController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        /* Debug.Log("Course Name In Special Levels: " + courseName);
-         Debug.Log("Username In Special Levels: " + userName);
-         loader.SetActive(true);
-         await Read();
-         loader.SetActive(false);*/
     }
 
     public async Task Read()
@@ -35,6 +29,7 @@ public class SpecialLevelController : MonoBehaviour
         {
             Destroy(itemParent.transform.GetChild(i).gameObject);
         }
+        //Retrieve Courses Created by the Teacher
         DatabaseQAHandler.GetCourseLvlQns(courseLvlQns =>
         {
             foreach (var courseLvlQn in courseLvlQns)
@@ -54,10 +49,10 @@ public class SpecialLevelController : MonoBehaviour
         });
         Stopwatch sw = Stopwatch.StartNew();
         var delay = Task.Delay(1000).ContinueWith(_ =>
-        {
-            sw.Stop();
-            return sw.ElapsedMilliseconds;
-        });
+                                   {
+                                       sw.Stop();
+                                       return sw.ElapsedMilliseconds;
+                                   });
         await delay;
         int sec = (int)delay.Result;
         Debug.Log("Read elapsed milliseconds: {0}" + sec);
@@ -99,7 +94,7 @@ public class SpecialLevelController : MonoBehaviour
     }
 
     public List<string> qns = new List<string>();
-    public List<string> ans = new List<string>();
+    public List<int> ans = new List<int>();
     public List<string> students = new List<string>();
     public async Task InvokeLvlCheckExist(int lvlNo)
     {
@@ -141,10 +136,10 @@ public class SpecialLevelController : MonoBehaviour
         });
         Stopwatch sw = Stopwatch.StartNew();
         var delay = Task.Delay(500).ContinueWith(_ =>
-        {
-            sw.Stop();
-            return sw.ElapsedMilliseconds;
-        });
+                                   {
+                                       sw.Stop();
+                                       return sw.ElapsedMilliseconds;
+                                   });
         await delay;
         int sec = (int)delay.Result;
         Debug.Log("check level exist elapsed milliseconds: {0}" + sec);
@@ -156,10 +151,10 @@ public class SpecialLevelController : MonoBehaviour
         DatabaseQAHandler.PostCourseLvlQn(courseLvlQn, () => { });
         Stopwatch sw = Stopwatch.StartNew();
         var delay = Task.Delay(1000).ContinueWith(_ =>
-        {
-            sw.Stop();
-            return sw.ElapsedMilliseconds;
-        });
+                                   {
+                                       sw.Stop();
+                                       return sw.ElapsedMilliseconds;
+                                   });
         await delay;
         int sec = (int)delay.Result;
         Debug.Log("Creating Level Elapsed milliseconds: {0}" + sec);
@@ -183,10 +178,10 @@ public class SpecialLevelController : MonoBehaviour
         DatabaseQAHandler.DeleteCourseLvlQn(key, () => { });
         Stopwatch sw = Stopwatch.StartNew();
         var delay = Task.Delay(1000).ContinueWith(_ =>
-        {
-            sw.Stop();
-            return sw.ElapsedMilliseconds;
-        });
+                                   {
+                                       sw.Stop();
+                                       return sw.ElapsedMilliseconds;
+                                   });
         await delay;
         int sec = (int)delay.Result;
         Debug.Log("Delete elapsed milliseconds: {0}" + sec);
