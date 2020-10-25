@@ -20,16 +20,16 @@ public class InventoryInterface : MonoBehaviour
         List<Item> tempList = new List<Item>();
         for (int i=0; i<1; i++)
         {
-            Item iTemp = new Item();
-            iTemp.Name = "a";
-            iTemp.Quantity = 1;
-            iTemp.Type = Item.WEAPON;
-            Item iTemp1 = new Item();
-            iTemp1.Name = "b";
-            iTemp1.Quantity = 3;
-            iTemp1.Type = Item.WEAPON;
-            tempList.Add(iTemp);
-            tempList.Add(iTemp1);
+            // Item iTemp = new Item();
+            // iTemp.Name = "a";
+            // iTemp.Quantity = 1;
+            // iTemp.Type = Item.WEAPON;
+            // Item iTemp1 = new Item();
+            // iTemp1.Name = "b";
+            // iTemp1.Quantity = 3;
+            // iTemp1.Type = Item.WEAPON;
+            // tempList.Add(iTemp);
+            // tempList.Add(iTemp1);
         }
         
         ii.items = tempList;

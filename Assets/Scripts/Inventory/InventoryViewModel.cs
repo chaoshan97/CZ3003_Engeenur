@@ -10,9 +10,8 @@ public class InventoryViewModel : MonoBehaviour, INotifyPropertyChanged
     public InventoryInterface inventoryInt;
     public MainMenuControllerScript mainMenuControllerScript;
     private UserData userData;
-    private EquippedItems equippedItems;
-    private UIControllerScript uiController;
-    private InventoryItems inBagList = new InventoryItems();
+    private EquippedItems equippedItems = new EquippedItems();
+    private Dictionary<string, Item> inBagList;
     private List<Button> instantiatedUI = new List<Button>();
     public event PropertyChangedEventHandler PropertyChanged;
     public GameObject goldAmount;
@@ -20,7 +19,7 @@ public class InventoryViewModel : MonoBehaviour, INotifyPropertyChanged
 
     public Button inbagRowTemplate;
 
-
+    // triggers when Inventory UI's canvas is set active
     void OnEnable() 
     {
         Init();
@@ -28,27 +27,36 @@ public class InventoryViewModel : MonoBehaviour, INotifyPropertyChanged
 
     private void Init() 
     {
-        StartCoroutine(inventoryInt.getInventoryDetails((success, allResults) => {
-            if (success) 
-            {
-                this.inBagList = allResults;
-                this.populateInBagItems();
-            }
-        }));
+        // StartCoroutine(inventoryInt.getInventoryDetails((success, allResults) => {
+        //     if (success) 
+        //     {
+        //         this.inBagList = allResults;
+        //         this.populateInBagItems();
+        //     }
+        // }));
 
-        StartCoroutine(inventoryInt.getEquippedItemsDetails((success, allResults) => {
-            if (success) 
-            {
-                this.equippedItems = allResults;
-            }
-        }));
-
+        // StartCoroutine(inventoryInt.getEquippedItemsDetails((success, allResults) => {
+        //     if (success) 
+        //     {
+        //         this.equippedItems = allResults;
+        //     }
+        // }));
+        Debug.Log("Start of Init()"); // debug
         // get userdata from mainmenu
-        this.userData = this.mainMenuControllerScript.getUserData();
+        // this.userData = this.mainMenuControllerScript.getUserData();
+
+        // get items list
+        InventoryDBHandler.GetInventory("tom", itemsDict => {
+            this.inBagList = itemsDict;
+            // display list of items in inventory on the UI
+            this.populateInBagItems();
+        });
+
         // set the gold amount to the UI
-        goldAmount.GetComponent<Text>().text = this.userData.getCoin().ToString();
+        // goldAmount.GetComponent<Text>().text = this.userData.getCoin().ToString();
     }
 
+    // display rows of items on the inventory
     private void populateInBagItems() 
     {
         // Clear Results from previously selected level
@@ -60,13 +68,13 @@ public class InventoryViewModel : MonoBehaviour, INotifyPropertyChanged
         instantiatedUI.Clear();
 
         // Instantiate new results
-        foreach (Item item in inBagList.items) 
+        foreach (KeyValuePair<string, Item> item in this.inBagList) 
         {
             Button inbagRow = Instantiate<Button>(this.inbagRowTemplate, transform);
-            inbagRow.name = item.Name;  // set name of the button
-            inbagRow.transform.GetChild(0).GetComponent<Text>().text = item.Name;   // set the item name to the row
+            inbagRow.name = item.Value.name;  // set name of the button
+            inbagRow.transform.GetChild(0).GetComponent<Text>().text = item.Value.name;   // set the item name to the row
             inbagRow.transform.GetChild(0).GetComponent<Text>().fontStyle = 0; // set to unbold
-            inbagRow.transform.GetChild(1).GetComponent<Text>().text = item.Quantity.ToString();    // set the quantity of the item to the row
+            inbagRow.transform.GetChild(1).GetComponent<Text>().text = item.Value.quantity.ToString();    // set the quantity of the item to the row
             inbagRow.transform.GetChild(1).GetComponent<Text>().fontStyle = 0; // set to unbold
             // add button listener to know which item is being clicked
             inbagRow.onClick.AddListener(delegate
@@ -86,27 +94,27 @@ public class InventoryViewModel : MonoBehaviour, INotifyPropertyChanged
         Item item;
 
         // search for the item that is being clicked
-        for (int i=0; i< this.inBagList.items.Count; i++)
+        foreach (string key in this.inBagList.Keys)
         {
-            item = this.inBagList.items[i];
+            item = this.inBagList[key];
 
-            if (item.Name.Equals(itemClicked.name))
+            if (item.name.Equals(itemClicked.name))
             {
                 // check if clicked item to be equipped is a weapon as can only equip weaponm not potions
-                if (item.Type.Equals(Item.WEAPON))
+                if (item.property.Equals(Item.WEAPON))
                 {
                     Debug.Log("Equipping item...");
                     // update the newly equipped weapon to the UI
-                    this.equippedWeapon.GetComponent<Text>().text = item.Name;
+                    this.equippedWeapon.GetComponent<Text>().text = item.name;
                     // set Model of EquippedItems to the newly equipped item
                     equippedItems.weapon = item;
                     
                     // remove item from the inventory since quantity of it becomes 0 after adding it to the item list
-                    if (item.Quantity - 1 == 0)
-                        this.inBagList.items.RemoveAt(i);
+                    if (item.quantity - 1 == 0)
+                        this.inBagList.Remove(key);
                     // reduce quantity of that equipped item from the inventory
                     else
-                        item.Quantity -= 1;
+                        item.quantity -= 1;
 
                     // found the item so don't need to continue to search
                     break;
@@ -121,15 +129,15 @@ public class InventoryViewModel : MonoBehaviour, INotifyPropertyChanged
         if (previousEquippedItem != null)
         {
             // search item in inventory that contains the same item as the previously equipped item so can increase its quantity in the inventory
-            for (int i=0; i< this.inBagList.items.Count; i++)
+            foreach (string key in this.inBagList.Keys)
             {
-                item = this.inBagList.items[i];
+                item = this.inBagList[key];
 
                 // check if found the inventory item to increase the quantity
-                if (item.Name.Equals(previousEquippedItem.Name))
+                if (item.name.Equals(previousEquippedItem.name))
                 {
                     // increment item's quantity by 1 since adding previous equipped item back into the inventory
-                    ++item.Quantity;
+                    ++item.quantity;
                     // since increased the quantity, no need to append the item to the inventory list
                     toAppendItem = false;
 
@@ -141,7 +149,7 @@ public class InventoryViewModel : MonoBehaviour, INotifyPropertyChanged
             // check if need to append item into the inventory list
             if (toAppendItem)
                 // append previous equipped item since inventory doesn't have that item
-                this.inBagList.items.Add(previousEquippedItem);
+                this.inBagList.Add("jack" + previousEquippedItem.name, previousEquippedItem);
         }
 
         // update the UI in the list of items in the inventory
