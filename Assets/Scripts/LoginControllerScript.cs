@@ -36,6 +36,7 @@ public class LoginControllerScript : MonoBehaviour
     public LoginDbHandler loginDbHandler;
 
     public MainMenuControllerScript mainMenuController;
+    private UserData userData;
 
 
     private bool verified = false; //Set as 'false'. Now 'true' for testing purpose
@@ -74,15 +75,24 @@ public class LoginControllerScript : MonoBehaviour
                 }
                 else
                 {
-                    //StartCoroutine(PostRequest(email, password));
-                    bool loginChk = await PostRequest(email, password);
-                    if (loginChk == true)
+                    string loginChk = await PostRequest(email, password);
+                    if (loginChk != null)
                     {
-                        UIController.loginButton();
+                        bool studentChk = await ChkStudent(loginChk);
+                        if (studentChk == true)
+                        {
+                            mainMenuController.setUserData(userData);
+                            //mainMenuController.loadMainMenu();
+                            UIController.loginButton();
+                        }
+                        else
+                        {
+                            StartCoroutine(ShowWrongMessage());
+                        }
                     }
                     else
                     {
-                         StartCoroutine(ShowWrongMessage());
+                        StartCoroutine(ShowWrongMessage());
                     }
 
                 }
@@ -116,7 +126,7 @@ public class LoginControllerScript : MonoBehaviour
         PassPopUp.SetActive(false);
 
     }
-    
+
     IEnumerator ShowWrongMessage()
     {
         WrongPopUp.SetActive(true);
@@ -125,10 +135,39 @@ public class LoginControllerScript : MonoBehaviour
 
     }
 
-    public async Task<bool> PostRequest(string username, string password)
+    public async Task<string> PostRequest(string username, string password)
     {
-        bool result = await loginDbHandler.FetchUserSignInInfo(username, password);
+        string result = await loginDbHandler.FetchUserSignInInfo(username, password);
         return result;
         Debug.Log("Check Result: " + result);
+    }
+
+    public async Task<bool> ChkStudent(string localID)
+    {
+        bool chk = false;
+        LoginDbHandler.GetStudent(localID, student =>
+        {
+            chk = true;
+            userData = new UserData();
+            userData.coin = student.coin;
+            userData.email = student.email;
+            userData.experience = student.experience;
+            userData.hp = student.hp;
+            userData.level = student.level;
+            userData.localId = student.localId;
+            userData.maxExperience = student.maxExperience;
+            userData.userName = student.userName;
+            userData.verified = student.verified;
+        });
+        Stopwatch sw = Stopwatch.StartNew();
+        var delay = Task.Delay(1000).ContinueWith(_ =>
+        {
+            sw.Stop();
+            return sw.ElapsedMilliseconds;
+        });
+        await delay;
+        int sec = (int)delay.Result;
+        Debug.Log("Time elapsed milliseconds: {0}" + sec + ", Chk is " + chk);
+        return chk;
     }
 }
