@@ -5,6 +5,7 @@ using UnityEngine;
 public class UIControllerScript : MonoBehaviour
 {
     public GameObject loginCanvas;
+    public GameObject loginTrCanvas;
     public GameObject createAccountCanvas;
     public GameObject townCanvas;
     public GameObject inventoryCanvas;
@@ -47,7 +48,7 @@ public class UIControllerScript : MonoBehaviour
 
     public void teacherLoginButton()
     {
-        loginCanvas.SetActive(false);
+        loginTrCanvas.SetActive(false);
         teacherTownCanvas.SetActive(true);
 
     }
@@ -221,7 +222,8 @@ public class UIControllerScript : MonoBehaviour
         trQnCanvas.SetActive(false);
         specialLevelCanvas.SetActive(true);
     }
-    public void TrQnToCourseCanvas(){
+    public void TrQnToCourseCanvas()
+    {
         trQnCanvas.SetActive(false);
         courseCanvas.SetActive(true);
     }
@@ -247,6 +249,11 @@ public class UIControllerScript : MonoBehaviour
     public void LoginToMainCanvas()
     {
         loginCanvas.SetActive(false);
+        mainCanvas.SetActive(true);
+    }
+    public void LoginTrToMainCanvas()
+    {
+        loginTrCanvas.SetActive(false);
         mainCanvas.SetActive(true);
     }
 
