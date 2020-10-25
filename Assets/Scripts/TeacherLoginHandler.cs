@@ -8,7 +8,7 @@ using UnityEngine.UI;
 using FullSerializer;
 using LitJson;
 
-public class TeacherLoginHandler : MonoBehaviour
+public class TeacherLoginHandler: MonoBehaviour
 {
     private string AuthKey = "AIzaSyAM0B744pa-v9FjU69DmlfQGMqiZAHJpUo";
     public static fsSerializer serializer = new fsSerializer();
@@ -16,53 +16,31 @@ public class TeacherLoginHandler : MonoBehaviour
     private string idToken;
     public static string localId;
     private string getLocalId;
-
-    Teacher teacher = new Teacher();
+    public string verified;
+    TeacherData teacherData = new TeacherData();
     private string databaseURL = "https://engeenur-17baa.firebaseio.com/students/";
-    //private LoginControllerScript loginControllerScript;
+    private LoginControllerScript loginControllerScript;
     
-    // Start is called before the first frame update
-    public void FetchUserSignInInfo(string email, string password)
+    public void FetchTeacherSignInInfo(string email, string password)
     {
-       
-        // JsonData json = JsonMapper.ToObject(jsonData);
-        // string password = json["password"].ToString();
-        // string email = json["email"].ToString();
-        //password = JsonUtility.FromJson<Student>(obj.password);
-        // const int workFactor = 12;
-        // string pwdToHash = password + "^Y8~JK";
-        // string hashedPassword = BCrypt.Net.BCrypt.HashPassword(pwdToHash, workFactor);
-        SignInUser(email, password);
-    }
-    private void PostToDatabase(bool verified = false, string username= null)
-    {
-        Teacher teacher = new Teacher();
-        Debug.Log("1");
-        if (verified)
-        {
-            teacher.verified=true;
-            teacher.localId=localId;
-            teacher.userName=username;
-            
-        }
-        Debug.Log("2");
-        //verify();
-
-        RestClient.Put(databaseURL + "/" + localId + ".json?auth=" + idToken, teacher);
-       
+        SignInTeacher(email, password);
     }
 
-    private void RetrieveFromDatabase()
+    private void RetrieveFromDB()
     {
-        
-        RestClient.Get<Teacher>(databaseURL + "/" + getLocalId + ".json?auth=" + idToken).Then(response =>
+        RestClient.Get(databaseURL + "/" + getLocalId + ".json?auth=" + idToken).Then(response =>
         {
-            teacher = response;
+            var responseJson = response.Text;
+            var data = fsJsonParser.Parse(responseJson);
+            object deserialized = null;
+            serializer.TryDeserialize(data, typeof(Dictionary<string, TeacherData>), ref deserialized);
+            var teacherData  = deserialized as Dictionary<string, TeacherData>;
+            Debug.Log(teacherData);
             //loginControllerScript.
         });
     }
 
-    private void SignInUser(string email, string password)
+    private void SignInTeacher(string email, string password)
     {
         string teacherData = "{\"email\":\"" + email + "\",\"password\":\"" + password + "\",\"returnSecureToken\":true}";
         RestClient.Post<SignResponse>("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=" + AuthKey, teacherData).Then(
@@ -70,30 +48,30 @@ public class TeacherLoginHandler : MonoBehaviour
             {
                 idToken = response.idToken;
                 localId = response.localId;
-                GetUsername();
+                GetTeachername();
                 Debug.Log("here1");
             }).Catch(error =>
             {
-                
                 Debug.Log(error);
             });
     }
-    private void GetUsername()
+    private void GetTeachername()
     {
-        RestClient.Get<Teacher>(databaseURL + "/" + localId + ".json?auth=" + idToken).Then(response =>
+        RestClient.Get<UserData>(databaseURL + "/" + localId + ".json?auth=" + idToken).Then(response =>
         {
             userName = response.userName;
-            //Debug.Log("here2");
+            GetTeacherLocalId();
+            Debug.Log("here2");
         });
     }
-
-    private void GetLocalId()
+    private void GetTeacherLocalId()
     {
         RestClient.Get(databaseURL + "/" +".json?auth=" + idToken).Then(response =>
         {
-            var username = response.Text;
+            var username = userName;
+            
             fsData teacherData = fsJsonParser.Parse(response.Text);
-            Dictionary<string, Teacher> teachers = null;
+            Dictionary<string, TeacherData> teachers = null;
             serializer.TryDeserialize(teacherData, ref teachers);
 
             foreach (var teacher in teachers.Values)
@@ -101,14 +79,14 @@ public class TeacherLoginHandler : MonoBehaviour
                 if (teacher.userName == username)
                 {
                     getLocalId = teacher.localId;
-                    RetrieveFromDatabase();
+                    RetrieveFromDB();
                     break;
                 }
             }
-        }).Catch(error =>
-        {
-            Debug.Log(error);
-        });
+            }).Catch(error =>
+            {
+                Debug.Log(error);
+            });
     }
-
 }
+

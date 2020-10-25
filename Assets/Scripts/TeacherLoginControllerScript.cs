@@ -8,35 +8,32 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Networking;
 using System.Text;
 
-
 public class TeacherLoginControllerScript : MonoBehaviour
 {
 
     [SerializeField]
-    private InputField Username = null;
+    private InputField emailInput = null;
 
     [SerializeField]
-    private InputField Password = null;
+    private InputField passwordInput = null;
 
     [SerializeField]
-    private GameObject WrongPopUp = null;
+    private GameObject wrongPopUp = null;
 
     public UIControllerScript UIController;
 
-    public MainMenuControllerScript MainMenuController;
-
+    public MainMenuControllerScript mainMenuController;
 
     private bool verified = false; //Set as 'false'. Now 'true' for testing purpose
     private string response;
-
-
+    public TeacherLoginHandler teacherLoginHandler; 
 
     // Start is called before the first frame update
     void Start()
     {
     }
 
-    // Update is called once per frame
+    //Update is called once per frame
     void Update()
     {
 
@@ -44,62 +41,44 @@ public class TeacherLoginControllerScript : MonoBehaviour
 
     public void login()
     {
-        string username = Username.text.Trim().ToLower();
-        string password = Password.text;
-
-        string jsonData = "{\"username\":\"" + username + "\",\"password\":\"" + password + "\"}";
-
-        StartCoroutine(PostRequest("http://localhost:3000/teacher/1", jsonData)); //Change to server url
+        string email = emailInput.text.Trim().ToLower();
+        string password = passwordInput.text;
+    
+        StartCoroutine(PostRequest(email, password));
 
     }
 
     IEnumerator ShowWrongMessage()
     {
-        WrongPopUp.SetActive(true);
+        wrongPopUp.SetActive(true);
         yield return new WaitForSeconds(2);
-        WrongPopUp.SetActive(false);
+        wrongPopUp.SetActive(false);
 
     }
 
-    IEnumerator PostRequest(string url, string json)
+    IEnumerator PostRequest(string email, string password)
     {
-        var uwr = new UnityWebRequest(url, "GET"); //Should be POST
-        byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
-        uwr.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonToSend);
-        uwr.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
-        uwr.SetRequestHeader("Content-Type", "application/json");
+        teacherLoginHandler.FetchTeacherSignInInfo(email,password);
+        yield return new WaitForSeconds(2);
 
-        //Send the request then wait here until it returns
-        yield return uwr.SendWebRequest();
+        TeacherData teacher = new TeacherData();
 
-        if (uwr.isNetworkError)
+        verified = teacher.getVerified();
+
+        if (verified == true)
         {
-            Debug.Log("Error While Sending: " + uwr.error);
+
+            UIController.teacherLoginButton();
+            mainMenuController.setTeacherData(teacher);
+            mainMenuController.loadTeacherMainMenu();
         }
         else
         {
-            Debug.Log("Received: " + uwr.downloadHandler.text);
-            response = uwr.downloadHandler.text;
-
-            TeacherData teacher = JsonUtility.FromJson<TeacherData>(response);
- 
-            verified = teacher.getVerified();
-
-
-            if (verified == true)
-            {
-
-                UIController.teacherLoginButton();
-                MainMenuController.setTeacherData(teacher);
-                MainMenuController.loadTeacherMainMenu();
-            }
-            else
-            {
-                StartCoroutine(ShowWrongMessage());
-            }
-
-
+            StartCoroutine(ShowWrongMessage());
         }
 
+
     }
+
+
 }

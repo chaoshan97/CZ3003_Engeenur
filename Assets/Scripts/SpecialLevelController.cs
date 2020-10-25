@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using Proyecto26;
 using System.Text.RegularExpressions;
-using UnityWeld.Binding;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using Debug = UnityEngine.Debug;
@@ -14,33 +13,30 @@ public class SpecialLevelController : MonoBehaviour
     public GameObject itemParent, item, formCreate, messageBox, delMsgBox, loader;
     public string courseName;
     public string userName;
-    public bool chk = false;
-    public CourseController courseController;
+    private bool chk = false;
+    public EnrollViewModel enrollViewModel;
     public UIControllerScript UIController;
     public TrQnViewModel trQnViewModel;
 
     // Start is called before the first frame update
     void Start()
     {
-        /* Debug.Log("Course Name In Special Levels: " + courseName);
-         Debug.Log("Username In Special Levels: " + userName);
-         loader.SetActive(true);
-         await Read();
-         loader.SetActive(false);*/
     }
 
+    //Creating buttons for levels
     public async Task Read()
     {
         for (int i = 0; i < itemParent.transform.childCount; i++)
         {
             Destroy(itemParent.transform.GetChild(i).gameObject);
         }
+        //Retrieve Courses Created by the Teacher
         DatabaseQAHandler.GetCourseLvlQns(courseLvlQns =>
         {
             foreach (var courseLvlQn in courseLvlQns)
             {
-                Debug.Log($"{courseLvlQn.Key} {courseLvlQn.Value.courseName} {courseLvlQn.Value.userName} {courseLvlQn.Value.level}");
-                if (courseLvlQn.Value.courseName == courseName && courseLvlQn.Value.userName == userName)
+                Debug.Log($"{courseLvlQn.Key} {courseLvlQn.Value.courseName} {courseLvlQn.Value.level}");
+                if (courseLvlQn.Value.courseName == courseName)//&& courseLvlQn.Value.userName == userName)
                 {
 
                     GameObject tmp_btn = Instantiate(item, itemParent.transform);
@@ -54,10 +50,10 @@ public class SpecialLevelController : MonoBehaviour
         });
         Stopwatch sw = Stopwatch.StartNew();
         var delay = Task.Delay(1000).ContinueWith(_ =>
-        {
-            sw.Stop();
-            return sw.ElapsedMilliseconds;
-        });
+                                   {
+                                       sw.Stop();
+                                       return sw.ElapsedMilliseconds;
+                                   });
         await delay;
         int sec = (int)delay.Result;
         Debug.Log("Read elapsed milliseconds: {0}" + sec);
@@ -99,8 +95,7 @@ public class SpecialLevelController : MonoBehaviour
     }
 
     public List<string> qns = new List<string>();
-    public List<string> ans = new List<string>();
-    public List<string> students = new List<string>();
+    public List<int> ans = new List<int>();
     public async Task InvokeLvlCheckExist(int lvlNo)
     {
         Task<bool> task = CheckLvlExist(lvlNo);
@@ -113,7 +108,7 @@ public class SpecialLevelController : MonoBehaviour
         }
         else
         {
-            var courseLvlQn = new CourseLvlQn(courseName, userName, lvlNo, qns, ans, students);
+            var courseLvlQn = new CourseLvlQn(courseName, lvlNo, qns, ans);
             loader.SetActive(true);
             await PostingLvl(courseLvlQn);
             await Read();
@@ -129,8 +124,8 @@ public class SpecialLevelController : MonoBehaviour
         {
             foreach (var courseLvlQn in courseLvlQns)
             {
-                Debug.Log($"{courseLvlQn.Key} {courseLvlQn.Value.courseName} {courseLvlQn.Value.userName} {courseLvlQn.Value.level}");
-                if (courseLvlQn.Value.userName == userName && courseLvlQn.Value.courseName == courseName)
+                Debug.Log($"{courseLvlQn.Key} {courseLvlQn.Value.courseName} {courseLvlQn.Value.level}");
+                if (/*courseLvlQn.Value.userName == userName &&*/ courseLvlQn.Value.courseName == courseName)
                 {
                     if (courseLvlQn.Value.level == lvlNo)
                     {
@@ -141,25 +136,26 @@ public class SpecialLevelController : MonoBehaviour
         });
         Stopwatch sw = Stopwatch.StartNew();
         var delay = Task.Delay(500).ContinueWith(_ =>
-        {
-            sw.Stop();
-            return sw.ElapsedMilliseconds;
-        });
+                                   {
+                                       sw.Stop();
+                                       return sw.ElapsedMilliseconds;
+                                   });
         await delay;
         int sec = (int)delay.Result;
         Debug.Log("check level exist elapsed milliseconds: {0}" + sec);
         return chk;
     }
 
+    //Create level in DB
     public async Task PostingLvl(CourseLvlQn courseLvlQn)
     {
         DatabaseQAHandler.PostCourseLvlQn(courseLvlQn, () => { });
         Stopwatch sw = Stopwatch.StartNew();
         var delay = Task.Delay(1000).ContinueWith(_ =>
-        {
-            sw.Stop();
-            return sw.ElapsedMilliseconds;
-        });
+                                   {
+                                       sw.Stop();
+                                       return sw.ElapsedMilliseconds;
+                                   });
         await delay;
         int sec = (int)delay.Result;
         Debug.Log("Creating Level Elapsed milliseconds: {0}" + sec);
@@ -183,10 +179,10 @@ public class SpecialLevelController : MonoBehaviour
         DatabaseQAHandler.DeleteCourseLvlQn(key, () => { });
         Stopwatch sw = Stopwatch.StartNew();
         var delay = Task.Delay(1000).ContinueWith(_ =>
-        {
-            sw.Stop();
-            return sw.ElapsedMilliseconds;
-        });
+                                   {
+                                       sw.Stop();
+                                       return sw.ElapsedMilliseconds;
+                                   });
         await delay;
         int sec = (int)delay.Result;
         Debug.Log("Delete elapsed milliseconds: {0}" + sec);
@@ -219,10 +215,11 @@ public class SpecialLevelController : MonoBehaviour
         loader.SetActive(false);
     }
 
+    //When click close
     public void closeSpecialLvl()
     {
-        courseController.WakeUp();
-        UIController.CloseSpecialLevelCanvas();
+        enrollViewModel.WakeUp();
+        UIController.SpecialLevelToEnrollmentCanvas();
     }
 
     // Update is called once per frame

@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using Proyecto26;
 using System.Text.RegularExpressions;
-using UnityWeld.Binding;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using Debug = UnityEngine.Debug;
@@ -20,11 +19,12 @@ public class TrQnViewModel : MonoBehaviour
     public InputField ansInput;
     public InputField qnUpdateInput;
     public InputField ansUpdateInput;
-    public bool chk = false;
+    private bool chk = false;
     CourseLvlQn courseLvlQnCreate;
     public SpecialLevelController specialLevelController;
-    public EnrollViewModel enrollViewModel;
+    public CourseController courseController;
     public UIControllerScript UIController;
+    public int count=0;
 
     void Start()
     {
@@ -32,6 +32,7 @@ public class TrQnViewModel : MonoBehaviour
 
     public async Task Read()
     {
+        count=0;
         for (int i = 0; i < itemParent.transform.childCount; i++)
         {
             Destroy(itemParent.transform.GetChild(i).gameObject);
@@ -47,8 +48,9 @@ public class TrQnViewModel : MonoBehaviour
                 Debug.Log("here item name: " + tmp_item.name);
                 tmp_item.transform.GetChild(0).GetComponent<Text>().text = number.ToString();
                 tmp_item.transform.GetChild(1).GetComponent<Text>().text = courseLvlQn.qns[i];
-                tmp_item.transform.GetChild(2).GetComponent<Text>().text = courseLvlQn.ans[i];
+                tmp_item.transform.GetChild(2).GetComponent<Text>().text = (courseLvlQn.ans[i]).ToString();
                 number++;
+                count++;
             }
         });
         Stopwatch sw = Stopwatch.StartNew();
@@ -59,7 +61,7 @@ public class TrQnViewModel : MonoBehaviour
                                    });
         await delay;
         int sec = (int)delay.Result;
-        Debug.Log("Read elapsed milliseconds: {0}" + sec);
+        Debug.Log("Read elapsed milliseconds: {0}" + sec +"Count:"+count);
     }
 
     //create qns check
@@ -149,8 +151,9 @@ public class TrQnViewModel : MonoBehaviour
     //Creating qn in DB
     public async Task PostingQn(string qn, string ans)
     {
+        int intAns = int.Parse(ans,System.Globalization.NumberStyles.Integer);
         (courseLvlQnCreate.qns).Add(qn);
-        (courseLvlQnCreate.ans).Add(ans);
+        (courseLvlQnCreate.ans).Add(intAns);
         DatabaseQAHandler.PutCourseLvlQn(key, courseLvlQnCreate, () => { });
         Stopwatch sw = Stopwatch.StartNew();
         var delay = Task.Delay(1000).ContinueWith(_ =>
@@ -203,8 +206,9 @@ public class TrQnViewModel : MonoBehaviour
         editName = int.Parse(item.name, System.Globalization.NumberStyles.Integer);
         Debug.Log("CHECK EDIT name: " + editName);
         formUpdate.transform.GetChild(1).GetComponent<InputField>().text = courseLvlQnCreate.qns[editName];
-        formUpdate.transform.GetChild(2).GetComponent<InputField>().text = courseLvlQnCreate.ans[editName];
+        formUpdate.transform.GetChild(2).GetComponent<InputField>().text = (courseLvlQnCreate.ans[editName]).ToString();
     }
+    
     // Edit qn basic check
     public async void EditQn()
     {
@@ -213,7 +217,7 @@ public class TrQnViewModel : MonoBehaviour
         bool handler = Check(qn, ans);
         if (handler == true)
         {
-            if (qn == courseLvlQnCreate.qns[editName] && ans == courseLvlQnCreate.ans[editName])
+            if (qn == courseLvlQnCreate.qns[editName] && ans == courseLvlQnCreate.ans[editName].ToString())
             {
                 messageBox.SetActive(true);
                 messageBox.transform.GetChild(1).GetComponent<Text>().text = "No changes in question and answer.";
@@ -232,7 +236,7 @@ public class TrQnViewModel : MonoBehaviour
     {
         loader.SetActive(true);
         courseLvlQnCreate.qns[editName] = qn;
-        courseLvlQnCreate.ans[editName] = ans;
+        courseLvlQnCreate.ans[editName] = int.Parse(ans,System.Globalization.NumberStyles.Integer);
         DatabaseQAHandler.PutCourseLvlQn(key, courseLvlQnCreate, () => { });
         Stopwatch sw = Stopwatch.StartNew();
         var delay = Task.Delay(1000).ContinueWith(_ =>
@@ -268,14 +272,16 @@ public class TrQnViewModel : MonoBehaviour
     }
 
     //When click Next
-    public void OpenEnrollment()
+    public void Next()
     {
-        enrollViewModel.key = key;
+        courseController.WakeUp();
+        UIController.TrQnToCourseCanvas();
+        /*enrollViewModel.key = key;
         enrollViewModel.courseName = courseName;
         enrollViewModel.userName = userName;
         enrollViewModel.WakeUp();
         Debug.Log("CLICK next ITEM NAME: " + key);
-        UIController.OpenEnrollCanvas();
+        UIController.OpenEnrollCanvas();*/
     }
 
     // Update is called once per frame

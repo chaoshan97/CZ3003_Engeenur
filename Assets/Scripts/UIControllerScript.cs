@@ -24,24 +24,25 @@ public class UIControllerScript : MonoBehaviour
     public GameObject specialLevelCanvas;
     public GameObject trQnCanvas;
     public GameObject enrollCanvas;
+    public GameObject mainCanvas;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void loginButton()
     {
         loginCanvas.SetActive(false);
         townCanvas.SetActive(true);
- 
+
     }
 
     public void teacherLoginButton()
@@ -149,7 +150,7 @@ public class UIControllerScript : MonoBehaviour
     {
         leadershipBoardCanvas.SetActive(false);
         townCanvas.SetActive(true);
-        
+
     }
 
     public void OpenShopScrollView()
@@ -187,17 +188,28 @@ public class UIControllerScript : MonoBehaviour
         viewResultsCanvas.SetActive(true);
         teacherTownCanvas.SetActive(false);
     }
-
-    public void OpenSpecialLevelCanvas()
+    public void EnrollmentToCourseCanvas()
     {
-        questionCanvas.SetActive(true);
-        teacherTownCanvas.SetActive(false);
+        enrollCanvas.SetActive(false);
+        courseCanvas.SetActive(true);
     }
 
-    public void CloseSpecialLevelCanvas()
+    public void CourseToEnrollmentCanvas()
+    {
+        courseCanvas.SetActive(false);
+        enrollCanvas.SetActive(true);
+
+    }
+    public void EnrollmentToSpecialLevelCanvas()
+    {
+        enrollCanvas.SetActive(false);
+        specialLevelCanvas.SetActive(true);
+    }
+
+    public void SpecialLevelToEnrollmentCanvas()
     {
         specialLevelCanvas.SetActive(false);
-        courseCanvas.SetActive(true);
+        enrollCanvas.SetActive(true);
     }
     public void OpenTrQnCanvas()
     {
@@ -209,16 +221,9 @@ public class UIControllerScript : MonoBehaviour
         trQnCanvas.SetActive(false);
         specialLevelCanvas.SetActive(true);
     }
-    public void OpenEnrollCanvas()
-    {
+    public void TrQnToCourseCanvas(){
         trQnCanvas.SetActive(false);
-        enrollCanvas.SetActive(true);
-    }
-
-    public void CloseEnrollCanvas()
-    {
-        enrollCanvas.SetActive(false);
-        trQnCanvas.SetActive(true);
+        courseCanvas.SetActive(true);
     }
 
     public void CloseBattleCanvas()
@@ -226,4 +231,29 @@ public class UIControllerScript : MonoBehaviour
         battleCanvas.SetActive(false);
         townCanvas.SetActive(true);
     }
+
+    public void ProceedToLoginCanvas()
+    {
+        mainCanvas.SetActive(false);
+        loginCanvas.SetActive(true);
+    }
+
+    public void ProceedToCreateAccCanvas()
+    {
+        mainCanvas.SetActive(false);
+        createAccountCanvas.SetActive(true);
+    }
+
+    public void LoginToMainCanvas()
+    {
+        loginCanvas.SetActive(false);
+        mainCanvas.SetActive(true);
+    }
+
+    public void CreateAccToMainCanvas()
+    {
+        createAccountCanvas.SetActive(false);
+        mainCanvas.SetActive(true);
+    }
+
 }
