@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using Proyecto26;
 using System.Text.RegularExpressions;
-using UnityWeld.Binding;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using Debug = UnityEngine.Debug;
@@ -12,14 +11,14 @@ using Debug = UnityEngine.Debug;
 public class EnrollViewModel : MonoBehaviour
 {
     public GameObject itemParent, item, formCreate, messageBox, delMsgBox, loader;
-    public string key;
     public string courseName;
     public string userName;
-    public int level;
     public InputField studInput;
-    public bool chk = false;
-    CourseLvlQn courseLvlQnCreate;
-    public TrQnViewModel trQnViewModel;
+    private bool chk = false;
+    private bool chkStudValid = false;
+    Course currentCourse;
+    public SpecialLevelController specialLevelController;
+    public CourseController courseController;
     public UIControllerScript UIController;
     // Start is called before the first frame update
     void Start()
@@ -33,17 +32,18 @@ public class EnrollViewModel : MonoBehaviour
         {
             Destroy(itemParent.transform.GetChild(i).gameObject);
         }
-        DatabaseQAHandler.GetCourseLvlQn(key, courseLvlQn =>
+        DatabaseQAHandler.GetCourse(courseName, course =>
         {
-            courseLvlQnCreate = courseLvlQn;
+            currentCourse = new Course(userName, course.students);
             int number = 1;
-            for (int i = 0; i < (courseLvlQn.students).Count; i++) // Loop through List
+            for (int i = 0; i < (course.students).Count; i++) // Loop through List
             {
+                Debug.Log("STUDENT[I]"+ course.students[i]);
                 GameObject tmp_item = Instantiate(item, itemParent.transform);
                 tmp_item.name = i.ToString();
                 Debug.Log("here item name: " + tmp_item.name);
                 tmp_item.transform.GetChild(0).GetComponent<Text>().text = number.ToString();
-                tmp_item.transform.GetChild(1).GetComponent<Text>().text = courseLvlQn.students[i];
+                tmp_item.transform.GetChild(1).GetComponent<Text>().text = course.students[i];
                 number++;
             }
         });
@@ -65,9 +65,10 @@ public class EnrollViewModel : MonoBehaviour
         bool handler = Check(studName);
         if (handler == true)
         {
-            await InvokeStudCheckExist(studName);
+            await InvokeStudCheck(studName);
         }
         chk = false;
+        chkStudValid = false;
         formCreate.transform.GetChild(1).GetComponent<InputField>().text = "";
     }
 
@@ -85,58 +86,53 @@ public class EnrollViewModel : MonoBehaviour
     }
 
     // Stud Creation Check
-    public async Task InvokeStudCheckExist(string studName)
+    public async Task InvokeStudCheck(string studName)
     {
-        Task<bool> task = CheckStudExist(studName);
-        bool studExist = await task;
-        Debug.Log("Stud Exist: " + studExist);
-        if (studExist == true)
+        Task<bool> task = CheckStudEnroll(studName);
+        bool studEnroll = await task;
+        Debug.Log("Stud Enroll: " + studEnroll);
+        if (studEnroll == true)
         {
             messageBox.SetActive(true);
-            messageBox.transform.GetChild(1).GetComponent<Text>().text = studName + " already exist.";
+            messageBox.transform.GetChild(1).GetComponent<Text>().text = studName + " already enrolled.";
         }
         else
         {
-            loader.SetActive(true);
-            await PostingStud(studName);
-            await Read();
-            loader.SetActive(false);
-            messageBox.SetActive(true);
-            messageBox.transform.GetChild(1).GetComponent<Text>().text = studName + " enrolled successfully.";
-
+            Task<bool> taskValid = CheckStudValid(studName);
+            bool studValidCheck = await taskValid;
+            if (studValidCheck == false) // Student Username Invalid
+            {
+                messageBox.SetActive(true);
+                messageBox.transform.GetChild(1).GetComponent<Text>().text = studName + " does not exist";
+            }
+            else
+            {
+                loader.SetActive(true);
+                await PostingStud(studName);
+                await Read();
+                loader.SetActive(false);
+                messageBox.SetActive(true);
+                messageBox.transform.GetChild(1).GetComponent<Text>().text = studName + " enroll successfully.";
+            }
         }
     }
 
-    //Check for existing stud
-    public async Task<bool> CheckStudExist(string studName)
+    //Check whether student is enrolled
+    public async Task<bool> CheckStudEnroll(string studName)
     {
-        DatabaseQAHandler.GetCourseLvlQn(key, courseLvlQn =>
+        DatabaseQAHandler.GetCourse(courseName, course =>
         {
-            for (int i = 0; i < (courseLvlQn.students).Count; i++) // Loop through List
+            for (int i = 0; i < (course.students).Count; i++) // Loop through List
             {
-                if (studName == courseLvlQn.students[i])
+                Debug.Log("STUDENT[I]"+ course.students[i]);
+                Debug.Log("studname:"+studName);
+                if (studName == course.students[i])
                 {
+                    Debug.Log("SAMEE");
                     chk = true;
                 }
             }
         });
-        Stopwatch sw = Stopwatch.StartNew();
-        var delay = Task.Delay(500).ContinueWith(_ =>
-        {
-            sw.Stop();
-            return sw.ElapsedMilliseconds;
-        });
-        await delay;
-        int sec = (int)delay.Result;
-        Debug.Log("check qn exist elapsed milliseconds: {0}" + sec + ", Chk is " + chk);
-        return chk;
-    }
-
-    //Creating stud in DB
-    public async Task PostingStud(string studName)
-    {
-        (courseLvlQnCreate.students).Add(studName);
-        DatabaseQAHandler.PutCourseLvlQn(key, courseLvlQnCreate, () => { });
         Stopwatch sw = Stopwatch.StartNew();
         var delay = Task.Delay(1000).ContinueWith(_ =>
         {
@@ -145,7 +141,51 @@ public class EnrollViewModel : MonoBehaviour
         });
         await delay;
         int sec = (int)delay.Result;
-        Debug.Log("Creating Qn Elapsed milliseconds: {0}" + sec);
+        Debug.Log("check stud enroll elapsed milliseconds: {0}" + sec + ", Chk is " + chk);
+        return chk;
+    }
+
+    //Check whether the student username is valid
+    public async Task<bool> CheckStudValid(string studName)
+    {
+        DatabaseQAHandler.GetUsers(userDatas =>
+        {
+            foreach (var userData in userDatas)
+            {
+                Debug.Log($"{userData.Value.userName}");
+                if (userData.Value.userName == studName)
+                {
+                        Debug.Log("USERNAME VALIG");
+                    chkStudValid = true; // Student username is valid
+                }
+            }
+        });
+        Stopwatch sw = Stopwatch.StartNew();
+        var delay = Task.Delay(1000).ContinueWith(_ =>
+        {
+            sw.Stop();
+            return sw.ElapsedMilliseconds;
+        });
+        await delay;
+        int sec = (int)delay.Result;
+        Debug.Log("check stud exist elapsed milliseconds: {0}" + sec + ", Chk Valid is " + chkStudValid);
+        return chkStudValid;
+    }
+
+    //Creating stud in DB
+    public async Task PostingStud(string studName)
+    {
+        (currentCourse.students).Add(studName);
+        DatabaseQAHandler.PutCourse(courseName, currentCourse, () => { });
+        Stopwatch sw = Stopwatch.StartNew();
+        var delay = Task.Delay(1000).ContinueWith(_ =>
+        {
+            sw.Stop();
+            return sw.ElapsedMilliseconds;
+        });
+        await delay;
+        int sec = (int)delay.Result;
+        Debug.Log("Enroll Student Elapsed milliseconds: {0}" + sec);
     }
 
     //Check the name of the course to be deleted
@@ -154,16 +194,16 @@ public class EnrollViewModel : MonoBehaviour
     {
         delName = int.Parse(item.name, System.Globalization.NumberStyles.Integer);
         Debug.Log("CHECK DELETE name: " + delName);
-        delMsgBox.transform.GetChild(1).GetComponent<Text>().text = "Are you sure you want to delete this question?";
+        delMsgBox.transform.GetChild(1).GetComponent<Text>().text = "Are you sure you want to unenroll this student?";
 
     }
 
-    //Deleting qn in DB
+    //Deleting stud in DB
     public async void DeleteStud()
     {
         loader.SetActive(true);
-        (courseLvlQnCreate.students).RemoveAt(delName);
-        DatabaseQAHandler.PutCourseLvlQn(key, courseLvlQnCreate, () => { });
+        (currentCourse.students).RemoveAt(delName);
+        DatabaseQAHandler.PutCourse(courseName, currentCourse, () => { });
         Stopwatch sw = Stopwatch.StartNew();
         var delay = Task.Delay(1000).ContinueWith(_ =>
         {
@@ -176,7 +216,7 @@ public class EnrollViewModel : MonoBehaviour
         await Read();
         loader.SetActive(false);
         messageBox.SetActive(true);
-        messageBox.transform.GetChild(1).GetComponent<Text>().text = "Deleted successfully.";
+        messageBox.transform.GetChild(1).GetComponent<Text>().text = "Unenroll successfully.";
     }
 
     //Wake up 
@@ -184,7 +224,6 @@ public class EnrollViewModel : MonoBehaviour
     {
         Debug.Log("Course Name In enrollment: " + courseName);
         Debug.Log("Username In enrollment: " + userName);
-        Debug.Log("Key In enrollment: " + key);
         loader.SetActive(true);
         await Read();
         loader.SetActive(false);
@@ -193,8 +232,19 @@ public class EnrollViewModel : MonoBehaviour
     //When click Close
     public void CloseEnroll()
     {
-        trQnViewModel.WakeUp();
-        UIController.CloseEnrollCanvas();
+        courseController.WakeUp();
+        UIController.EnrollmentToCourseCanvas();
+    }
+
+    //When click Next
+    public void Next()
+    {
+        specialLevelController.courseName =courseName;
+        specialLevelController.userName= userName; 
+        specialLevelController.WakeUp();
+        UIController.EnrollmentToSpecialLevelCanvas();
+        //courseController.WakeUp();
+        //UIController.EnrollmentToCourseCanvas();
     }
 
     // Update is called once per frame

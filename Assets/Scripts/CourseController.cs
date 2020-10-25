@@ -4,20 +4,20 @@ using UnityEngine;
 using UnityEngine.UI;
 using Proyecto26;
 using System.Text.RegularExpressions;
-using UnityWeld.Binding;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using Debug = UnityEngine.Debug;
 
-[Binding]
 public class CourseController : MonoBehaviour
 {
     public GameObject itemParent, item, formCreate, messageBox, delMsgBox, loader, specialLevelCanvas;
     public InputField courseInput;
     public static string userName = "Jame"; //retrieve user
     public bool chk = false;
-    public SpecialLevelController specialLevelController;
+    //public SpecialLevelController specialLevelController;
+    public EnrollViewModel enrollViewModel;
     public UIControllerScript UIController;
+    
 
     // Start is called before the first frame update
     async void Start()
@@ -50,10 +50,10 @@ public class CourseController : MonoBehaviour
         });
         Stopwatch sw = Stopwatch.StartNew();
         var delay = Task.Delay(1000).ContinueWith(_ =>
-        {
-            sw.Stop();
-            return sw.ElapsedMilliseconds;
-        });
+                                   {
+                                       sw.Stop();
+                                       return sw.ElapsedMilliseconds;
+                                   });
         await delay;
         int sec = (int)delay.Result;
         Debug.Log("Read elapsed milliseconds: {0}" + sec);
@@ -105,7 +105,8 @@ public class CourseController : MonoBehaviour
         }
         else
         {
-            var course = new Course(userName);
+            List<string> students = new List<string>();
+            var course = new Course(userName, students);
             loader.SetActive(true);
             await PostingCourse(course, courseName);
             await Read();
@@ -122,10 +123,10 @@ public class CourseController : MonoBehaviour
         DatabaseQAHandler.PostCourse(course, courseName, () => { });
         Stopwatch sw = Stopwatch.StartNew();
         var delay = Task.Delay(1000).ContinueWith(_ =>
-        {
-            sw.Stop();
-            return sw.ElapsedMilliseconds;
-        });
+                                   {
+                                       sw.Stop();
+                                       return sw.ElapsedMilliseconds;
+                                   });
         await delay;
         int sec = (int)delay.Result;
         Debug.Log("Creating Course Elapsed milliseconds: {0}" + sec);
@@ -136,16 +137,15 @@ public class CourseController : MonoBehaviour
     {
         DatabaseQAHandler.GetCourse(courseName, course =>
         {
-            Debug.Log($"{course.userName} exist.");
             chk = true;
             Debug.Log("chCourseExist1" + chk);
         });
         Stopwatch sw = Stopwatch.StartNew();
         var delay = Task.Delay(500).ContinueWith(_ =>
-        {
-            sw.Stop();
-            return sw.ElapsedMilliseconds;
-        });
+                                   {
+                                       sw.Stop();
+                                       return sw.ElapsedMilliseconds;
+                                   });
         await delay;
         int sec = (int)delay.Result;
         Debug.Log("check course exist elapsed milliseconds: {0}" + sec);
@@ -169,12 +169,23 @@ public class CourseController : MonoBehaviour
         loader.SetActive(true);
         Debug.Log("DELETE name: " + courseKey);
         DatabaseQAHandler.DeleteCourse(courseKey, () => { });
+        DatabaseQAHandler.GetCourseLvlQns(courseLvlQns =>
+        {
+            foreach (var courseLvlQn in courseLvlQns)
+            {
+                //Debug.Log($"{course.Key} {course.Value.userName}");
+                if (courseLvlQn.Value.courseName == courseKey) //Find course created by you
+                {
+                    DatabaseQAHandler.DeleteCourseLvlQn(courseLvlQn.Key, () => { });
+                }
+            }
+        });
         Stopwatch sw = Stopwatch.StartNew();
         var delay = Task.Delay(1000).ContinueWith(_ =>
-        {
-            sw.Stop();
-            return sw.ElapsedMilliseconds;
-        });
+                                   {
+                                       sw.Stop();
+                                       return sw.ElapsedMilliseconds;
+                                   });
         await delay;
         int sec = (int)delay.Result;
         Debug.Log("Delete elapsed milliseconds: {0}" + sec);
@@ -188,11 +199,17 @@ public class CourseController : MonoBehaviour
     //Click a course button
     public void ClickCourse(GameObject item)
     {
+        enrollViewModel.courseName = item.name;
+        enrollViewModel.userName = userName;
+        enrollViewModel.WakeUp();
+        Debug.Log("CLICK COURSE ITEM NAME: " + item.name);
+        UIController.CourseToEnrollmentCanvas();
+        /*
         specialLevelController.courseName = item.name;
         specialLevelController.userName = userName;
         specialLevelController.WakeUp();
         Debug.Log("CLICK COURSE ITEM NAME: " + item.name);
-        UIController.OpenSpecialLevelCanvas();
+        UIController.OpenSpecialLevelCanvas();*/
     }
 
     //wake up 

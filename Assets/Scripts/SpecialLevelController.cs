@@ -14,7 +14,7 @@ public class SpecialLevelController : MonoBehaviour
     public string courseName;
     public string userName;
     private bool chk = false;
-    public CourseController courseController;
+    public EnrollViewModel enrollViewModel;
     public UIControllerScript UIController;
     public TrQnViewModel trQnViewModel;
 
@@ -23,6 +23,7 @@ public class SpecialLevelController : MonoBehaviour
     {
     }
 
+    //Creating buttons for levels
     public async Task Read()
     {
         for (int i = 0; i < itemParent.transform.childCount; i++)
@@ -34,8 +35,8 @@ public class SpecialLevelController : MonoBehaviour
         {
             foreach (var courseLvlQn in courseLvlQns)
             {
-                Debug.Log($"{courseLvlQn.Key} {courseLvlQn.Value.courseName} {courseLvlQn.Value.userName} {courseLvlQn.Value.level}");
-                if (courseLvlQn.Value.courseName == courseName && courseLvlQn.Value.userName == userName)
+                Debug.Log($"{courseLvlQn.Key} {courseLvlQn.Value.courseName} {courseLvlQn.Value.level}");
+                if (courseLvlQn.Value.courseName == courseName)//&& courseLvlQn.Value.userName == userName)
                 {
 
                     GameObject tmp_btn = Instantiate(item, itemParent.transform);
@@ -95,7 +96,6 @@ public class SpecialLevelController : MonoBehaviour
 
     public List<string> qns = new List<string>();
     public List<int> ans = new List<int>();
-    public List<string> students = new List<string>();
     public async Task InvokeLvlCheckExist(int lvlNo)
     {
         Task<bool> task = CheckLvlExist(lvlNo);
@@ -108,7 +108,7 @@ public class SpecialLevelController : MonoBehaviour
         }
         else
         {
-            var courseLvlQn = new CourseLvlQn(courseName, userName, lvlNo, qns, ans, students);
+            var courseLvlQn = new CourseLvlQn(courseName, lvlNo, qns, ans);
             loader.SetActive(true);
             await PostingLvl(courseLvlQn);
             await Read();
@@ -124,8 +124,8 @@ public class SpecialLevelController : MonoBehaviour
         {
             foreach (var courseLvlQn in courseLvlQns)
             {
-                Debug.Log($"{courseLvlQn.Key} {courseLvlQn.Value.courseName} {courseLvlQn.Value.userName} {courseLvlQn.Value.level}");
-                if (courseLvlQn.Value.userName == userName && courseLvlQn.Value.courseName == courseName)
+                Debug.Log($"{courseLvlQn.Key} {courseLvlQn.Value.courseName} {courseLvlQn.Value.level}");
+                if (/*courseLvlQn.Value.userName == userName &&*/ courseLvlQn.Value.courseName == courseName)
                 {
                     if (courseLvlQn.Value.level == lvlNo)
                     {
@@ -146,6 +146,7 @@ public class SpecialLevelController : MonoBehaviour
         return chk;
     }
 
+    //Create level in DB
     public async Task PostingLvl(CourseLvlQn courseLvlQn)
     {
         DatabaseQAHandler.PostCourseLvlQn(courseLvlQn, () => { });
@@ -214,10 +215,11 @@ public class SpecialLevelController : MonoBehaviour
         loader.SetActive(false);
     }
 
+    //When click close
     public void closeSpecialLvl()
     {
-        courseController.WakeUp();
-        UIController.CloseSpecialLevelCanvas();
+        enrollViewModel.WakeUp();
+        UIController.SpecialLevelToEnrollmentCanvas();
     }
 
     // Update is called once per frame

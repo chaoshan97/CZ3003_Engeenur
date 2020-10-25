@@ -4,22 +4,17 @@ using UnityEngine;
 using System;
 
 [Serializable]
-public class CourseLvlQn
+public class CourseLvlQn 
 {
     public string courseName;
-    public string userName;
     public int level;
-    public List<string> qns;
-    public List<string> ans;
-    public List<string> students;
+    public List<string>qns;
+    public List<int>ans;
 
-    public CourseLvlQn(string courseName, string userName, int level, List<string> qnsList, List<string> ansList, List<string> studsList)
-    {
+    public CourseLvlQn(string courseName, int level, List<string>qnsList, List<int>ansList){
         this.courseName = courseName;
-        this.userName = userName;
         this.level = level;
         qns = new List<string>(qnsList);
-        ans = new List<string>(ansList);
-        students = new List<string>(studsList);
+        ans = new List<int>(ansList);
     }
 }
