@@ -179,6 +179,15 @@ public class CreateAccountControllerScript : MonoBehaviour
         chkEmailResult = false;
         LoginDbHandler.GetUsers(userDatas =>
         {
+            foreach (var userData in userDatas)
+            {
+                Debug.Log($"{userData.Key}");
+                if (userData.Value.email == email)
+                {
+                    chkEmailResult = true;
+                    break;
+                }
+            }
         });
         Stopwatch sw = Stopwatch.StartNew();
         var delay = Task.Delay(1000).ContinueWith(_ =>

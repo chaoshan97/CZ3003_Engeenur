@@ -81,8 +81,9 @@ public class LoginControllerScript : MonoBehaviour
                         bool studentChk = await ChkStudent(loginChk);
                         if (studentChk == true)
                         {
+                            Debug.Log(userData.userName);
                             mainMenuController.setUserData(userData);
-                            //mainMenuController.loadMainMenu();
+                            mainMenuController.loadMainMenu();
                             UIController.loginButton();
                         }
                         else

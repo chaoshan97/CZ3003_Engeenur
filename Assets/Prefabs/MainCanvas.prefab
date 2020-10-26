@@ -273,7 +273,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 9a4a72a6579999940b4b34d77c6b62af, type: 3}
+    m_Font: {fileID: 12800000, guid: b982617ce8f6fbf4eb835336276e66ea, type: 3}
     m_FontSize: 80
     m_FontStyle: 0
     m_BestFit: 0
@@ -427,7 +427,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 9a4a72a6579999940b4b34d77c6b62af, type: 3}
+    m_Font: {fileID: 12800000, guid: b982617ce8f6fbf4eb835336276e66ea, type: 3}
     m_FontSize: 200
     m_FontStyle: 0
     m_BestFit: 0
@@ -528,7 +528,7 @@ GameObject:
   - component: {fileID: 7472407865049674593}
   - component: {fileID: 7472407865049674592}
   m_Layer: 5
-  m_Name: MainCanvas 1
+  m_Name: MainCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -817,7 +817,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 9a4a72a6579999940b4b34d77c6b62af, type: 3}
+    m_Font: {fileID: 12800000, guid: b982617ce8f6fbf4eb835336276e66ea, type: 3}
     m_FontSize: 80
     m_FontStyle: 0
     m_BestFit: 0

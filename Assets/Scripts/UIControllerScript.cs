@@ -67,13 +67,13 @@ public class UIControllerScript : MonoBehaviour
 
     }
 
-    public void OpenIntentoryButton()
+    public void OpenInventoryButton()
     {
         townCanvas.SetActive(false);
         inventoryCanvas.SetActive(true);
     }
 
-    public void CloseIntentoryButton()
+    public void CloseInventoryButton()
     {
         inventoryCanvas.SetActive(false);
         townCanvas.SetActive(true);
@@ -261,6 +261,20 @@ public class UIControllerScript : MonoBehaviour
     {
         createAccountCanvas.SetActive(false);
         mainCanvas.SetActive(true);
+    }
+
+    public void SelectIAmATeacher()
+    {
+        loginTrCanvas.SetActive(true);
+        loginCanvas.SetActive(false);
+
+    }
+
+    public void SelectIAmAStudent()
+    {
+        loginCanvas.SetActive(true);
+        loginTrCanvas.SetActive(false);
+
     }
 
 }
