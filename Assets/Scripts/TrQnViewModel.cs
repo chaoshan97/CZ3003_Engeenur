@@ -21,8 +21,8 @@ public class TrQnViewModel : MonoBehaviour
     public InputField ansUpdateInput;
     private bool chk = false;
     CourseLvlQn courseLvlQnCreate;
-    public SpecialLevelController specialLevelController;
-    public CourseController courseController;
+    public TrSpecialLvlViewModel trSpecialLvlViewModel;
+    public TrCourseViewModel trCourseViewModel;
     public UIControllerScript UIController;
     public int count=0;
 
@@ -267,21 +267,15 @@ public class TrQnViewModel : MonoBehaviour
     //When click Close
     public void CloseTrQn()
     {
-        specialLevelController.WakeUp();
+        trSpecialLvlViewModel.WakeUp();
         UIController.CloseTrQnCanvas();
     }
 
     //When click Next
     public void Next()
     {
-        courseController.WakeUp();
+        trCourseViewModel.WakeUp();
         UIController.TrQnToCourseCanvas();
-        /*enrollViewModel.key = key;
-        enrollViewModel.courseName = courseName;
-        enrollViewModel.userName = userName;
-        enrollViewModel.WakeUp();
-        Debug.Log("CLICK next ITEM NAME: " + key);
-        UIController.OpenEnrollCanvas();*/
     }
 
     // Update is called once per frame

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class LeadershipViewModel : MonoBehaviour
 {
     public LeadershipInterface leadershipInt;
-    private List<TheScore> scoreList;
+    private List<KeyValuePair<string, TheScore>> scoreList;
     private List<GameObject> instantiatedUI = new List<GameObject>();
     public GameObject scoreRowTemplate;
 
@@ -17,12 +17,18 @@ public class LeadershipViewModel : MonoBehaviour
 
     private void Init() 
     {
-        StartCoroutine(leadershipInt.getLeadershipBoardDetails((success, allResults) => {
-            if (success) {
-                this.scoreList = allResults;
-                this.populateLeadershipboardRows();
-            }
-        }));
+        // StartCoroutine(leadershipInt.getLeadershipBoardDetails((success, allResults) => {
+        //     if (success) {
+        //         this.scoreList = allResults;
+        //         this.populateLeadershipboardRows();
+        //     }
+        // }));
+        LeadershipDBHandler.GetLeadershipRanking(scoreList => {
+            // set to local dictionary of scores
+            this.scoreList = scoreList;
+            // display list of score in leadership board on the UI
+            this.populateLeadershipboardRows();
+        });
     }
 
     private void populateLeadershipboardRows() 
@@ -36,14 +42,14 @@ public class LeadershipViewModel : MonoBehaviour
         // this.scoreRowTemplate.GetComponent<Button>
 
         // Instantiate new results
-        foreach (TheScore score in scoreList) 
+        foreach (KeyValuePair<string, TheScore> score in scoreList) 
         {
             GameObject resultRow = Instantiate<GameObject>(this.scoreRowTemplate, transform);
-            resultRow.transform.GetChild(0).GetComponent<Text>().text = score.studentName;
+            resultRow.transform.GetChild(0).GetComponent<Text>().text = score.Key;
             resultRow.transform.GetChild(0).GetComponent<Text>().fontStyle = 0; // set to not bold
-            resultRow.transform.GetChild(1).GetComponent<Text>().text = score.LevelNo.ToString();
+            resultRow.transform.GetChild(1).GetComponent<Text>().text = score.Value.levelNo.ToString();
             resultRow.transform.GetChild(1).GetComponent<Text>().fontStyle = 0; // set to not bold
-            resultRow.transform.GetChild(2).GetComponent<Text>().text = score.Score.ToString();
+            resultRow.transform.GetChild(2).GetComponent<Text>().text = score.Value.score.ToString();
             resultRow.transform.GetChild(2).GetComponent<Text>().fontStyle = 0; // set to not bold
             instantiatedUI.Add(resultRow);
         }

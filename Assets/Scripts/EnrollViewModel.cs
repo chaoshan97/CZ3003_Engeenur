@@ -17,8 +17,8 @@ public class EnrollViewModel : MonoBehaviour
     private bool chk = false;
     private bool chkStudValid = false;
     Course currentCourse;
-    public SpecialLevelController specialLevelController;
-    public CourseController courseController;
+    public TrSpecialLvlViewModel trSpecialLvlViewModel;
+    public TrCourseViewModel trCourseViewModel;
     public UIControllerScript UIController;
     // Start is called before the first frame update
     void Start()
@@ -232,19 +232,17 @@ public class EnrollViewModel : MonoBehaviour
     //When click Close
     public void CloseEnroll()
     {
-        courseController.WakeUp();
+        trCourseViewModel.WakeUp();
         UIController.EnrollmentToCourseCanvas();
     }
 
     //When click Next
     public void Next()
     {
-        specialLevelController.courseName =courseName;
-        specialLevelController.userName= userName; 
-        specialLevelController.WakeUp();
+        trSpecialLvlViewModel.courseName =courseName;
+        trSpecialLvlViewModel.userName= userName; 
+        trSpecialLvlViewModel.WakeUp();
         UIController.EnrollmentToSpecialLevelCanvas();
-        //courseController.WakeUp();
-        //UIController.EnrollmentToCourseCanvas();
     }
 
     // Update is called once per frame
