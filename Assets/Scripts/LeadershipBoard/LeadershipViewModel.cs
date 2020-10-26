@@ -25,6 +25,9 @@ public class LeadershipViewModel : MonoBehaviour
         //         this.populateLeadershipboardRows();
         //     }
         // }));
+
+        this.userData = this.mainMenuControllerScript.getUserData();
+
         LeadershipDBHandler.GetLeadershipRanking(scoreList => {
             // set to local dictionary of scores
             this.scoreList = scoreList;
@@ -61,8 +64,8 @@ public class LeadershipViewModel : MonoBehaviour
             instantiatedUI.Add(resultRow);
 
             // to highlight user's row by changing the text color to red for that row
-            // if (userData.getName().Equals(score.Key))
-            if ("jerry".Equals(score.Key))    // debug
+            if (userData.getName().Equals(score.Key))
+            // if ("jerry".Equals(score.Key))    // debug
             {
                 for (int i=0; i<4; i++)
                     resultRow.transform.GetChild(i).GetComponent<Text>().color = Color.red;
