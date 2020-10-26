@@ -45,6 +45,8 @@ public class Item
     public uint quantity;
     public string property;
 
+    public Item() {}
+
     public Item(string name, string property, uint quantity, string studentUsername)
     {
         this.name = name;

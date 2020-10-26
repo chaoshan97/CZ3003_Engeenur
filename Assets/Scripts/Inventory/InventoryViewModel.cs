@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityWeld.Binding;
 using System.ComponentModel;
+using System;
 
 [Binding]
 public class InventoryViewModel : MonoBehaviour, INotifyPropertyChanged
@@ -41,15 +42,23 @@ public class InventoryViewModel : MonoBehaviour, INotifyPropertyChanged
         //         this.equippedItems = allResults;
         //     }
         // }));
-        Debug.Log("Start of Init()"); // debug
+        
         // get userdata from mainmenu
         // this.userData = this.mainMenuControllerScript.getUserData();
 
         // get items list
         InventoryDBHandler.GetInventory("tom", itemsDict => {
+            // set to local dictionary of items in inventory
             this.inBagList = itemsDict;
             // display list of items in inventory on the UI
             this.populateInBagItems();
+        });
+
+        InventoryDBHandler.GetEquippedItem("tom", equippedObj => {
+            // set to local object of equipped items
+            this.equippedItems = equippedObj;
+            // set weapon name on the UI
+            this.equippedWeapon.GetComponent<Text>().text = equippedObj.weapon.name;
         });
 
         // set the gold amount to the UI
@@ -70,18 +79,23 @@ public class InventoryViewModel : MonoBehaviour, INotifyPropertyChanged
         // Instantiate new results
         foreach (KeyValuePair<string, Item> item in this.inBagList) 
         {
-            Button inbagRow = Instantiate<Button>(this.inbagRowTemplate, transform);
-            inbagRow.name = item.Value.name;  // set name of the button
-            inbagRow.transform.GetChild(0).GetComponent<Text>().text = item.Value.name;   // set the item name to the row
-            inbagRow.transform.GetChild(0).GetComponent<Text>().fontStyle = 0; // set to unbold
-            inbagRow.transform.GetChild(1).GetComponent<Text>().text = item.Value.quantity.ToString();    // set the quantity of the item to the row
-            inbagRow.transform.GetChild(1).GetComponent<Text>().fontStyle = 0; // set to unbold
-            // add button listener to know which item is being clicked
-            inbagRow.onClick.AddListener(delegate
-                {
-                    onInBagItemClick(inbagRow);
-                });
-            instantiatedUI.Add(inbagRow);
+            // don't need to generate empty items on the UI
+            // still need to keep those QTY=0 as we need to know what are they to delete them from the Database
+            if (item.Value.quantity != 0)
+            {
+                Button inbagRow = Instantiate<Button>(this.inbagRowTemplate, transform);
+                inbagRow.name = item.Value.name;  // set name of the button
+                inbagRow.transform.GetChild(0).GetComponent<Text>().text = item.Value.name;   // set the item name to the row
+                inbagRow.transform.GetChild(0).GetComponent<Text>().fontStyle = 0; // set to unbold
+                inbagRow.transform.GetChild(1).GetComponent<Text>().text = item.Value.quantity.ToString();    // set the quantity of the item to the row
+                inbagRow.transform.GetChild(1).GetComponent<Text>().fontStyle = 0; // set to unbold
+                // add button listener to know which item is being clicked
+                inbagRow.onClick.AddListener(delegate
+                    {
+                        onInBagItemClick(inbagRow);
+                    });
+                instantiatedUI.Add(inbagRow);
+            }
         }
     }
 
@@ -110,10 +124,10 @@ public class InventoryViewModel : MonoBehaviour, INotifyPropertyChanged
                     equippedItems.weapon = item;
                     
                     // remove item from the inventory since quantity of it becomes 0 after adding it to the item list
-                    if (item.quantity - 1 == 0)
-                        this.inBagList.Remove(key);
-                    // reduce quantity of that equipped item from the inventory
-                    else
+                    // if (item.quantity - 1 == 0)
+                    //     this.inBagList.Remove(key);
+                    // // reduce quantity of that equipped item from the inventory
+                    // else
                         item.quantity -= 1;
 
                     // found the item so don't need to continue to search
@@ -149,14 +163,32 @@ public class InventoryViewModel : MonoBehaviour, INotifyPropertyChanged
             // check if need to append item into the inventory list
             if (toAppendItem)
                 // append previous equipped item since inventory doesn't have that item
-                this.inBagList.Add("jack" + previousEquippedItem.name, previousEquippedItem);
+                this.inBagList.Add("tom" + previousEquippedItem.name, previousEquippedItem);
         }
 
         // update the UI in the list of items in the inventory
         this.populateInBagItems();
+        InventoryDBHandler.PutEquippedItem("tom", this.equippedItems);
+        InventoryDBHandler.PutInventory(this.inBagList);
     }
 
-    
+    // clone item by item of inventory from dictionary to dictionary
+    public Dictionary<string, Item> CloneInventory(Dictionary<string, Item> original)
+    {
+        Dictionary<string, Item> ret = new Dictionary<string, Item>();
+
+        // clone item by item of inventory from dictionary to dictionary
+        foreach (KeyValuePair<string, Item> entry in original)
+        {
+            Item item = new Item();
+            item.name = entry.Value.name;
+            item.quantity = entry.Value.quantity;
+            item.studentUsername = entry.Value.studentUsername;
+            ret.Add(entry.Key, item);
+        }
+
+        return ret;
+    }
 
     private void OnPropertyChanged(string propertyName)
     {
