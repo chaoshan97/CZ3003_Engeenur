@@ -80,7 +80,7 @@ public class TeacherLoginControllerScript : MonoBehaviour
                        if(teacherChk== true){
                            Debug.Log("teacher: "+teacherData.userName);
                            mainMenuController.setTeacherData(teacherData);
-                           // mainMenuController.loadTeacherMainMenu();
+                           mainMenuController.loadTeacherMainMenu();
                            UIController.teacherLoginButton();
                        }else{
                            StartCoroutine(ShowWrongMessage());
@@ -140,6 +140,7 @@ public class TeacherLoginControllerScript : MonoBehaviour
         {
             chk=true;
             Debug.Log("inn");
+            teacherData = new TeacherData();
             teacherData.email = teacher.email;
             teacherData.userName = teacher.userName;
             teacherData.verified = teacher.verified;
