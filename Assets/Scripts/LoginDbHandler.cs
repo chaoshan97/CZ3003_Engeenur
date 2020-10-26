@@ -23,18 +23,13 @@ public class LoginDbHandler : MonoBehaviour
     UserData userData = new UserData();
     private string databaseURL = "https://engeenur-17baa.firebaseio.com/students/";
     private LoginControllerScript loginControllerScript;
-    private bool signInResult;
+    private string localID;
 
-
-    public async Task<bool> FetchUserSignInInfo(string email, string password)
+    public async Task<string> FetchUserSignInInfo(string email, string password)
     {
-       signInResult = true;
-       await SignInUser(email, password);
-       if (signInResult == false){
-           return false;
-       }else{
-           return true;
-       }
+        localID = null;
+        await SignInUser(email, password);
+        return localID;
     }
     public void FetchUserSignUpInfo(string email, string username, string password)
     {
@@ -113,9 +108,9 @@ public class LoginDbHandler : MonoBehaviour
                 idToken = response.idToken;
                 localId = response.localId;
                 GetUsername();
+                localID = response.localId; //get the localId
             }).Catch(error =>
             {
-                signInResult = false;
                 Debug.Log(error);
             });
         Stopwatch sw = Stopwatch.StartNew();
@@ -158,8 +153,8 @@ public class LoginDbHandler : MonoBehaviour
              }
          }).Catch(error =>
         {
-                 Debug.Log(error);
-             });
+            Debug.Log(error);
+        });
     }
 
     public delegate void GetUsersCallback(Dictionary<string, UserData> userDatas);
@@ -177,6 +172,13 @@ public class LoginDbHandler : MonoBehaviour
             var userDatas = deserialized as Dictionary<string, UserData>;
             callback(userDatas);
         });
+    }
+
+    //Retreive Student
+    public delegate void GetUserDataCallback(UserData userData);
+    public static void GetStudent(string localId, GetUserDataCallback callback)
+    {
+        RestClient.Get<UserData>("https://engeenur-17baa.firebaseio.com/students/" + localId + ".json").Then(userData => { callback(userData); });
     }
 }
 
