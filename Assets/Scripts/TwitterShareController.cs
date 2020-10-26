@@ -47,8 +47,7 @@ public class TwitterShareController : MonoBehaviour
         if (!success) return;
         // When success, authorization is completed. You can make request to other endpoint.
         // User's screen_name is in '`Twity.Client.screenName`.
-        info.text = "Authentication Successful!";
-        Debug.Log("Twitter Username: " + Twity.Client.screenName);
+        info.text = "Authentication Successful! Posting Tweet...";
 
         Dictionary<string, string> parameters = new Dictionary<string, string>();
         parameters["media_data"] = screenshotBase64;
@@ -68,10 +67,8 @@ public class TwitterShareController : MonoBehaviour
     }
     void StatusesUpdateCallback(bool success, string response) {
         if (success) {
-            info.text = "Battle Results Posted!";
+            info.text = "Battle Results Posted! You may close this popup.";
             Debug.Log("Tweet Posted");
-            Tweet tweet = JsonUtility.FromJson<Tweet>(response);
-            popup.SetActive(false);
         } else {
             Debug.Log(response);
         }
@@ -82,7 +79,6 @@ public class TwitterShareController : MonoBehaviour
     // Popup Submit Button OnClick Listener
     public void submitBtnListener() {
         string pin = pinField.text;
-        Debug.Log("User entered PIN: " + pin);
         GenerateAccessToken(pin);
     }
 
@@ -94,5 +90,9 @@ public class TwitterShareController : MonoBehaviour
         screenImg.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0);
         screenImg.Apply();
         screenshotBase64 = System.Convert.ToBase64String(screenImg.EncodeToPNG());
+    }
+
+    public void closePopup() {
+        popup.SetActive(false);
     }
 }

@@ -5,30 +5,29 @@ using UnityEngine.UI;
 public class ViewResultUI : MonoBehaviour
 {
     public ViewResultController ctrl;
-    private List<SpecialLevelResult> allResults;
 
     public GameObject resultTemplate;
     public Dropdown dropdown;
     private List<GameObject> instantiatedUI = new List<GameObject>();
+
+    private Dictionary<string, Dictionary<string, int>> allResults;
 
     void OnEnable() {
         Init();
     }
 
     private void Init() {
-        StartCoroutine(ctrl.GetResults((success, allResults) => {
-            if (success) {
-                this.allResults = allResults;
-                PopulateLevelsInDropdown();
-            }
-        }));
+        ctrl.GetResults(allResults => {
+            this.allResults = allResults;
+            PopulateCourseInDropdown();
+        });
     }
 
-    private void PopulateLevelsInDropdown() {
+    private void PopulateCourseInDropdown() {
         dropdown.ClearOptions();
-        
-        for (int i=0; i<allResults.Count; i++) {
-            dropdown.options.Add(new Dropdown.OptionData(allResults[i].level));
+
+        foreach (string course in allResults.Keys) {
+            dropdown.options.Add(new Dropdown.OptionData(course));
         }
         dropdown.RefreshShownValue();
 
@@ -42,23 +41,25 @@ public class ViewResultUI : MonoBehaviour
 
     private void OnLevelSelected(Dropdown dropdown) {
         int index = dropdown.value;
-        PopulateLevelResults(index);
+        string course = dropdown.options[index].text;
+        PopulateScores(course);
     }
 
-    private void PopulateLevelResults(int index) {
-        // Clear Results from previously selected level
+    private void PopulateScores(string course) {
         foreach (GameObject item in instantiatedUI) {
             Destroy(item);
         }
         instantiatedUI.Clear();
 
+        Dictionary<string, int> scores = allResults[course];
+
         // Instantiate new results
-        foreach (SpecialLevelResult.UserResult userResult in allResults[index].userResults) {
+        foreach (string user in scores.Keys) {
             GameObject resultRow = Instantiate<GameObject>(resultTemplate, transform);
-            resultRow.transform.GetChild(0).GetComponent<Text>().text = userResult.username;
-            resultRow.transform.GetChild(1).GetComponent<Text>().text = userResult.score;
+            resultRow.transform.GetChild(0).GetComponent<Text>().text = user;
+            resultRow.transform.GetChild(1).GetComponent<Text>().text = scores[user].ToString();
+            resultRow.SetActive(true);
             instantiatedUI.Add(resultRow);
         }
     }
-
 }
