@@ -46,20 +46,19 @@ public class LeadershipViewModel : MonoBehaviour
             Destroy(item);
         }
         instantiatedUI.Clear();
-        // this.scoreRowTemplate.GetComponent<Button>
 
         // Instantiate new results
         foreach (KeyValuePair<string, TheScore> score in scoreList) 
         {
             GameObject resultRow = Instantiate<GameObject>(this.scoreRowTemplate, transform);
-            resultRow.SetActive(true);
+            resultRow.SetActive(true);  // template was set to hidden so all duplicated onces must be set to active
             resultRow.transform.GetChild(0).GetComponent<Text>().text = ranking++.ToString();
             resultRow.transform.GetChild(0).GetComponent<Text>().fontStyle = 0; // set to not bold
             resultRow.transform.GetChild(1).GetComponent<Text>().text = score.Key;
             resultRow.transform.GetChild(1).GetComponent<Text>().fontStyle = 0; // set to not bold
-            resultRow.transform.GetChild(2).GetComponent<Text>().text = score.Value.levelNo.ToString();
+            resultRow.transform.GetChild(2).GetComponent<Text>().text = (score.Value.levelScore.Count - 1).ToString();
             resultRow.transform.GetChild(2).GetComponent<Text>().fontStyle = 0; // set to not bold
-            resultRow.transform.GetChild(3).GetComponent<Text>().text = score.Value.score.ToString();
+            resultRow.transform.GetChild(3).GetComponent<Text>().text = score.Value.levelScore[score.Value.levelScore.Count - 1].ToString();
             resultRow.transform.GetChild(3).GetComponent<Text>().fontStyle = 0; // set to not bold
             instantiatedUI.Add(resultRow);
 

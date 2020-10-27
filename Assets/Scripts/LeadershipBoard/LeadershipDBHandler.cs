@@ -11,6 +11,24 @@ public static class LeadershipDBHandler
 
     public delegate void GetLeadershipCallback(List<KeyValuePair<string, TheScore>> itemDict);
 
+    // public static void GetLeadershipRanking(GetLeadershipCallback callback) 
+    // {
+    //     RestClient.Get($"{databaseURL}score.json").Then(res => 
+    //     {
+    //         // parsing JSON into Item object
+    //         var responseJson = res.Text;
+    //         var data = fsJsonParser.Parse(responseJson);
+    //         object deserialized = null;
+    //         serializer.TryDeserialize(data, typeof(Dictionary<string, TheScore>), ref deserialized);
+
+    //         var scoreDict = deserialized as Dictionary<string, TheScore>;
+            
+    //         var scoreList = scoreDict.OrderByDescending(t => t.Value.levelNo).ThenByDescending(t => t.Value.score).ToList();
+
+    //         callback(scoreList);
+    //     });
+    // }
+
     public static void GetLeadershipRanking(GetLeadershipCallback callback) 
     {
         RestClient.Get($"{databaseURL}score.json").Then(res => 
@@ -23,7 +41,8 @@ public static class LeadershipDBHandler
 
             var scoreDict = deserialized as Dictionary<string, TheScore>;
             
-            var scoreList = scoreDict.OrderByDescending(t => t.Value.levelNo).ThenByDescending(t => t.Value.score).ToList();
+            var scoreList = scoreDict.OrderByDescending(t => t.Value.levelScore.Count).
+                ThenByDescending(t => t.Value.levelScore[t.Value.levelScore.Count - 1]).ToList();
 
             callback(scoreList);
         });

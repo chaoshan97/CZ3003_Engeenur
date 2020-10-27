@@ -44,25 +44,26 @@ public class InventoryViewModel : MonoBehaviour, INotifyPropertyChanged
         // }));
         
         // get userdata from mainmenu
-        // this.userData = this.mainMenuControllerScript.getUserData();
+        this.userData = this.mainMenuControllerScript.getUserData();
 
         // get items list
-        InventoryDBHandler.GetInventory("tom", itemsDict => {
+        InventoryDBHandler.GetInventory(userData.getName(), itemsDict => {
             // set to local dictionary of items in inventory
             this.inBagList = itemsDict;
             // display list of items in inventory on the UI
             this.populateInBagItems();
         });
 
-        InventoryDBHandler.GetEquippedItem("tom", equippedObj => {
+        InventoryDBHandler.GetEquippedItem(userData.getName(), equippedObj => {
             // set to local object of equipped items
             this.equippedItems = equippedObj;
+
             // set weapon name on the UI
             this.equippedWeapon.GetComponent<Text>().text = equippedObj.weapon.name;
         });
 
         // set the gold amount to the UI
-        // goldAmount.GetComponent<Text>().text = this.userData.getCoin().ToString();
+        goldAmount.GetComponent<Text>().text = this.userData.getCoin().ToString();
     }
 
     // display rows of items on the inventory
@@ -84,6 +85,7 @@ public class InventoryViewModel : MonoBehaviour, INotifyPropertyChanged
             if (item.Value.quantity != 0)
             {
                 Button inbagRow = Instantiate<Button>(this.inbagRowTemplate, transform);
+                inbagRow.gameObject.SetActive(true);
                 inbagRow.name = item.Value.name;  // set name of the button
                 inbagRow.transform.GetChild(0).GetComponent<Text>().text = item.Value.name;   // set the item name to the row
                 inbagRow.transform.GetChild(0).GetComponent<Text>().fontStyle = 0; // set to unbold
@@ -163,12 +165,12 @@ public class InventoryViewModel : MonoBehaviour, INotifyPropertyChanged
             // check if need to append item into the inventory list
             if (toAppendItem)
                 // append previous equipped item since inventory doesn't have that item
-                this.inBagList.Add("tom" + previousEquippedItem.name, previousEquippedItem);
+                this.inBagList.Add(userData.getName() + previousEquippedItem.name, previousEquippedItem);
         }
 
         // update the UI in the list of items in the inventory
         this.populateInBagItems();
-        InventoryDBHandler.PutEquippedItem("tom", this.equippedItems);
+        InventoryDBHandler.PutEquippedItem(userData.getName(), this.equippedItems);
         InventoryDBHandler.PutInventory(this.inBagList);
     }
 

@@ -28,6 +28,7 @@ public static class InventoryDBHandler
         {
             // without using serializer, res1.Text will include '\"' on both ends of the string so need to Trim them away
             equippedItem.name = res.Text.Trim('\"');
+            
 
             RestClient.Get($"{databaseURL}shop/{equippedItem.name}/property.json").Then(res1 =>
             {
