@@ -37,6 +37,7 @@ public class TwitterShareController : MonoBehaviour
             return;
         }
         Application.OpenURL(Twity.Oauth.authorizeURL);
+        pinField.text = string.Empty;
         popup.SetActive(true);
     }
     void GenerateAccessToken(string pin) {
@@ -44,7 +45,11 @@ public class TwitterShareController : MonoBehaviour
         StartCoroutine(Twity.Client.GenerateAccessToken(pin, AccessTokenCallback));
     }
     void AccessTokenCallback(bool success) {
-        if (!success) return;
+        if (!success) {
+            info.text = "Wrong PIN. Try Again.";
+            StartCoroutine(Twity.Client.GenerateRequestToken(RequestTokenCallback));
+            return;
+        }
         // When success, authorization is completed. You can make request to other endpoint.
         // User's screen_name is in '`Twity.Client.screenName`.
         info.text = "Authentication Successful! Posting Tweet...";
