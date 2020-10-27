@@ -189,6 +189,11 @@ public class UIControllerScript : MonoBehaviour
         viewResultsCanvas.SetActive(true);
         teacherTownCanvas.SetActive(false);
     }
+    public void CloseViewResultsCanvas() 
+    {
+        viewResultsCanvas.SetActive(false);
+        teacherTownCanvas.SetActive(true);
+    }
     public void EnrollmentToCourseCanvas()
     {
         enrollCanvas.SetActive(false);

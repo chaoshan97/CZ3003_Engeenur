@@ -13,6 +13,6 @@ public class ViewResultController : MonoBehaviour {
     }
 
     public void CloseViewResult() {
-        //uiController.CloseViewResult();
+        uiController.CloseViewResultsCanvas();
     }
 }
