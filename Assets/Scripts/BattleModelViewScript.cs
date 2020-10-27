@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.ComponentModel;
 using UnityWeld.Binding;
+using Proyecto26;
 
 [Binding]
 public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
@@ -217,7 +218,7 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
         playerScript.init(PlayerName, PlayerHealth, 10, 1, 1, 1);
 
         //Fetch questions
-        for (int i = 1; i <= 3; ++i)
+        for (int i = 1; i <= 10; ++i)
         {
             listOfQuestions.Add(new Question(i + i, i + "+" + i));
         }
@@ -248,6 +249,16 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
     {
         questionUI.SetActive(false);
         resultUIScript.gameObject.SetActive(true);
+        userData.setCoin(userData.getCoin() + monsterScript.Coin);
+        //level up
+        if (userData.getMaxExperience() <= userData.getExperience() + monsterScript.Experience)
+        {
+            userData.setLevel(userData.getLevel() + 1);
+            userData.setExperience(userData.getMaxExperience() - userData.getExperience() + monsterScript.Experience);
+        }
+        else
+            userData.setExperience(userData.getExperience() + monsterScript.Experience);
+        LoginDbHandler.UpdateToDatabase(userData);
         if (PlayerHealth <= 0)
         {
             resultUIScript.setResults(score, 0, 0);
@@ -267,10 +278,12 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
         }
         if (answerInput.text == "")
         {
+            monsterScript.gameObject.GetComponent<Animator>().SetTrigger("Attack");
             PlayerHealth -= monsterScript.Damage;
         }
         else if (int.Parse(answerInput.text) == Answer)
         {
+            playerScript.gameObject.GetComponent<Animator>().SetTrigger("Attack");
             if (MonsterHealth - playerScript.Damage < 0)
                 MonsterHealth = 0;
             else
@@ -280,6 +293,7 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
         }
         else
         {
+            monsterScript.gameObject.GetComponent<Animator>().SetTrigger("Attack");
             PlayerHealth -= monsterScript.Damage;
         }
 
