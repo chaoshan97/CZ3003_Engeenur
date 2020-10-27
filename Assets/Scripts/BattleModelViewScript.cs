@@ -28,6 +28,10 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
 
     private List<Question> listOfQuestions = new List<Question>();
     private int score = 0;
+
+    public MainMenuControllerScript mainMenuControllerScript;
+    public UserData userData;
+
    [Binding]
     public int MonsterHealth
     {
@@ -295,7 +299,9 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
         // Start is called before the first frame update
     void Start()
     {
-
+        userData = mainMenuControllerScript.getUserData();
+        PlayerName = userData.userName;
+        PlayerHealth = userData.hp;
     }
 
     // Update is called once per frame
