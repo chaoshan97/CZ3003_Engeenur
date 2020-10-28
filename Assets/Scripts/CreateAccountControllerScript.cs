@@ -63,20 +63,31 @@ public class CreateAccountControllerScript : MonoBehaviour
     private string response;
     private bool chkEmailResult = false;
     private bool chkUsernameResult = false;
-
+    public string email;
+    public bool check = true;
+    public bool nameExistflag = false;
+    public bool pwMismatchflag = false;
+    public bool emailEmptyflag = false;
+    public bool emailFormatWrong = false;
+    public bool emptyUsername = false;
+    public bool emailExistflag = false;
+    public bool passwordEmpty = false;
+    public bool wrongPasswordFormat = false;
+    public bool emptyCfmPassword = false;
 
     public async void createAccount()
     {
-        string email = emailInput.text.Trim().ToLower();
+        email = emailInput.text.Trim().ToLower();
+        Debug.Log(email);
         string username = UserName.text.Trim().ToLower();
         string password = Password.text;
         string confirmPassword = PasswordConfirm.text;
-        bool check = true;
 
         //Checking Email
         if (email == null || email == "") //Check if Email Input is empty
         {
             check = false;
+            emailEmptyflag = true;
             StartCoroutine(ShowEmailNotFillMessage());
         }
         else
@@ -85,6 +96,8 @@ public class CreateAccountControllerScript : MonoBehaviour
             if (!isEmail) //Checking if email format is correct
             {
                 check = false;
+                emailFormatWrong = true;
+                Debug.Log("Not email");
                 StartCoroutine(ShowEmailWrongMessage());
             }
             else
@@ -95,6 +108,8 @@ public class CreateAccountControllerScript : MonoBehaviour
                 if (chkEmailResult)
                 {
                     check = false;
+                    emailExistflag = true;
+                    Debug.Log("Email acc exist");
                     StartCoroutine(ShowEmailExistMessage());
                 }
             }
@@ -104,6 +119,8 @@ public class CreateAccountControllerScript : MonoBehaviour
         if (username == null || username == "") //Check if Username Input is empty
         {
             check = false;
+            emptyUsername = true;
+            Debug.Log("Empty name");
             StartCoroutine(ShowUsernameNotFillMessage());
         }
         else
@@ -112,6 +129,8 @@ public class CreateAccountControllerScript : MonoBehaviour
             if (chkUsernameResult)
             {
                 check = false;
+                nameExistflag = true;
+                Debug.Log("Name exist");
                 StartCoroutine(ShowUsernameExistMessage());
             }
         }
@@ -120,6 +139,7 @@ public class CreateAccountControllerScript : MonoBehaviour
         if (password == null || password == "") //Check if Password Input is empty
         {
             check = false;
+            passwordEmpty = true;
             StartCoroutine(ShowPasswordNotFillMessage());
         }
         else
@@ -129,6 +149,8 @@ public class CreateAccountControllerScript : MonoBehaviour
             if (!passwordChk)
             {
                 check = false;
+                wrongPasswordFormat = true;
+                Debug.Log("Invalid password");
                 StartCoroutine(ShowInvalidPasswordWrongMessage());
             }
         }
@@ -137,6 +159,8 @@ public class CreateAccountControllerScript : MonoBehaviour
         if (confirmPassword == null || confirmPassword == "") //Check if Confirm Password Input is empty
         {
             check = false;
+            emptyCfmPassword = true;
+            Debug.Log("Password not filled");
             StartCoroutine(ShowCfmPassNotFillMessage());
         }
         else
@@ -144,6 +168,8 @@ public class CreateAccountControllerScript : MonoBehaviour
             if (password != confirmPassword)
             {
                 check = false;
+                pwMismatchflag = true;
+                Debug.Log("Not same password");
                 StartCoroutine(ShowPasswordWrongMessage());
             }
         }
@@ -151,26 +177,12 @@ public class CreateAccountControllerScript : MonoBehaviour
         //Create acc if it pass all checks
         if (check == true)
         {
+            Debug.Log("checks are ok");
             Debug.Log("email" + email);
             Debug.Log(username);
             Debug.Log(password);
             loginDbHandler.FetchUserSignUpInfo(email, username, password);
             UIController.CreateAccToMainCanvas();
-        }
-    }
-
-
-    public bool IsValid(string emailaddress)
-    {
-        try
-        {
-            MailAddress m = new MailAddress(emailaddress);
-
-            return true;
-        }
-        catch (FormatException)
-        {
-            return false;
         }
     }
 
