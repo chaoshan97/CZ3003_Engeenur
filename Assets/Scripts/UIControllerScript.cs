@@ -318,4 +318,17 @@ public class UIControllerScript : MonoBehaviour
     {
         stageSelectedCanvas.SetActive(true);
     }
+
+    public void TrTownToCourse()
+    {
+
+        teacherTownCanvas.SetActive(false);
+        courseCanvas.SetActive(true);
+    }
+
+    public void CourseToTrTown()
+    {
+        courseCanvas.SetActive(false);
+        teacherTownCanvas.SetActive(true);
+    }
 }
