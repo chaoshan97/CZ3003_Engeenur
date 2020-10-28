@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.ComponentModel;
 using UnityWeld.Binding;
+using Proyecto26;
 
 [Binding]
 public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
@@ -28,6 +29,10 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
 
     private List<Question> listOfQuestions = new List<Question>();
     private int score = 0;
+
+    public MainMenuControllerScript mainMenuControllerScript;
+    public UserData userData;
+
    [Binding]
     public int MonsterHealth
     {
@@ -188,6 +193,11 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
 
     private void Awake()
     {
+        init();
+    }
+
+    public void init()
+    {
         //instantiate monsterGameObject based on prefab
         monster = Instantiate(monsterPrefab);
         player = Instantiate(playerPrefab);
@@ -205,14 +215,13 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
         monsterScript.init(1, MonsterHealth, 10, 20, 30);
         PlayerName = "tanbp";
         PlayerHealth = 100;
-        playerScript.init(PlayerName, PlayerHealth, 30, 1, 1, 1);
-        
+        playerScript.init(PlayerName, PlayerHealth, 10, 1, 1, 1);
+
         //Fetch questions
-        for (int i = 1; i <= 3; ++i)
+        for (int i = 1; i <= 10; ++i)
         {
-            listOfQuestions.Add(new Question(i+i, i +"+"+ i));
+            listOfQuestions.Add(new Question(i + i, i + "+" + i));
         }
-        Debug.Log(listOfQuestions[0].Questions);
         QuestionString = listOfQuestions[0].Questions;
         questionScript = listOfQuestions[0];
         Answer = listOfQuestions[0].Answer;
@@ -240,6 +249,16 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
     {
         questionUI.SetActive(false);
         resultUIScript.gameObject.SetActive(true);
+        userData.setCoin(userData.getCoin() + monsterScript.Coin);
+        //level up
+        if (userData.getMaxExperience() <= userData.getExperience() + monsterScript.Experience)
+        {
+            userData.setLevel(userData.getLevel() + 1);
+            userData.setExperience(userData.getMaxExperience() - userData.getExperience() + monsterScript.Experience);
+        }
+        else
+            userData.setExperience(userData.getExperience() + monsterScript.Experience);
+        LoginDbHandler.UpdateToDatabase(userData);
         if (PlayerHealth <= 0)
         {
             resultUIScript.setResults(score, 0, 0);
@@ -259,10 +278,12 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
         }
         if (answerInput.text == "")
         {
+            monsterScript.gameObject.GetComponent<Animator>().SetTrigger("Attack");
             PlayerHealth -= monsterScript.Damage;
         }
         else if (int.Parse(answerInput.text) == Answer)
         {
+            playerScript.gameObject.GetComponent<Animator>().SetTrigger("Attack");
             if (MonsterHealth - playerScript.Damage < 0)
                 MonsterHealth = 0;
             else
@@ -272,10 +293,11 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
         }
         else
         {
+            monsterScript.gameObject.GetComponent<Animator>().SetTrigger("Attack");
             PlayerHealth -= monsterScript.Damage;
         }
 
-        if (!setNewQuestion() || MonsterHealth <= 0)
+        if (!setNewQuestion() || MonsterHealth <= 0 || PlayerHealth <= 0)
         {
             //goto result page
             if (PlayerHealth == 0)
@@ -295,7 +317,9 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
         // Start is called before the first frame update
     void Start()
     {
-
+        userData = mainMenuControllerScript.getUserData();
+        PlayerName = userData.userName;
+        PlayerHealth = userData.hp;
     }
 
     // Update is called once per frame

@@ -20,13 +20,24 @@ public class InventoryViewModel : MonoBehaviour, INotifyPropertyChanged
 
     public Button inbagRowTemplate;
 
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
     // triggers when Inventory UI's canvas is set active
     void OnEnable() 
     {
         Init();
     }
 
-    private void Init() 
+    public void Init() 
     {
         // StartCoroutine(inventoryInt.getInventoryDetails((success, allResults) => {
         //     if (success) 
@@ -45,6 +56,10 @@ public class InventoryViewModel : MonoBehaviour, INotifyPropertyChanged
         
         // get userdata from mainmenu
         this.userData = this.mainMenuControllerScript.getUserData();
+
+        // incase server have issues and never fetch the user data entity
+        if (this.userData == null)
+            return;
 
         // get items list
         InventoryDBHandler.GetInventory(userData.getName(), itemsDict => {
@@ -190,6 +205,32 @@ public class InventoryViewModel : MonoBehaviour, INotifyPropertyChanged
         }
 
         return ret;
+    }
+
+    // for test suite
+    public List<Button> getInstantiatedUI()
+    {
+        return this.instantiatedUI;
+    }
+
+    // for test suite
+    public void setEquippedItems(EquippedItems equippedItems)
+    {
+        this.equippedItems = equippedItems;
+        this.equippedWeapon.GetComponent<Text>().text = equippedItems.weapon.name;
+    }
+
+    // for test suite
+    public void setInBagList(Dictionary<string, Item> inBagList)
+    {
+        this.inBagList = inBagList;
+        this.populateInBagItems();
+    }
+
+    // for test suite
+    public void setUserData(UserData userData)
+    {
+        this.userData = userData;
     }
 
     private void OnPropertyChanged(string propertyName)

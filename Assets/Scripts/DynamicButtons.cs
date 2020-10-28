@@ -2,14 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Proyecto26; //RestClient API
+using FullSerializer;
 
 public class DynamicButtons : MonoBehaviour
 {
-    int level = 3;
+
+    //int level=0;
+    //public List<String> myKeys;
     //private Button myBtn;
-   
-    public void setBtnInvisible(int lvl)
+
+    public void SetBtnInvisible(int lvl)
     {
+
         
         for (int i=10; i > lvl; i--)
         {
@@ -19,14 +24,11 @@ public class DynamicButtons : MonoBehaviour
         
     }
     // Start is called before the first frame update
-    void Start()
+    /*public void AvailableStage()
     {
-        setBtnInvisible(level);
-    }
+        SetBtnInvisible(level);
+    }*/
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
+
 }

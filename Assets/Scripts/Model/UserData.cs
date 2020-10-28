@@ -48,9 +48,19 @@ public class UserData
         return level;
     }
 
+    public void setLevel(int _level)
+    {
+        level = _level;
+    }
+
     public int getExperience()
     {
         return experience;
+    }
+
+    public void setExperience(int _experience)
+    {
+        experience = _experience;
     }
 
     public int getMaxExperience()
@@ -66,6 +76,11 @@ public class UserData
     public int getCoin()
     {
         return coin;
+    }
+
+    public void setCoin(int _coin)
+    {
+        coin = _coin;
     }
 
     public bool getVerified()

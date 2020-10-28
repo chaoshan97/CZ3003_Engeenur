@@ -17,7 +17,7 @@ public class LeadershipViewModel : MonoBehaviour
         Init();
     }
 
-    private void Init() 
+    public void Init() 
     {
         // StartCoroutine(leadershipInt.getLeadershipBoardDetails((success, allResults) => {
         //     if (success) {
@@ -70,5 +70,11 @@ public class LeadershipViewModel : MonoBehaviour
                     resultRow.transform.GetChild(i).GetComponent<Text>().color = Color.red;
             }
         }
+    }
+
+    // for test suite
+    public List<GameObject> getInstantiatedUI()
+    {
+        return this.instantiatedUI;
     }
 }

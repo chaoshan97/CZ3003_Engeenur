@@ -16,7 +16,7 @@ public class LoginDbHandler : MonoBehaviour
     private string AuthKey = "AIzaSyAM0B744pa-v9FjU69DmlfQGMqiZAHJpUo";
     public static fsSerializer serializer = new fsSerializer();
     public string userName;
-    private string idToken;
+    public static string idToken;
     public static string localId;
     private string getLocalId;
     public string verified;
@@ -179,6 +179,12 @@ public class LoginDbHandler : MonoBehaviour
     public static void GetStudent(string localId, GetUserDataCallback callback)
     {
         RestClient.Get<UserData>("https://engeenur-17baa.firebaseio.com/students/" + localId + ".json").Then(userData => { callback(userData); });
+    }
+
+    public static void UpdateToDatabase(UserData userData)
+    {
+        RestClient.Put("https://engeenur-17baa.firebaseio.com/students/" + "/" + localId + ".json?auth=" + idToken, userData);
+
     }
 }
 
