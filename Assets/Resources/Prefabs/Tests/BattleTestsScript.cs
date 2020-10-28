@@ -5,9 +5,9 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
 
-namespace Tests
+namespace BattleTests
 {
-    public class NewTestScript
+    public class BattleTestsScript
     {
         private BattleModelViewScript battleModelViewScript;
         private GameObject battleCanvas;

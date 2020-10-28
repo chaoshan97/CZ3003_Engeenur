@@ -36,12 +36,11 @@ public class LoginControllerScript : MonoBehaviour
     public LoginDbHandler loginDbHandler;
 
     public MainMenuControllerScript mainMenuController;
-    private UserData userData;
+    public UserData userData;
 
 
-    private bool verified = false; //Set as 'false'. Now 'true' for testing purpose
+    public bool studentChk = false; //Set as 'false'. Now 'true' for testing purpose
     private string response;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -53,34 +52,49 @@ public class LoginControllerScript : MonoBehaviour
 
     }
 
+
     public async void login()
     {
         string email = emailInput.text.Trim().ToLower();
         string password = passwordInput.text;
+        Debug.Log(email);
+        Debug.Log(password);
+
         if ((email == "" || email == null) && (password == "" || password == null))
         {
+            Debug.Log("Email Password not filled");
             StartCoroutine(EmailPasswordNotFill());
         }
         else
         {
             if (email == "" || email == null)
             {
+                Debug.Log("Email not filled");
                 StartCoroutine(EmailNotFill());
             }
             else
             {
                 if (password == "" || password == null)
                 {
+                    Debug.Log("Password not filled");
                     StartCoroutine(PassNotFill());
                 }
                 else
                 {
+                    Debug.Log(email);
+                    Debug.Log(password);
+                    Debug.Log("entering loginChk");
                     string loginChk = await PostRequest(email, password);
+                    Debug.Log("exited loginChk. Value below.");
+                    Debug.Log(loginChk);
                     if (loginChk != null)
                     {
-                        bool studentChk = await ChkStudent(loginChk);
+                        Debug.Log("loginChk is not null");
+                        studentChk = await ChkStudent(loginChk);
+                        Debug.Log("studenChk exited");
                         if (studentChk == true)
                         {
+                            Debug.Log("studentChk true");
                             Debug.Log(userData.userName);
                             mainMenuController.setUserData(userData);
                             mainMenuController.loadMainMenu();
@@ -88,11 +102,13 @@ public class LoginControllerScript : MonoBehaviour
                         }
                         else
                         {
+                            Debug.Log("Wrong User Pass");
                             StartCoroutine(ShowWrongMessage());
                         }
                     }
                     else
                     {
+                        Debug.Log("Wrong User Pass");
                         StartCoroutine(ShowWrongMessage());
                     }
 
@@ -139,8 +155,9 @@ public class LoginControllerScript : MonoBehaviour
     public async Task<string> PostRequest(string username, string password)
     {
         string result = await loginDbHandler.FetchUserSignInInfo(username, password);
-        return result;
         Debug.Log("Check Result: " + result);
+        return result;
+        
     }
 
     public async Task<bool> ChkStudent(string localID)

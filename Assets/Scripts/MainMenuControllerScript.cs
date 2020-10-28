@@ -45,6 +45,11 @@ public class MainMenuControllerScript : MonoBehaviour
         return data;
     }
 
+    public TeacherData getTeacherData()
+    {
+        return teacherData;
+    }
+
     public void setUserData(UserData user)
     {
         Debug.Log("SET USER DATA: " + user.userName);
