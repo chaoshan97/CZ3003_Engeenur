@@ -1,9 +1,9 @@
 {
-    "name": "Tests",
+    "name": "TestsSy",
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "GameAssembly"
+        "NewAssembly"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
