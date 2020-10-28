@@ -26,7 +26,10 @@ public class UIControllerScript : MonoBehaviour
     public GameObject trQnCanvas;
     public GameObject enrollCanvas;
     public GameObject mainCanvas;
-
+    public GameObject stageSelectionNormalCanvas;
+    public GameObject stageSelectionCloseCanvas;
+    public GameObject stageSelectSpecialCanvas;
+    public GameObject stageSelectedCanvas;
     // Start is called before the first frame update
     void Start()
     {
@@ -282,4 +285,30 @@ public class UIControllerScript : MonoBehaviour
 
     }
 
+    public void StageSpecialCanvas()
+    {
+        stageSelectionNormalCanvas.SetActive(false);
+        stageSelectSpecialCanvas.SetActive(true);
+        stageSelectionCloseCanvas.SetActive(true);
+    }
+
+    public void StageNormalCanvas()
+    {
+        stageSelectSpecialCanvas.SetActive(false);
+        stageSelectionNormalCanvas.SetActive(true);
+        stageSelectionCloseCanvas.SetActive(true);
+    }
+
+    public void StageSelectionCloseCanvas()
+    {
+        stageSelectionNormalCanvas.SetActive(false);
+        stageSelectSpecialCanvas.SetActive(false);
+        stageSelectionCloseCanvas.SetActive(false);
+    }
+
+    public void StageSelectedCanvas()
+    {
+        stageSelectedCanvas.SetActive(false);
+        battleCanvas.SetActive(true);
+    }
 }
