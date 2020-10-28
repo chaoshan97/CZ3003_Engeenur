@@ -17,6 +17,7 @@ public class TrSpecialLvlViewModel : MonoBehaviour
     public EnrollViewModel enrollViewModel;
     public UIControllerScript UIController;
     public TrQnViewModel trQnViewModel;
+    public bool created = false;
 
     // Start is called before the first frame update
     void Start()
@@ -26,9 +27,16 @@ public class TrSpecialLvlViewModel : MonoBehaviour
     //Creating buttons for levels
     public async Task Read()
     {
-        for (int i = 0; i < itemParent.transform.childCount; i++)
+        Debug.Log("READ ");
+        int count = itemParent.transform.childCount;
+        if (count != null)
         {
-            Destroy(itemParent.transform.GetChild(i).gameObject);
+            for (int i = 0; i < count; i++)
+            {
+                Debug.Log("itemparent");
+                Destroy(itemParent.transform.GetChild(i).gameObject);
+            }
+
         }
         //Retrieve Courses Created by the Teacher
         DatabaseQAHandler.GetCourseLvlQns(courseLvlQns =>
@@ -103,6 +111,8 @@ public class TrSpecialLvlViewModel : MonoBehaviour
         Debug.Log("Level Exist: " + lvlExist);
         if (lvlExist == true)
         {
+            created = false;
+            Debug.Log("LvlExist true, created: "+created);
             messageBox.SetActive(true);
             messageBox.transform.GetChild(1).GetComponent<Text>().text = "Level " + lvlNo + " already exist.";
         }
@@ -110,6 +120,7 @@ public class TrSpecialLvlViewModel : MonoBehaviour
         {
             var courseLvlQn = new CourseLvlQn(courseName, lvlNo, qns, ans);
             loader.SetActive(true);
+            created = true;
             await PostingLvl(courseLvlQn);
             await Read();
             loader.SetActive(false);

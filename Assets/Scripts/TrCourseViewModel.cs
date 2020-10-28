@@ -12,28 +12,38 @@ public class TrCourseViewModel : MonoBehaviour
 {
     public GameObject itemParent, item, formCreate, messageBox, delMsgBox, loader, specialLevelCanvas;
     public InputField courseInput;
-    public string userName; //retrieve user
     public bool chk = false;
-    //public SpecialLevelController specialLevelController;
     public EnrollViewModel enrollViewModel;
     public UIControllerScript UIController;
-    
+    public string userName;
+    public bool created = false;
 
+    public string teacherName;
     // Start is called before the first frame update
     async void Start()
     {
-        loader.SetActive(true);
+        Debug.Log("USERNAME IS aa " + userName);
+        //loader.SetActive(true);
         await Read();
-        loader.SetActive(false);
+        //loader.SetActive(false);
     }
 
     // Create course buttons
     public async Task Read()
     {
-        for (int i = 0; i < itemParent.transform.childCount; i++)
+        Debug.Log("ITEMmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm");
+        int count = itemParent.transform.childCount;
+        Debug.Log("IN ITEMPARENT");
+        if (count != 0)
         {
-            Destroy(itemParent.transform.GetChild(i).gameObject);
+            for (int i = 0; i < count; i++)
+            {
+                Debug.Log("itemparent");
+                Destroy(itemParent.transform.GetChild(i).gameObject);
+            }
+
         }
+        Debug.Log("ITEM 2");
         DatabaseQAHandler.GetCourses(courses =>
         {
             foreach (var course in courses)
@@ -68,10 +78,12 @@ public class TrCourseViewModel : MonoBehaviour
     //Course creation check
     public async void CreateCourse()
     {
+        created = false;
         string courseName = courseInput.text;
         bool handler = Check();
         if (handler == true)
         {
+            Debug.Log("Line75: " + courseName);
             await InvokeCourseCheckExist(courseName);
         }
         formCreate.transform.GetChild(1).GetComponent<InputField>().text = "";
@@ -91,29 +103,39 @@ public class TrCourseViewModel : MonoBehaviour
         }
         return true;
     }
-
+    public bool locks = true;
     // Invoke checkCourseExist
     public async Task InvokeCourseCheckExist(string courseName)
     {
         Task<bool> task = CheckCourseExist(courseName);
         bool courseExist = await task;
         Debug.Log("Course Exist: " + courseExist);
+
+        while (locks) {}
         if (courseExist == true)
         {
+            created = false;
+            Debug.Log("created " + created);
+            Debug.Log("ABOVE MSG BOX1");
             messageBox.SetActive(true);
+            Debug.Log("ABOVE MSG BOX2");
             messageBox.transform.GetChild(1).GetComponent<Text>().text = courseName + " already exist.";
         }
         else
         {
+            created = true;
             List<string> students = new List<string>();
             var course = new Course(userName, students);
+            Debug.Log("Before loader");
             loader.SetActive(true);
+            Debug.Log("created " + created);
             await PostingCourse(course, courseName);
             await Read();
             loader.SetActive(false);
+            Debug.Log("messageBox");
             messageBox.SetActive(true);
+            Debug.Log("messageBox2");
             messageBox.transform.GetChild(1).GetComponent<Text>().text = courseName + " created successfully.";
-
         }
     }
 
@@ -135,13 +157,15 @@ public class TrCourseViewModel : MonoBehaviour
     // Check if the course already exist
     public async Task<bool> CheckCourseExist(string courseName)
     {
+        chk = false;
+        Debug.Log("line140:" + courseName + "!");
         DatabaseQAHandler.GetCourse(courseName, course =>
         {
             chk = true;
             Debug.Log("chCourseExist1" + chk);
         });
         Stopwatch sw = Stopwatch.StartNew();
-        var delay = Task.Delay(500).ContinueWith(_ =>
+        var delay = Task.Delay(2000).ContinueWith(_ =>
                                    {
                                        sw.Stop();
                                        return sw.ElapsedMilliseconds;
@@ -149,6 +173,7 @@ public class TrCourseViewModel : MonoBehaviour
         await delay;
         int sec = (int)delay.Result;
         Debug.Log("check course exist elapsed milliseconds: {0}" + sec);
+        locks = false;
         return chk;
     }
 
@@ -204,6 +229,12 @@ public class TrCourseViewModel : MonoBehaviour
         enrollViewModel.WakeUp();
         Debug.Log("CLICK COURSE ITEM NAME: " + item.name);
         UIController.CourseToEnrollmentCanvas();
+    }
+
+    //Click Close
+    public void ClickClose()
+    {
+        UIController.CourseToTrTown();
     }
 
     //wake up 

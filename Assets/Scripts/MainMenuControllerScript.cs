@@ -27,6 +27,7 @@ public class MainMenuControllerScript : MonoBehaviour
     private UnityEngine.UI.Text TeacherName = null;
 
     TeacherData teacherData = new TeacherData();
+    public TrCourseViewModel trCourseViewModel;
 
     // Start is called before the first frame update
     void Start()
@@ -45,22 +46,28 @@ public class MainMenuControllerScript : MonoBehaviour
         return data;
     }
 
+    public TeacherData getTeacherData()
+    {
+        Debug.Log("1 MainController: " + teacherData.userName);
+        return teacherData;
+    }
+
     public void setUserData(UserData user)
     {
         Debug.Log("SET USER DATA: " + user.userName);
-       /* UserData userData = new UserData();
-        userData.coin = user.coin;
-        userData.email = user.email;
-        userData.experience = user.experience;
-        userData.hp = user.hp;
-        userData.level = user.level;
-        userData.localId = user.localId;
-        userData.maxExperience = user.maxExperience;
-        userData.userName = user.userName;
-        userData.verified = user.verified;
-        data = userData; */
-        
-        
+        /* UserData userData = new UserData();
+         userData.coin = user.coin;
+         userData.email = user.email;
+         userData.experience = user.experience;
+         userData.hp = user.hp;
+         userData.level = user.level;
+         userData.localId = user.localId;
+         userData.maxExperience = user.maxExperience;
+         userData.userName = user.userName;
+         userData.verified = user.verified;
+         data = userData; */
+
+
         data = user; //Object reference not set to instance error 
     }
 
@@ -77,7 +84,7 @@ public class MainMenuControllerScript : MonoBehaviour
         HealthValue.text = data.getHp().ToString();
         CoinValue.text = data.getCoin().ToString();*/
     }
-
+ 
     public void setTeacherData(TeacherData teacher)
     {
         Debug.Log("SET teacher DATA: " + teacher.userName);
@@ -85,6 +92,13 @@ public class MainMenuControllerScript : MonoBehaviour
     }
     public void loadTeacherMainMenu()
     {
-        TeacherName.text = teacherData.getName();
+        TeacherName.text = teacherData.userName;//teacherData.getName();
+        trCourseViewModel.userName = teacherData.userName;
+    }
+
+    public string getTeacherUserNameData()
+    {
+        //Debug.Log("2 MainController: " + teacherUserName);
+        return teacherData.userName;
     }
 }

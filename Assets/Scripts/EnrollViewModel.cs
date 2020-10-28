@@ -20,6 +20,8 @@ public class EnrollViewModel : MonoBehaviour
     public TrSpecialLvlViewModel trSpecialLvlViewModel;
     public TrCourseViewModel trCourseViewModel;
     public UIControllerScript UIController;
+
+    public bool created = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -28,9 +30,15 @@ public class EnrollViewModel : MonoBehaviour
 
     public async Task Read()
     {
-        for (int i = 0; i < itemParent.transform.childCount; i++)
+        int count = itemParent.transform.childCount;
+        if (count != null)
         {
-            Destroy(itemParent.transform.GetChild(i).gameObject);
+            for (int i = 0; i < count; i++)
+            {
+                Debug.Log("itemparent");
+                Destroy(itemParent.transform.GetChild(i).gameObject);
+            }
+
         }
         DatabaseQAHandler.GetCourse(courseName, course =>
         {
@@ -38,7 +46,7 @@ public class EnrollViewModel : MonoBehaviour
             int number = 1;
             for (int i = 0; i < (course.students).Count; i++) // Loop through List
             {
-                Debug.Log("STUDENT[I]"+ course.students[i]);
+                Debug.Log("STUDENT[I]" + course.students[i]);
                 GameObject tmp_item = Instantiate(item, itemParent.transform);
                 tmp_item.name = i.ToString();
                 Debug.Log("here item name: " + tmp_item.name);
@@ -61,6 +69,7 @@ public class EnrollViewModel : MonoBehaviour
     //create stud check
     public async void CreateStudEnroll()
     {
+        created = false;
         string studName = studInput.text;
         bool handler = Check(studName);
         if (handler == true)
@@ -100,6 +109,7 @@ public class EnrollViewModel : MonoBehaviour
         {
             Task<bool> taskValid = CheckStudValid(studName);
             bool studValidCheck = await taskValid;
+            Debug.Log("studValid"+ studValidCheck);
             if (studValidCheck == false) // Student Username Invalid
             {
                 messageBox.SetActive(true);
@@ -108,6 +118,8 @@ public class EnrollViewModel : MonoBehaviour
             else
             {
                 loader.SetActive(true);
+                created = true;
+                Debug.Log("1");
                 await PostingStud(studName);
                 await Read();
                 loader.SetActive(false);
@@ -124,8 +136,8 @@ public class EnrollViewModel : MonoBehaviour
         {
             for (int i = 0; i < (course.students).Count; i++) // Loop through List
             {
-                Debug.Log("STUDENT[I]"+ course.students[i]);
-                Debug.Log("studname:"+studName);
+                Debug.Log("STUDENT[I]" + course.students[i]);
+                Debug.Log("studname:" + studName);
                 if (studName == course.students[i])
                 {
                     Debug.Log("SAMEE");
@@ -155,7 +167,7 @@ public class EnrollViewModel : MonoBehaviour
                 Debug.Log($"{userData.Value.userName}");
                 if (userData.Value.userName == studName)
                 {
-                        Debug.Log("USERNAME VALIG");
+                    Debug.Log("USERNAME VALIG");
                     chkStudValid = true; // Student username is valid
                 }
             }
@@ -239,8 +251,8 @@ public class EnrollViewModel : MonoBehaviour
     //When click Next
     public void Next()
     {
-        trSpecialLvlViewModel.courseName =courseName;
-        trSpecialLvlViewModel.userName= userName; 
+        trSpecialLvlViewModel.courseName = courseName;
+        trSpecialLvlViewModel.userName = userName;
         trSpecialLvlViewModel.WakeUp();
         UIController.EnrollmentToSpecialLevelCanvas();
     }
