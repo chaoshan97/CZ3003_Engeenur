@@ -62,4 +62,8 @@ public class ViewResultUI : MonoBehaviour
             instantiatedUI.Add(resultRow);
         }
     }
+
+    public List<GameObject> getInstantiatedUI() {
+        return this.instantiatedUI;
+    }
 }

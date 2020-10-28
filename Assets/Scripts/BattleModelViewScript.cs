@@ -211,6 +211,7 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
         // initialize the monster values TODO fetch from firebase
 
         MonsterHealth = 30;
+        MonsterName = "Nyx";
 
         monsterScript.init(1, MonsterHealth, 10, 20, 30);
         PlayerName = "tanbp";
@@ -258,7 +259,7 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
         }
         else
             userData.setExperience(userData.getExperience() + monsterScript.Experience);
-        LoginDbHandler.UpdateToDatabase(userData);
+        //LoginDbHandler.UpdateToDatabase(userData);
         if (PlayerHealth <= 0)
         {
             resultUIScript.setResults(score, 0, 0);
