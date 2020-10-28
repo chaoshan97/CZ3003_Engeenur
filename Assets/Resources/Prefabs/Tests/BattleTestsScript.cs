@@ -22,7 +22,7 @@ namespace BattleTests
         }
         // A Test behaves as an ordinary method
         [Test]
-        public void TestCorrectAnswerMonsterTakeDamage()
+        public void TC30TestCorrectAnswerMonsterTakeDamage()
         {
             // Use the Assert class to test conditions
             
@@ -36,7 +36,7 @@ namespace BattleTests
         }
 
         [Test]
-        public void TestCorrectAnswerQuestionChange()
+        public void TC30TestCorrectAnswerQuestionChange()
         {
             // Use the Assert class to test conditions
 
@@ -49,7 +49,7 @@ namespace BattleTests
         }
 
         [Test]
-        public void TestWrongAnswerPlayerTakeDamage()
+        public void TC30TC29TestWrongAnswerPlayerTakeDamage()
         {
             // Use the Assert class to test conditions
 
@@ -62,7 +62,7 @@ namespace BattleTests
         }
 
         [Test]
-        public void TestWrongAnswerQuestionChange()
+        public void TC30TestWrongAnswerQuestionChange()
         {
             // Use the Assert class to test conditions
 
@@ -75,7 +75,7 @@ namespace BattleTests
         }
 
         [Test]
-        public void TestOpenResultScreenWhenMonsterHealthIsZero()
+        public void TC30TestOpenResultScreenWhenMonsterHealthIsZero()
         {
             // Use the Assert class to test conditions
 
@@ -89,7 +89,7 @@ namespace BattleTests
         }
 
         [Test]
-        public void TestOpenResultScreenWhenPlayerHealthIsZero()
+        public void TC29TestOpenResultScreenWhenPlayerHealthIsZero()
         {
             // Use the Assert class to test conditions
 

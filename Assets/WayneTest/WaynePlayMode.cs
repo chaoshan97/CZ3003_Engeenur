@@ -13,7 +13,7 @@ namespace Tests
 
         public void LoadScene()
         {
-            SceneManager.LoadScene("MainSceneIntergated");
+            SceneManager.LoadScene("MainSceneIntergated2");
 
         }
 
