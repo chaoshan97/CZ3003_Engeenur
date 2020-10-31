@@ -10,47 +10,44 @@ using Debug = UnityEngine.Debug;
 public class ShopViewModel : MonoBehaviour
 {
     public GameObject itemParent, item, formCreate, messageBox;
-    public Text coinTxt;
-    //public static string userName = "mary"; //retrieve current login user
+    public Text coinTxt; 
     public Dictionary<string, Item> itemdict = new Dictionary<string, Item>();
     public string itemtobepurchased;
-    public int quantity;
-    //UserData currentUser = new UserData();
-    //UserData currentUser;
-    
+    private int buyCost;
+    private int qty = 1;
+    private int totalCost;
     public MainMenuControllerScript mainMenuController;
-    private UserData userData;
+    private UserData player;
 
-    
-
-
+    public void OnEnable()
+    {
+        this.player = mainMenuController.getUserData();
+    }
 
     // Start is called before the first frame update
-    async void Start()
+    void Start()
     {
-        //string itemName = "Freezing Potion";
-        //ShopItem shopitem = new ShopItem(15, "Time", 10, "Freeze time");
-        //DatabaseShopHandler.PostShopItem(shopitem, itemName, () => { });
-        
-        await Read();
-        await checkCoin();
+        StartCoroutine(Read()); //Wait for shop item buttons to be created
+        coinTxt.text = player.getCoin().ToString();
+        Debug.Log("Coin Balance: "+ player.getCoin().ToString()); //Check for current coin balance
         Init();
     }
 
-    //Creating shopitem buttons
-    public async Task Read()
-    {
-        for (int i = 0; i < itemParent.transform.childCount; i++)
+    IEnumerator Read() {
+        int count = itemParent.transform.childCount;
+        if (count != null)
         {
-            Destroy(itemParent.transform.GetChild(i).gameObject);
+            for (int i = 0; i < count; i++)
+            {
+                Debug.Log("itemparent");
+                Destroy(itemParent.transform.GetChild(i).gameObject);
+            }
         }
         DatabaseShopHandler.GetShopItems(shopItems =>
         {
             foreach (var shopItem in shopItems)
             {
                 Debug.Log($"{shopItem.Key} {shopItem.Value.cost} {shopItem.Value.property} {shopItem.Value.no} {shopItem.Value.description}");
-
-
                 GameObject tmp_btn = Instantiate(item, itemParent.transform);
                 tmp_btn.name = shopItem.Key;
                 Debug.Log("item name: " + tmp_btn.name);
@@ -59,76 +56,51 @@ public class ShopViewModel : MonoBehaviour
                 tmp_btn.transform.GetChild(3).GetComponent<Text>().text = (shopItem.Value.description).ToString();
             }
         });
-        Stopwatch sw = Stopwatch.StartNew();
-        var delay = Task.Delay(200).ContinueWith(_ =>
-                                   {
-                                       sw.Stop();
-                                       return sw.ElapsedMilliseconds;
-                                   });
-        await delay;
-        int sec = (int)delay.Result;
-        Debug.Log("Read elapsed milliseconds: {0}" + sec);
+        yield return new WaitForSeconds(0.01f);
     }
+    //Creating shopitem buttons
+    //public async Task Read()
+    //{
+    //    int count = itemParent.transform.childCount;
+    //    if (count != null) {
+    //        for(int i=0;i < count; i++)
+    //        {
+    //            Debug.Log("itemparent");
+    //            Destroy(itemParent.transform.GetChild(i).gameObject);
+    //        }
+    //    }
+    //    DatabaseShopHandler.GetShopItems(shopItems =>
+    //    {
+    //        foreach (var shopItem in shopItems)
+    //        {
+    //            Debug.Log($"{shopItem.Key} {shopItem.Value.cost} {shopItem.Value.property} {shopItem.Value.no} {shopItem.Value.description}");
 
-    //Check coin
-    public string userKey;
-    public async Task checkCoin()
-    {
-        UserData player = mainMenuController.getUserData();
 
-
-       
-        //Debug.Log("coin"+ player.getCoin());
-        //Debug.Log("coinnnnnnn" + player.getCoin().ToString());
-        coinTxt.text = player.getCoin().ToString(); 
-        Debug.Log(player.getCoin().ToString());
-        // Debug.Log(userData.coin.ToString());
-        /*
-        Debug.Log("INNNNNNNNNNNNNNNNNNNNNNNNN");
-        DatabaseShopHandler.GetUsers(userDatas =>
-        {
-            Debug.Log("goooooooooooooooooooooooooooo");
-            foreach (var userData in userDatas)
-            {
-                Debug.Log($"{userData.Key} {userData.Value.coin} {userData.Value.userName}");
-                if (userData.Value.userName == userName)
-                {
-                    userKey = userData.Key;
-                    Debug.Log("User Key: " + userKey);
-                    //currentUser.coin = userData.Value.coin;
-                    Debug.Log(coinTxt);
-                    currentUser = new UserData();
-                    currentUser.email = userData.Value.email;
-                    currentUser.userName = userData.Value.userName;
-                    currentUser.experience = userData.Value.experience;
-                    currentUser.maxExperience = userData.Value.hp;
-                    currentUser.hp = userData.Value.hp;
-                    currentUser.coin = userData.Value.coin;
-                    coinTxt.text = (userData.Value.coin).ToString();
-                    currentUser.level = userData.Value.level;
-                    currentUser.verified = userData.Value.verified;
-                    currentUser.localId = userData.Value.localId;
-                }
-            }
-        });
-        Stopwatch sw = Stopwatch.StartNew();
-        var delay = Task.Delay(200).ContinueWith(_ =>
-                                   {
-                                       sw.Stop();
-                                       return sw.ElapsedMilliseconds;
-                                   });
-        await delay;
-        int sec = (int)delay.Result;
-        Debug.Log("Get coin elapsed milliseconds: {0}" + sec);
-        */
-    }
+    //            GameObject tmp_btn = Instantiate(item, itemParent.transform);
+    //            tmp_btn.name = shopItem.Key;
+    //            Debug.Log("item name: " + tmp_btn.name);
+    //            tmp_btn.transform.GetChild(1).GetComponent<Text>().text = (shopItem.Key).ToString();
+    //            tmp_btn.transform.GetChild(2).GetComponent<Text>().text = (shopItem.Value.cost).ToString();
+    //            tmp_btn.transform.GetChild(3).GetComponent<Text>().text = (shopItem.Value.description).ToString();
+    //        }
+    //    });
+    //    Stopwatch sw = Stopwatch.StartNew();
+    //    var delay = Task.Delay(200).ContinueWith(_ =>
+    //                               {
+    //                                   sw.Stop();
+    //                                   return sw.ElapsedMilliseconds;
+    //                               });
+    //    await delay;
+    //    int sec = (int)delay.Result;
+    //    Debug.Log("Read elapsed milliseconds: {0}" + sec);
+    //}
 
     //When a shop item is clicked
-    private int buyCost;
     public void clickShopItem(GameObject item)
     {
-        formCreate.transform.GetChild(1).GetComponent<Text>().text = item.name;
-        formCreate.transform.GetChild(3).GetComponent<Text>().text = "1";
+        formCreate.transform.GetChild(1).GetComponent<Text>().text = item.name; //Shop Item Name
+        formCreate.transform.GetChild(3).GetComponent<Text>().text = "1"; //Quantity
+        //Retrieve a shop item to get the name and cost
         DatabaseShopHandler.GetShopItem(item.name, shopItem =>
         {
             formCreate.transform.GetChild(6).GetComponent<Text>().text = shopItem.cost.ToString();
@@ -137,17 +109,13 @@ public class ShopViewModel : MonoBehaviour
         });
     }
 
-    public int qty = 1;
-    // When clicked qty up
-    private int totalcost;
+    //When click arrow up
     public void UpQty()
     {
         qty++;
-        formCreate.transform.GetChild(3).GetComponent<Text>().text = qty.ToString();        
-        totalcost = qty * buyCost;
-        formCreate.transform.GetChild(6).GetComponent<Text>().text = totalcost.ToString(); // total cost
-        //formCreate.transform.GetChild(6).GetComponent<Text>().text = buyCost.ToString();
-       
+        formCreate.transform.GetChild(3).GetComponent<Text>().text = qty.ToString(); //Update qty       
+        totalCost = qty * buyCost;//Calculate total cost
+        formCreate.transform.GetChild(6).GetComponent<Text>().text = totalCost.ToString(); // total cost
     }
 
     // When clicked qty down
@@ -161,35 +129,25 @@ public class ShopViewModel : MonoBehaviour
         else
         {
             qty--;
-            formCreate.transform.GetChild(3).GetComponent<Text>().text = qty.ToString();
+            formCreate.transform.GetChild(3).GetComponent<Text>().text = qty.ToString(); //Update qty
+            totalCost = qty * buyCost; //Calculate total cost
+            formCreate.transform.GetChild(6).GetComponent<Text>().text = totalCost.ToString(); // total cost
         }
     }
 
     //Buy
-    private int totalCost;
     public void Buy()
     {
-
-        // simin added
         UserData player = mainMenuController.getUserData();
-        Debug.Log("coin" + player.getCoin());
-        Debug.Log("coinnnnnnn" + player.getCoin().ToString());
+        Debug.Log("coin" + player.getCoin().ToString());
         coinTxt.text = player.getCoin().ToString();
-
-        //
-
         bool notExist = true;
         string coin = coinTxt.text;
         buyCost = buyCost * qty;
-
-  
-
-
-        int urCoin = int.Parse(coin, System.Globalization.NumberStyles.Integer);
-        if (urCoin >= buyCost)
+        int coinBalance = int.Parse(coin, System.Globalization.NumberStyles.Integer);
+        if (coinBalance >= buyCost)
         {
             //ADD IN INVENTORY (update inventory db)
-
             foreach (var key in this.itemdict.Keys)
             {
                 var item = this.itemdict[key];
@@ -211,20 +169,18 @@ public class ShopViewModel : MonoBehaviour
             }
 
             InventoryDBHandler.PutInventory(this.itemdict);
-
-            Debug.Log("CAN BUY");
-            urCoin = urCoin - buyCost;
-            player.coin = urCoin;
-            DatabaseShopHandler.PutUser(userKey, player, () => { });//Update coin in User DB
-            coinTxt.text = urCoin.ToString(); //update coin text in UI
+            coinBalance = coinBalance - buyCost; //calculate coin left
+            player.coin = coinBalance; //update user coin balance
+            DatabaseShopHandler.PutUser(player.localId, player, () => { });//Update coin in User DB
+            coinTxt.text = coinBalance.ToString(); //update coin text in UI
         }
         else
         {
             messageBox.SetActive(true);
             messageBox.transform.GetChild(1).GetComponent<Text>().text = "Inefficient coins.";
         }
-        buyCost = 0;
-        qty = 1;
+        buyCost = 0; //reset total purchase cost inside form create
+        qty = 1; //reset qty
     }
 
     private void Init()
@@ -235,13 +191,7 @@ public class ShopViewModel : MonoBehaviour
         {
             itemdict = inventoryItems;
             Debug.Log("ItemDict = " + itemdict.Count);
-           /* foreach (var inventoryItem in inventoryItems)
-            {
-                Debug.Log($"{inventoryItem.Key} {inventoryItem.Value.name} {inventoryItem.Value.quantity}");
-
-            }
-            */
         });
-
     }
+
 }

@@ -98,14 +98,12 @@ public class UIControllerScript : MonoBehaviour
     public void OpenShopButton()
     {
         townCanvas.SetActive(false);
-        shopCanvas.SetActive(true);
+        shopItemCanvas.SetActive(true);
     }
 
     public void CloseShopButton()
     {
-        inventoryScrollView.SetActive(false);
-        shopScrollView.SetActive(false);
-        shopCanvas.SetActive(false);
+        shopItemCanvas.SetActive(false);
         townCanvas.SetActive(true);
     }
 
