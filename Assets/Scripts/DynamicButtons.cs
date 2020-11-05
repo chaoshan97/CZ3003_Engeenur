@@ -4,30 +4,41 @@ using UnityEngine;
 using UnityEngine.UI;
 using Proyecto26; //RestClient API
 using FullSerializer;
+using System;
+using System.Globalization;
 
 public class DynamicButtons : MonoBehaviour
 {
 
-    //int level=0;
-    //public List<String> myKeys;
-    //private Button myBtn;
 
+    int count = 0;
+
+    //Set button invisible for special stages
     public void SetBtnInvisible(int lvl)
     {
 
-        
-        for (int i=10; i > lvl; i--)
+        for(int k = 10; k > 10-count; k--)
+        {
+            Button myBtn = GameObject.Find("Stg" + k).GetComponent<Button>();
+            myBtn.interactable = true;
+            myBtn.image.color = new Color(1f, 1f, 1f, 1f);
+            myBtn.GetComponentInChildren<Text>().color = new Color(0.6132076f, 0.3401352f, 0.06652725f, 1f);
+        }
+
+        count = 0;
+
+        for (int i = 10; i > lvl; i--)
         {
             Button myBtn = GameObject.Find("Stg" + i).GetComponent<Button>();
-            myBtn.gameObject.SetActive(false);
+            myBtn.interactable = false;
+            myBtn.image.color = new Color(0f, 0f, 0f, 0f);
+            myBtn.GetComponentInChildren<Text>().color = new Color(0f, 0f, 0f, 0f);
+            count++;
         }
         
+
     }
-    // Start is called before the first frame update
-    /*public void AvailableStage()
-    {
-        SetBtnInvisible(level);
-    }*/
+
 
 
 

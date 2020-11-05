@@ -7,7 +7,7 @@ using FullSerializer; // External Library, drag the source folder in
 using System;
 using System.Globalization;
 using System.Threading.Tasks;
-//using System.Diagnostics;
+
 
 public class GetDatabaseQuestions : MonoBehaviour
 {
@@ -19,11 +19,26 @@ public class GetDatabaseQuestions : MonoBehaviour
     public string ts;
     int stgAvail;
 
+    //for battle system retrieval
+    public List<String> question;
+    public List<int> answer;
+
+    public Button get1;
+    public Button get2;
+    public Button get3;
+    public Button get4;
+    public Button get5;
+    public Button get6;
+    public Button get7;
+    public Button get8;
+    public Button get9;
+    public Button get10;
+
     public static fsSerializer serializer = new fsSerializer();
 
     string database = "https://engeenur-17baa.firebaseio.com/";
 
-    //count number of questions in a stage. Input stage: e.g. N1 or N2...
+    //count number of questions in a stage. Input stage: e.g. 1 for stage 1
     public int CountKey(int n)
     {
         int key = 0;
@@ -74,40 +89,137 @@ public class GetDatabaseQuestions : MonoBehaviour
         yield return null;
     }*/
 
-    public void GetStageAvailable(string uid)
-    {
-       
-
-        //database + @"?orderBy=""$key""&startAt=""" + key + "Q" + k + @"""&endAt=""" + key + "Q" + k + @""""
-        //database + @"?orderBy=""$key""&startAt=""" + key + @"""&endAt=""" + key + @"\uf8ff"""
-        //RestClient.Get(database + @"?orderBy=""$key""&startAt="""+ key +"Q"+ k +@"""&endAt="""+key+"Q"+ k +@"""").Then(response =>
-        RestClient.Get(database + "UserData/" + uid + "/StageAvailable.json").Then(response =>
-        {
-
-            fsData stgData = fsJsonParser.Parse(response.Text);
-            serializer.TryDeserialize(stgData, ref stgAvail);
-
-
-            //Debug.Log("Get " + stgAvail);
-
-            //initialise to get function from another class
-            ds = FindObjectOfType(typeof(Disable)) as Disable;
-            ds.getStg(stgAvail);
-          
-            //add function to use retrieved data from database. Cannot return variable out
-
-
-        });
-
-
-    }
-
     
 
-    void Start()
+    //OnClickListener Events, update question and answer list according to stage selected
+    public void GetStageSelected(string course, int stage)
     {
-        //To disable stage; Replace ID with the student ID
-        GetStageAvailable("ID1");
+        switch (stage)
+        {
+            case 1:
+                question.Clear();
+                answer.Clear();
+                for (int i = 1; i <= CountKey(stage); i++)
+                {
+                    question.Add(ques[course + "Q" + i.ToString()].Questions);
+                    answer.Add(ques[course + "Q" + i.ToString()].Answer);
+                }
+                Debug.Log("Ques " + question[0]);
+                break;
+
+            case 2:
+                question.Clear();
+                answer.Clear();
+                for (int i = 1; i <= CountKey(stage); i++)
+                {
+                    question.Add(ques[course + "Q" + i.ToString()].Questions);
+                    answer.Add(ques[course + "Q" + i.ToString()].Answer);
+                }
+                Debug.Log("Ques " + question[0]);
+                break;
+
+            case 3:
+                question.Clear();
+                answer.Clear();
+                for (int i = 1; i <= CountKey(stage); i++)
+                {
+                    question.Add(ques[course + "Q" + i.ToString()].Questions);
+                    answer.Add(ques[course + "Q" + i.ToString()].Answer);
+                }
+                Debug.Log("Ques " + question[0]);
+                break;
+            case 4:
+                question.Clear();
+                answer.Clear();
+                for (int i = 1; i <= CountKey(stage); i++)
+                {
+                    question.Add(ques[course + "Q" + i.ToString()].Questions);
+                    answer.Add(ques[course + "Q" + i.ToString()].Answer);
+                }
+                Debug.Log("Ques " + question[0]);
+                break;
+
+            case 5:
+                question.Clear();
+                answer.Clear();
+                for (int i = 1; i <= CountKey(stage); i++)
+                {
+                    question.Add(ques[course + "Q" + i.ToString()].Questions);
+                    answer.Add(ques[course + "Q" + i.ToString()].Answer);
+                }
+                Debug.Log("Ques " + question[0]);
+                break;
+
+            case 6:
+                question.Clear();
+                answer.Clear();
+                for (int i = 1; i <= CountKey(stage); i++)
+                {
+                    question.Add(ques[course + "Q" + i.ToString()].Questions);
+                    answer.Add(ques[course + "Q" + i.ToString()].Answer);
+                }
+                Debug.Log("Ques " + question[0]);
+                break;
+
+            case 7:
+                question.Clear();
+                answer.Clear();
+                for (int i = 1; i <= CountKey(stage); i++)
+                {
+                    question.Add(ques[course + "Q" + i.ToString()].Questions);
+                    answer.Add(ques[course + "Q" + i.ToString()].Answer);
+                }
+                Debug.Log("Ques " + question[0]);
+                break;
+
+            case 8:
+                question.Clear();
+                answer.Clear();
+                for (int i = 1; i <= CountKey(stage); i++)
+                {
+                    question.Add(ques[course + "Q" + i.ToString()].Questions);
+                    answer.Add(ques[course + "Q" + i.ToString()].Answer);
+                }
+                Debug.Log("Ques " + question[0]);
+                break;
+
+            case 9:
+                question.Clear();
+                answer.Clear();
+                for (int i = 1; i <= CountKey(stage); i++)
+                {
+                    question.Add(ques[course + "Q" + i.ToString()].Questions);
+                    answer.Add(ques[course + "Q" + i.ToString()].Answer);
+                }
+                Debug.Log("Ques " + question[0]);
+                break;
+
+            case 10:
+                question.Clear();
+                answer.Clear();
+                for (int i = 1; i <= CountKey(stage); i++)
+                {
+                    question.Add(ques[course + "Q" + i.ToString()].Questions);
+                    answer.Add(ques[course + "Q" + i.ToString()].Answer);
+                }
+                Debug.Log("Ques " + question[0]);
+                break;
+        }
+    }
+
+        void Start()
+    {
+ 
+        get1.onClick.AddListener(delegate { GetStageSelected("N1", 1); });
+        get2.onClick.AddListener(delegate { GetStageSelected("N2", 2); });
+        get3.onClick.AddListener(delegate { GetStageSelected("N3", 3); });
+        get4.onClick.AddListener(delegate { GetStageSelected("N4", 4); });
+        get5.onClick.AddListener(delegate { GetStageSelected("N5", 5); });
+        get6.onClick.AddListener(delegate { GetStageSelected("N6", 6); });
+        get7.onClick.AddListener(delegate { GetStageSelected("N7", 7); });
+        get8.onClick.AddListener(delegate { GetStageSelected("N8", 8); });
+        get9.onClick.AddListener(delegate { GetStageSelected("N9", 9); });
+        get10.onClick.AddListener(delegate { GetStageSelected("N10", 10); });
     }
 
     void Awake()

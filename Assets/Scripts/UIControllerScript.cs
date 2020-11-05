@@ -11,6 +11,7 @@ public class UIControllerScript : MonoBehaviour
     public GameObject inventoryCanvas;
     public GameObject levelSelectCanvas;
     public GameObject shopCanvas;
+    public GameObject shopItemCanvas;
     public GameObject battleCanvas;
     public GameObject shopScrollView;
     public GameObject inventoryScrollView;
@@ -26,11 +27,11 @@ public class UIControllerScript : MonoBehaviour
     public GameObject trQnCanvas;
     public GameObject enrollCanvas;
     public GameObject mainCanvas;
+    public GameObject stageSelectionOpen;
     public GameObject stageSelectionNormalCanvas;
     public GameObject stageSelectionCloseCanvas;
     public GameObject stageSelectSpecialCanvas;
     public GameObject stageSelectedCanvas;
-    public GameObject stageSelectionOpen;
     // Start is called before the first frame update
     void Start()
     {
