@@ -27,7 +27,6 @@ public class UIControllerScript : MonoBehaviour
     public GameObject trQnCanvas;
     public GameObject enrollCanvas;
     public GameObject mainCanvas;
-    public GameObject stageSelectionOpen;
     public GameObject stageSelectionNormalCanvas;
     public GameObject stageSelectionCloseCanvas;
     public GameObject stageSelectSpecialCanvas;
@@ -302,18 +301,17 @@ public class UIControllerScript : MonoBehaviour
 
     public void StageSelectionCloseCanvas()
     {
-        stageSelectionNormalCanvas.SetActive(false);
-        stageSelectSpecialCanvas.SetActive(false);
-        stageSelectionCloseCanvas.SetActive(false);
+        stageSelectedCanvas.SetActive(false);
     }
 
     public void StageSelectedCanvas()
     {
         stageSelectedCanvas.SetActive(false);
+        townCanvas.SetActive(false);
         battleCanvas.SetActive(true);
     }
 
-    public void StageSelectionOpen()
+    public void StageSelectionCanvasOpen()
     {
         stageSelectedCanvas.SetActive(true);
     }

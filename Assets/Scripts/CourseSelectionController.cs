@@ -19,8 +19,7 @@ public class CourseSelectionController : MonoBehaviour
     //for battle system retrieval
     public List<String> question;
     public List<int> answer;
-
-
+    public int levelNo;
 
     public GetDatabaseQuestions db;
     string database = "https://engeenur-17baa.firebaseio.com/";
@@ -216,6 +215,7 @@ public class CourseSelectionController : MonoBehaviour
 
     public void GetStageSelected(string course, int stage)
     {
+        levelNo = stage;
         switch (stage)
         {
             case 1:

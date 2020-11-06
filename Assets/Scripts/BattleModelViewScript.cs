@@ -32,8 +32,12 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
 
     public MainMenuControllerScript mainMenuControllerScript;
     public UserData userData;
+    private bool levelLoaded = false;
+    public GetDatabaseQuestions normal;
+    public CourseSelectionController special;
+    private bool isThisNormalLevel = false;
 
-   [Binding]
+    [Binding]
     public int MonsterHealth
     {
         get
@@ -217,15 +221,7 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
         PlayerName = "tanbp";
         PlayerHealth = 100;
         playerScript.init(PlayerName, PlayerHealth, 10, 1, 1, 1);
-
-        //Fetch questions
-        for (int i = 1; i <= 10; ++i)
-        {
-            listOfQuestions.Add(new Question(i + i, i + "+" + i));
-        }
-        QuestionString = listOfQuestions[0].Questions;
-        questionScript = listOfQuestions[0];
-        Answer = listOfQuestions[0].Answer;
+        levelLoaded = true;
     }
 
     private void attackMonster()
@@ -323,9 +319,45 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
         PlayerHealth = userData.hp;
     }
 
+    void LoadLevel()
+    {
+        if (levelLoaded && listOfQuestions.Count == 0)
+        {
+            //Fetch questions
+            if (normal.question.Count != 0)
+            {
+                Debug.Log("playing normal level" + normal.levelNo);
+                for (int i = 0; i < normal.question.Count; ++i)
+                {
+                    listOfQuestions.Add(new Question(normal.answer[i], normal.question[i]));
+                }
+                QuestionString = listOfQuestions[0].Questions;
+                questionScript = listOfQuestions[0];
+                Answer = listOfQuestions[0].Answer;
+                normal.question.Clear();
+                normal.answer.Clear();
+                isThisNormalLevel = true;
+            }
+            if (special.question.Count != 0)
+            {
+                Debug.Log("playing special level" + special.levelNo);
+                for (int i = 0; i < special.question.Count; ++i)
+                {
+                    listOfQuestions.Add(new Question(special.answer[i], special.question[i]));
+                }
+                QuestionString = listOfQuestions[0].Questions;
+                questionScript = listOfQuestions[0];
+                Answer = listOfQuestions[0].Answer;
+                special.question.Clear();
+                special.answer.Clear();
+            }
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
+        LoadLevel();
         if (timerBarScript.barDisplay <= 0 ||  Input.GetKeyUp(KeyCode.Return))
         {
             checkAnswer();

@@ -22,6 +22,7 @@ public class GetDatabaseQuestions : MonoBehaviour
     //for battle system retrieval
     public List<String> question;
     public List<int> answer;
+    public int levelNo;
 
     public Button get1;
     public Button get2;
@@ -94,6 +95,7 @@ public class GetDatabaseQuestions : MonoBehaviour
     //OnClickListener Events, update question and answer list according to stage selected
     public void GetStageSelected(string course, int stage)
     {
+        levelNo = stage;
         switch (stage)
         {
             case 1:
