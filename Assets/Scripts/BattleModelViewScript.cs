@@ -15,7 +15,6 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
     public GameObject playerPrefab;
     public GameObject playerPos;
     public MonsterControllerScript monsterController;
-    public double timer;
     public GameObject monsterPrefab;
     public GameObject monsterPos;
     private GameObject monster;
@@ -203,6 +202,7 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
     public void init()
     {
         //instantiate monsterGameObject based on prefab
+        questionUI.SetActive(true);
         monster = Instantiate(monsterPrefab);
         player = Instantiate(playerPrefab);
 
@@ -255,7 +255,7 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
         }
         else
             userData.setExperience(userData.getExperience() + monsterScript.Experience);
-        //LoginDbHandler.UpdateToDatabase(userData);
+        LoginDbHandler.UpdateToDatabase(userData);
         if (PlayerHealth <= 0)
         {
             resultUIScript.setResults(score, 0, 0);
@@ -317,6 +317,21 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
         userData = mainMenuControllerScript.getUserData();
         PlayerName = userData.userName;
         PlayerHealth = userData.hp;
+    }
+
+    public void resetLevel()
+    {
+        levelLoaded = false;
+        Destroy(monster);
+        Destroy(player);
+        monsterScript = null;
+        playerScript = null;
+        listOfQuestions.Clear();
+        timerBarScript.barDisplay = 1;
+        score = 0;
+        resultUIScript.reset();
+        init();
+        isThisNormalLevel = false;
     }
 
     void LoadLevel()

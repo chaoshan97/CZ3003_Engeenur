@@ -16,6 +16,13 @@ public class ResultUIScript : MonoBehaviour
         experience.text += _experience.ToString();
     }
 
+    public void reset()
+    {
+        score.text = "Score: ";
+        gold.text = "Gold: ";
+        experience.text = "Experience: ";
+    }
+
     // Start is called before the first frame update
     void Start()
     {
