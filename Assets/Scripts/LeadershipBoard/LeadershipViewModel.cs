@@ -9,7 +9,6 @@ using UnityEngine.UI;
 /// </summary>
 public class LeadershipViewModel : MonoBehaviour
 {
-    public LeadershipInterface leadershipInt;
     private List<KeyValuePair<string, TheScore>> scoreList;
     private List<GameObject> instantiatedUI = new List<GameObject>();
     public MainMenuControllerScript mainMenuControllerScript;
@@ -29,13 +28,6 @@ public class LeadershipViewModel : MonoBehaviour
     /// </summary>
     public void Init() 
     {
-        // StartCoroutine(leadershipInt.getLeadershipBoardDetails((success, allResults) => {
-        //     if (success) {
-        //         this.scoreList = allResults;
-        //         this.populateLeadershipboardRows();
-        //     }
-        // }));
-
         this.userData = this.mainMenuControllerScript.getUserData();
 
         LeadershipDBHandler.GetLeadershipRanking(scoreList => {
