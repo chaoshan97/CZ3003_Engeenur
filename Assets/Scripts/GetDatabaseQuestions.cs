@@ -8,7 +8,11 @@ using System;
 using System.Globalization;
 using System.Threading.Tasks;
 
-
+/// <summary>
+/// This class will retrieve normal stages data from the database.
+/// Data will be stored and passed to the Battle System script.
+/// Stage information will be passed according to the selected stage number.
+/// </summary>
 public class GetDatabaseQuestions : MonoBehaviour
 {
     //for battle system retrieval

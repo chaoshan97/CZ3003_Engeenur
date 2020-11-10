@@ -7,6 +7,13 @@ using System;
 using Proyecto26; //RestClient API
 using FullSerializer;
 
+
+/// <summary>
+/// This class is used to select available courses assigned to students by the teachers. 
+/// Students will be able to see different number of stages depending on the number of stages created by the teacher according to the course name.
+/// This class will retrieve special stages data from the database.
+/// When student click on the stages, it will pass question, answer, monster, courseName, and levelNo date to the Battle System script.
+/// </summary>
 public class CourseSelectionController : MonoBehaviour
 {
     //for battle system retrieval
