@@ -6,7 +6,9 @@ using System;
 using Proyecto26; //RestClient API
 using FullSerializer; // External Library, drag the source folder in
 
-
+/// <summary>
+/// This class is used to set the available stages players can access. This can be seen from the score history of stages attempted by players.
+/// </summary>
 public class Disable : MonoBehaviour
 {
     private Dictionary<string, ScoreData> stgComplete = new Dictionary<string, ScoreData>();
@@ -16,7 +18,8 @@ public class Disable : MonoBehaviour
 
     //Database link
     string database = "https://engeenur-17baa.firebaseio.com/";
-    //Get levels from db to disable stage
+
+    //Get levels from database to disable stage
     public void getStg(int level)
     {
         for (int i = 10; i > 0; i--)
@@ -44,7 +47,6 @@ public class Disable : MonoBehaviour
     }
 
     //Retrieve stage completed from database
-    //Replace tom with user ID
     private IEnumerator GetStageCompleted()
     {
         RestClient.Get(database + "score.json").Then(response =>
@@ -52,7 +54,7 @@ public class Disable : MonoBehaviour
             userData = mainMenuControllerScript.getUserData();
             fsData questionData = fsJsonParser.Parse(response.Text);
             serializer.TryDeserialize(questionData, ref stgComplete);
-            getStg(stgComplete[userData.userName].levelScore.Count-1);
+            getStg(stgComplete[userData.userName].levelScore.Count);
         });
 
         yield return null;

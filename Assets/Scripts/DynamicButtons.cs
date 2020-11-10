@@ -7,6 +7,9 @@ using FullSerializer;
 using System;
 using System.Globalization;
 
+/// <summary>
+/// This class is used to set the number of stages that students can select based on the number of stages created by teachers in the special stage.
+/// </summary>
 public class DynamicButtons : MonoBehaviour
 {
     int count = 0;
