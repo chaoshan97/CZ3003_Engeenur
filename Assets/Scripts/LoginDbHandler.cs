@@ -59,7 +59,10 @@ public class LoginDbHandler : MonoBehaviour
         //verify();
 
         RestClient.Put(databaseURL + "/" + localId + ".json?auth=" + idToken, userData);
-
+        Item item = new Item("Bronze Daggger", "Damage", 1, username);
+        EquippedItems equippedItem = new EquippedItems();
+        equippedItem.weapon = item;
+        InventoryDBHandler.PutEquippedItem(username, equippedItem);
     }
 
     private void RetrieveFromDatabase()

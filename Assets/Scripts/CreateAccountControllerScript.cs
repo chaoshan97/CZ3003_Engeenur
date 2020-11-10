@@ -126,6 +126,7 @@ public class CreateAccountControllerScript : MonoBehaviour
         else
         {
             await CheckUsernameExist(username); //Check if this username already has an account 
+            Debug.Log(chkUsernameResult.ToString());
             if (chkUsernameResult)
             {
                 check = false;

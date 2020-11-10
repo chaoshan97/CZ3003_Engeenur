@@ -264,6 +264,11 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
         {
             resultUIScript.setResults(score, monsterScript.Coin, monsterScript.Experience);
         }
+        mainMenuControllerScript.loadMainMenu();
+        if (isThisNormalLevel)
+            RestClient.Put($"https://engeenur-17baa.firebaseio.com/score/"+userData.getName()+"/levelScore/"+normal.levelNo+".json", score.ToString());
+        //else
+            //RestClient.Put($"{databaseURL}specialScore/{course}/{newUser}.json", newScore.ToString());
     }
 
     public void checkAnswer()

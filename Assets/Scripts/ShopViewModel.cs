@@ -22,6 +22,7 @@ public class ShopViewModel : MonoBehaviour
     public void OnEnable()
     {
         this.player = mainMenuController.getUserData();
+        coinTxt.text = player.getCoin().ToString();
     }
 
     // Start is called before the first frame update
