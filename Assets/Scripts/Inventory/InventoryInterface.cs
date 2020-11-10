@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
+/// <summary>
+/// Author: Ang Hao Jie <br/>
+/// Interface for web requests to the server to obtain data.
+/// </summary>
 public class InventoryInterface : MonoBehaviour
 {
     private EquippedItems ei;
@@ -11,7 +15,9 @@ public class InventoryInterface : MonoBehaviour
     private string serverURL = "http://127.0.0.1:3000"; // 172.21.148.166
     //private UserData userData;    // commented out 1st
 
-    // fake data set
+    /// <summary>
+    /// For generating fake data set during development.
+    /// </summary>
     private void fakeDataGen()
     {
         ei = new EquippedItems();
@@ -36,7 +42,11 @@ public class InventoryInterface : MonoBehaviour
     }
 
 
-    // get inventory data of user from server
+    /// <summary>
+    /// Get user equipped items data from server
+    /// </summary>
+    /// <param name="callback">The callback method to be executed after task completion in coroutine.</param>
+    /// <returns>Yield return.</returns>
     public IEnumerator getEquippedItemsDetails(Action<bool, EquippedItems> callback)
     {
         // send web to our server to get inventory data
@@ -57,7 +67,11 @@ public class InventoryInterface : MonoBehaviour
         }
     }
 
-    // get inventory data of user from server
+    /// <summary>
+    /// Get inventory data of user from server
+    /// </summary>
+    /// <param name="callback">The callback method to be executed after task completion in coroutine.</param>
+    /// <returns>Yield return.</returns>
     public IEnumerator getInventoryDetails(Action<bool, InventoryItems> callback)
     {
         // send web to our server to get inventory data

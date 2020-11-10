@@ -3,6 +3,10 @@ using FullSerializer;
 using Proyecto26;
 using System.Linq;
 
+/// <summary>
+/// Author: Ang Hao Jie <br/>
+/// Database handler for leadership board to conduct CRUD.
+/// </summary>
 public static class LeadershipDBHandler
 {
     private static readonly string databaseURL = $"https://engeenur-17baa.firebaseio.com/";
@@ -29,6 +33,10 @@ public static class LeadershipDBHandler
     //     });
     // }
 
+    /// <summary>
+    /// Read leadership board global ranking from the database.
+    /// </summary>
+    /// <param name="callback">The callback method to be called after obtaining the data from database due to coroutine.</param>
     public static void GetLeadershipRanking(GetLeadershipCallback callback) 
     {
         RestClient.Get($"{databaseURL}score.json").Then(res => 
