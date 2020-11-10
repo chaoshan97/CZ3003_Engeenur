@@ -3,10 +3,17 @@ using Proyecto26;
 using FullSerializer;
 using System;
 
+/// <summary>
+/// Database Handler class for SpecialScore
+/// </summary>
 public static class SpecialScoreDBHandler {
     private static readonly string databaseURL = $"https://engeenur-17baa.firebaseio.com/";
     public static fsSerializer serializer = new fsSerializer();
 
+    /// <summary>
+    /// Get all results from SpecialScore
+    /// </summary>
+    /// <param name="callback">Callback function to retrieve SpecialScore results from database</param>
     public static void GetResults(Action<Dictionary<string, Dictionary<string, int>>> callback) {
 
         RestClient.Get($"{databaseURL}specialScore.json").Then(resCourse => {

@@ -2,13 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+/// <summary>
+/// <br>Author: Tan Boon Ping</br> 
+/// Storing of results of battle
+/// </summary>
 public class ResultUIScript : MonoBehaviour
 {
     public Text score;
     public Text gold;
     public Text experience;
 
+    /// <summary>
+    /// set text ui
+    /// </summary>
     public void setResults(int _score, int _gold, int _experience)
     {
         score.text += _score.ToString();
@@ -16,6 +22,9 @@ public class ResultUIScript : MonoBehaviour
         experience.text += _experience.ToString();
     }
 
+    /// <summary>
+    /// reset text ui
+    /// </summary>
     public void reset()
     {
         score.text = "Score: ";
