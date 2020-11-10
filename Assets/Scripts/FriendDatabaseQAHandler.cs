@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 using FullSerializer;
 using Proyecto26;
-
+/// <summary>
+/// <br>Author: Heng Fuwei, Esmond</br> 
+/// 
+/// </summary>
 public static class FriendDatabaseQAHandler
 {
     private static readonly string databaseURL = $"https://engeenur-17baa.firebaseio.com/";

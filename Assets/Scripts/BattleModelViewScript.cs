@@ -5,7 +5,10 @@ using UnityEngine.UI;
 using System.ComponentModel;
 using UnityWeld.Binding;
 using Proyecto26;
-
+/// <summary>
+/// <br>Author: Tan Boon Ping</br> 
+/// Model view of battle system
+/// </summary>
 [Binding]
 public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
 {
@@ -36,7 +39,9 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
     public CourseSelectionController special;
     private bool isThisNormalLevel = false;
     public TwitterShareController twitterShareController;
-
+    /// <summary>
+    /// data binding of monster health
+    /// </summary>
     [Binding]
     public int MonsterHealth
     {
@@ -64,6 +69,9 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
         }
     }
 
+    /// <summary>
+    /// data binding of monster name
+    /// </summary>
     [Binding]
     public string MonsterName
     {
@@ -91,6 +99,9 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
         }
     }
 
+    /// <summary>
+    /// data binding of player health
+    /// </summary>
     [Binding]
     public int PlayerHealth
     {
@@ -117,6 +128,9 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
         }
     }
 
+    /// <summary>
+    /// data binding of player name
+    /// </summary>
     [Binding]
     public string PlayerName
     {
@@ -143,6 +157,9 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
         }
     }
 
+    /// <summary>
+    /// data binding of question
+    /// </summary>
     [Binding]
     public string QuestionString
     {
@@ -169,6 +186,9 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
         }
     }
 
+    /// <summary>
+    /// data binding of answer
+    /// </summary>
     [Binding]
     public int Answer
     {
@@ -199,6 +219,9 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
     {
     }
 
+    /// <summary>
+    /// initializing battle system game objects
+    /// </summary>
     public void init()
     {
         //instantiate monsterGameObject based on prefab
@@ -229,12 +252,9 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
         playerScript.init(PlayerName, PlayerHealth, 10, 1, 1, 1);
         levelLoaded = true;
     }
-
-    private void attackMonster()
-    {
-
-    }
-
+    /// <summary>
+    /// setting new question from the list of questions
+    /// </summary>
     private bool setNewQuestion()
     {
         listOfQuestions.RemoveAt(0);
@@ -248,6 +268,9 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
         return false;
     }
 
+    /// <summary>
+    /// ddisplay battle results
+    /// </summary>
     private void toggleResultScreen()
     {
         twitterShareController.setResults(normal.levelNo, score);
@@ -278,6 +301,9 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
             RestClient.Put($"https://engeenur-17baa.firebaseio.com/specialScore/"+special.courseName+"/"+userData.getName()+".json", score.ToString());
     }
 
+    /// <summary>
+    /// check the players answer and applies damage to the correct entity based on whether the answer is right of wrong
+    /// </summary>
     public void checkAnswer()
     {
         if (listOfQuestions.Count == 0)
@@ -323,13 +349,16 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
         }
     }
 
-        // Start is called before the first frame update
+    // Start is called before the first frame update
     void Start()
     {
         userData = mainMenuControllerScript.getUserData();
         init();
     }
 
+    /// <summary>
+    /// reset the level when battle ends
+    /// </summary>
     public void resetLevel()
     {
         levelLoaded = false;
@@ -345,6 +374,9 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
         isThisNormalLevel = false;
     }
 
+    /// <summary>
+    /// loads the questions from firebase
+    /// </summary>
     void LoadLevel()
     {
         if (levelLoaded && listOfQuestions.Count == 0)

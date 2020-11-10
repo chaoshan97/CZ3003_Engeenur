@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+/// <summary>
+/// <br>Author: Heng Fuwei, Esmond</br> 
+/// 
+/// </summary>
 public class FriendListControllerScript : MonoBehaviour
 {
     public string theName;

@@ -1,7 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// <br>Author: Tan Boon Ping</br> 
+/// Creates a timer gui
+/// </summary>
 public class TimerBarScript : MonoBehaviour
 {
     public float barDisplay = 1; //current progress
@@ -10,7 +13,9 @@ public class TimerBarScript : MonoBehaviour
     public Texture2D emptyTex;
     public Texture2D fullTex;
     private float reductionSpeed = 15;
-
+    /// <summary>
+    /// create timer gui
+    /// </summary>
     void OnGUI()
     {
         //draw the background:
@@ -23,7 +28,9 @@ public class TimerBarScript : MonoBehaviour
         GUI.EndGroup();
         GUI.EndGroup();
     }
-
+    /// <summary>
+    /// set the speed of reduction of the timer
+    /// </summary>
     void setReductionSpeed(float _value)
     {
         reductionSpeed = _value;
@@ -34,7 +41,9 @@ public class TimerBarScript : MonoBehaviour
     {
 
     }
-
+    /// <summary>
+    /// reduce the timer
+    /// </summary>
     void Update()
     {
         //for this example, the bar display is linked to the current time,

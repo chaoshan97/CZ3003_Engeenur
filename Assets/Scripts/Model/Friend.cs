@@ -3,7 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
+/// <summary>
+/// <br>Author: Heng Fuwei, Esmond</br> 
+/// 
+/// </summary>
 public class Friend
 {
     public string userName;
