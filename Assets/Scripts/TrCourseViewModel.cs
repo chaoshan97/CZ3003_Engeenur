@@ -7,7 +7,10 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using Debug = UnityEngine.Debug;
-
+///<summary>
+///Author: Lim Pei Yan <br/>
+///Create and delete courses
+///</summary>
 public class TrCourseViewModel : MonoBehaviour
 {
     public GameObject itemParent, item, formCreate, messageBox, delMsgBox, loader, specialLevelCanvas;
@@ -28,7 +31,9 @@ public class TrCourseViewModel : MonoBehaviour
         //loader.SetActive(false);
     }
 
-    // Create course buttons
+    ///<summary>
+    ///Create course buttons
+    ///</summary> 
     public async Task Read()
     {
         Debug.Log("ITEMmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm");
@@ -69,13 +74,17 @@ public class TrCourseViewModel : MonoBehaviour
         Debug.Log("Read elapsed milliseconds: {0}" + sec);
     }
 
-    //When Cancel is clicked 
+    ///<summary>
+    ///When Cancel is clicked 
+    ///</summary> 
     public void Cancel()
     {
         formCreate.transform.GetChild(1).GetComponent<InputField>().text = "";
     }
 
-    //Course creation check
+    ///<summary>
+    ///Course creation check
+    ///</summary> 
     public async void CreateCourse()
     {
         created = false;
@@ -90,8 +99,9 @@ public class TrCourseViewModel : MonoBehaviour
         chk = false;
     }
 
-
-    //Basic checking of form elements
+    ///<summary>
+    ///Basic checking of form elements
+    ///</summary> 
     public bool Check()
     {
         string str = Regex.Replace(courseInput.text, @"\s", "");
@@ -103,8 +113,12 @@ public class TrCourseViewModel : MonoBehaviour
         }
         return true;
     }
+
+    
     public bool locks = true;
-    // Invoke checkCourseExist
+    ///<summary>
+    ///Invoke checkCourseExist
+    ///</summary> 
     public async Task InvokeCourseCheckExist(string courseName)
     {
         Task<bool> task = CheckCourseExist(courseName);
@@ -139,7 +153,9 @@ public class TrCourseViewModel : MonoBehaviour
         }
     }
 
-    // Creating course in database
+    ///<summary>
+    ///Creating course in database
+    ///</summary> 
     public async Task PostingCourse(Course course, string courseName)
     {
         DatabaseQAHandler.PostCourse(course, courseName, () => { });
@@ -154,7 +170,9 @@ public class TrCourseViewModel : MonoBehaviour
         Debug.Log("Creating Course Elapsed milliseconds: {0}" + sec);
     }
 
-    // Check if the course already exist
+    ///<summary>
+    ///Check if the course already exist
+    ///</summary> 
     public async Task<bool> CheckCourseExist(string courseName)
     {
         chk = false;
@@ -177,8 +195,9 @@ public class TrCourseViewModel : MonoBehaviour
         return chk;
     }
 
-
-    //Check the name of the course to be deleted
+    ///<summary>
+    ///Check the name of the course to be deleted
+    ///</summary> 
     public string courseKey;
     public void CheckItemDelName(GameObject item)
     {
@@ -188,7 +207,9 @@ public class TrCourseViewModel : MonoBehaviour
 
     }
 
-    //Delete course in database
+    ///<summary>
+    ///Delete course in database
+    ///</summary> 
     public async void DeleteCourse()
     {
         loader.SetActive(true);
@@ -221,7 +242,9 @@ public class TrCourseViewModel : MonoBehaviour
         courseKey = null;
     }
 
-    //Click a course button
+    ///<summary>
+    ///Click a course button
+    ///</summary> 
     public void ClickCourse(GameObject item)
     {
         enrollViewModel.courseName = item.name;
@@ -231,7 +254,9 @@ public class TrCourseViewModel : MonoBehaviour
         UIController.CourseToEnrollmentCanvas();
     }
 
-    //Click Close
+    ///<summary>
+    ///Click close button
+    ///</summary> 
     public void ClickClose()
     {
         UIController.CourseToTrTown();

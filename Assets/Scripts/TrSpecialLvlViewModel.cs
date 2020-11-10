@@ -7,7 +7,10 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using Debug = UnityEngine.Debug;
-
+///<summary>
+///Author: Lim Pei Yan <br/>
+///Create level and delete level
+///</summary>
 public class TrSpecialLvlViewModel : MonoBehaviour
 {
     public GameObject itemParent, item, formCreate, messageBox, delMsgBox, loader;
@@ -24,7 +27,9 @@ public class TrSpecialLvlViewModel : MonoBehaviour
     {
     }
 
-    //Creating buttons for levels
+    ///<summary>
+    ///Creating buttons for levels
+    ///</summary> 
     public async Task Read()
     {
         Debug.Log("READ ");
@@ -68,18 +73,26 @@ public class TrSpecialLvlViewModel : MonoBehaviour
     }
 
     public int lvlNoIF = 1;
-
+    ///<summary>
+    ///Open create level form
+    ///</summary> 
     public void OpenFormCreate()
     {
         formCreate.transform.GetChild(2).GetComponent<Text>().text = "1";
     }
 
+    ///<summary>
+    ///Increase Level No by 1
+    ///</summary> 
     public void UpLvlNoInput()
     {
         lvlNoIF++;
         formCreate.transform.GetChild(2).GetComponent<Text>().text = lvlNoIF.ToString();
     }
 
+    ///<summary>
+    ///Decrease Level No by 1
+    ///</summary> 
     public void DownLvlNoInput()
     {
         if (lvlNoIF == 1)
@@ -94,6 +107,9 @@ public class TrSpecialLvlViewModel : MonoBehaviour
         }
     }
 
+    ///<summary>
+    ///Create a Level Check
+    ///</summary> 
     public async void CreateLvl()
     {
         await InvokeLvlCheckExist(lvlNoIF);
@@ -104,6 +120,10 @@ public class TrSpecialLvlViewModel : MonoBehaviour
 
     public List<string> qns = new List<string>();
     public List<int> ans = new List<int>();
+    ///<summary>
+    ///Check whether there is an existing level
+    ///</summary> 
+    ///<param name = "lvlNo">Level number</param>
     public async Task InvokeLvlCheckExist(int lvlNo)
     {
         Task<bool> task = CheckLvlExist(lvlNo);
@@ -157,7 +177,10 @@ public class TrSpecialLvlViewModel : MonoBehaviour
         return chk;
     }
 
-    //Create level in DB
+    ///<summary>
+    ///Create a level in Database
+    ///</summary> 
+    ///<param name = "courseLvlQn">CourseLvlQn Object</param>
     public async Task PostingLvl(CourseLvlQn courseLvlQn)
     {
         DatabaseQAHandler.PostCourseLvlQn(courseLvlQn, () => { });
@@ -172,7 +195,10 @@ public class TrSpecialLvlViewModel : MonoBehaviour
         Debug.Log("Creating Level Elapsed milliseconds: {0}" + sec);
     }
 
-    //Check the name of the course to be deleted
+    ///<summary>
+    ///Check the name of the course to be deleted
+    ///</summary> 
+    ///<param name = "item"></param>
     public string key;
     public void CheckItemDelName(GameObject item)
     {
@@ -182,7 +208,9 @@ public class TrSpecialLvlViewModel : MonoBehaviour
 
     }
 
-    //Delete course in database
+    ///<summary>
+    ///Delete course in database
+    ///</summary> 
     public async void DeleteCourseLvl()
     {
         loader.SetActive(true);
@@ -204,8 +232,9 @@ public class TrSpecialLvlViewModel : MonoBehaviour
         key = null;
     }
 
-
-    //Click a course button
+    ///<summary>
+    ///Click a course button
+    ///</summary> 
     public void ClickLevel(GameObject item)
     {
         trQnViewModel.key = item.name;
@@ -226,7 +255,9 @@ public class TrSpecialLvlViewModel : MonoBehaviour
         loader.SetActive(false);
     }
 
-    //When click close
+    ///<summary>
+    ///Return to EnrollmentCanvas
+    ///</summary> 
     public void closeSpecialLvl()
     {
         enrollViewModel.WakeUp();

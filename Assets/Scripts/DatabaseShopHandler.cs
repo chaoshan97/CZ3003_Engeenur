@@ -2,6 +2,12 @@
 using FullSerializer;
 using Proyecto26;
 
+
+/// <summary>
+/// Author : Ten simin <br/>
+/// Methods to retrieve , create and delete items from the shop
+/// </summary>
+
 public class DatabaseShopHandler
 {
     private static readonly string databaseURL = $"https://engeenur-17baa.firebaseio.com/";
@@ -16,12 +22,22 @@ public class DatabaseShopHandler
     public delegate void GetUsersCallback(Dictionary<string, UserData> userDatas);
     public delegate void GetInventoryCallback(Dictionary<string, Item> itemDict);
 
+
+    /// <summary>
+    /// Create an item in the Shop
+    /// </summary>
+    /// <param name="itemName"></param>
+    /// <param name="callback"></param>
     //Create an item in Shop
     public static void PostShopItem(ShopItem shopitem, string itemName, PostItemCallback callback)
     {
         RestClient.Put<ShopItem>($"{databaseURL}shop/{itemName}.json", shopitem).Then(response => { callback(); });
     }
 
+    /// <summary>
+    /// Retrieve all the shop items
+    /// </summary>
+    /// <param name="callback"></param>
     //Retrieve all shop items
     public static void GetShopItems(GetItemsCallback callback)
     {
@@ -37,11 +53,22 @@ public class DatabaseShopHandler
         });
     }
 
+     /// <summary>
+     /// Retrieve a shop item
+     /// </summary>
+     /// <param name="itemName"></param>
+     /// <param name="callback"></param>
+
     //Retrieve a Shop Item
     public static void GetShopItem(string itemName, GetItemCallback callback)
     {
         RestClient.Get<ShopItem>($"{databaseURL}shop/{itemName}.json").Then(shopItem => { callback(shopItem); });
     }
+    /// <summary>
+    /// Delete a shop item
+    /// </summary>
+    /// <param name="itemName"></param>
+    /// <param name="callback"></param>
 
     //Delete a shop item
     public static void DeleteShopItem(string itemName, DelItemCallback callback)
@@ -49,6 +76,10 @@ public class DatabaseShopHandler
         RestClient.Delete($"{databaseURL}shop/" + itemName + ".json").Then(response => { callback(); });
     }
 
+    /// <summary>
+    /// Retrieve all the user data
+    /// </summary>
+    /// <param name="callback"></param>
     //Retrieve all user details
     public static void GetUsers(GetUsersCallback callback)
     {
@@ -64,17 +95,23 @@ public class DatabaseShopHandler
         });
     }
 
-    //Update User
+    /// <summary>
+    /// Update the user data
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="userData"></param>
+    /// <param name="callback"></param>
      public static void PutUser(string key, UserData userData, PostUserCallback callback)
     {
         RestClient.Put($"{databaseURL}students/"+key+".json", userData).Then(response => { callback(); });
     }
 
-
-    //haojie method  
-
-    // get all dictionary of items the user has in his/her inventory
-    public static void GetInventory(string studentUsername, GetInventoryCallback callback)
+    /// <summary>
+    /// Get all dictionary of items the user has in his/ her inventory
+    /// </summary>
+    /// <param name="studentUsername"></param>
+    /// <param name="callback"></param>
+     public static void GetInventory(string studentUsername, GetInventoryCallback callback)
     {
         Dictionary<string, Item> itemsDict;
         uint i = 0;

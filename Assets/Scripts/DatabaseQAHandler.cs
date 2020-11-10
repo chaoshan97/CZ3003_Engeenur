@@ -1,7 +1,11 @@
 ﻿using System.Collections.Generic;
 using FullSerializer;
 using Proyecto26;
-
+///<summary>
+///Author: Lim Pei Yan <br/>
+///Database Handler <br/>
+///Cretae, Retrieve, Update and Delete methods
+///</summary>
 public static class DatabaseQAHandler
 {
     private static readonly string databaseURL = $"https://engeenur-17baa.firebaseio.com/";
@@ -18,13 +22,21 @@ public static class DatabaseQAHandler
     public delegate void GetLvlsCallback(Dictionary<string, CourseLvlQn> courseLvlQns);
     public delegate void GetUsersCallback(Dictionary<string, UserData> userDatas);
 
-    //Create a Course
+    ///<summary>
+    ///Create a Course
+    ///</summary> 
+    ///<param name = "course">A Course object</param>
+    ///<param name = "courseName">Name of course</param>
+    ///<param name = "callback"></param>
     public static void PostCourse(Course course, string courseName, PostCourseCallback callback)
     {
         RestClient.Put<Course>($"{databaseURL}course/{courseName}.json", course).Then(response => { callback(); });
     }
 
-    //Retrieve All Courses
+    ///<summary>
+    ///Retrieve All Courses
+    ///</summary> 
+    ///<param name = "callback"></param>
     public static void GetCourses(GetCoursesCallback callback)
     {
         RestClient.Get($"{databaseURL}course.json").Then(response =>
@@ -39,37 +51,61 @@ public static class DatabaseQAHandler
         });
     }
 
-    //Retrieve a Course
+    ///<summary>
+    ///Retrieve a Course
+    ///</summary> 
+    ///<param name = "courseName">Name of course</param>
+    ///<param name = "callback"></param>
     public static void GetCourse(string courseName, GetCourseCallback callback)
     {
         RestClient.Get<Course>($"{databaseURL}course/{courseName}.json").Then(course => { callback(course); });
     }
 
-    //Delete a Course
+     ///<summary>
+    ///Delete a Course
+    ///</summary> 
+    ///<param name = "courseKey">Name of course</param>
+    ///<param name = "callback"></param>
     public static void DeleteCourse(string courseKey, DelCourseCallback callback)
     {
         RestClient.Delete($"{databaseURL}course/" + courseKey + ".json").Then(response => { callback(); });
     }
 
-    //Update a Course
+    ///<summary>
+    ///Update a Course
+    ///</summary> 
+    ///<param name = "courseName">Name of course</param>
+    ///<param name = "course">A Course object</param>
+    ///<param name = "callback"></param>
     public static void PutCourse(string courseName, Course course, PostCourseCallback callback)
     {
         RestClient.Put($"{databaseURL}course/"+courseName+".json", course).Then(response => { callback(); });
     }
 
-    //Create a level
+    ///<summary>
+    ///Create a Level
+    ///</summary> 
+    ///<param name = "courseLvlQn">A CourseLvlQn object</param>
+    ///<param name = "callback"></param>
     public static void PostCourseLvlQn(CourseLvlQn courseLvlQn, PostLvlCallback callback)
     {
         RestClient.Post<CourseLvlQn>($"{databaseURL}courseLevelQns/.json", courseLvlQn).Then(response => { callback(); });
     }
 
-    //Retrieve a course level 
+    ///<summary>
+    ///Retrieve a Course level
+    ///</summary> 
+    ///<param name = "id">Unique key of data</param>
+    ///<param name = "callback"></param>
     public static void GetCourseLvlQn(string id, GetLvlCallback callback)
     {
         RestClient.Get<CourseLvlQn>($"{databaseURL}courseLevelQns/{id}.json").Then(courseLvlQn => { callback(courseLvlQn); });
     }
 
-    //Retrieve all course levels
+    ///<summary>
+    ///Retrieve all course levels
+    ///</summary> 
+    ///<param name = "callback"></param>
     public static void GetCourseLvlQns(GetLvlsCallback callback)
     {
         RestClient.Get($"{databaseURL}courseLevelQns.json").Then(response =>
@@ -84,19 +120,31 @@ public static class DatabaseQAHandler
         });
     }
 
-    //Delete a Course Level
+    ///<summary>
+    ///Delete a Course Level
+    ///</summary> 
+    ///<param name = "key">Unique key of data</param>
+    ///<param name = "callback"></param>
     public static void DeleteCourseLvlQn(string key, DelLvlCallback callback)
     {
         RestClient.Delete($"{databaseURL}courseLevelQns/" + key + ".json").Then(response => { callback(); });
     }
 
-    //Update a Course Level Atrributes
+    ///<summary>
+    ///Update a Course Level Atrributes
+    ///</summary> 
+    ///<param name = "key">Unique key of data</param>
+    ///<param name = "courseLvlQn">A CourseLvlQn object</param>
+    ///<param name = "callback"></param>
     public static void PutCourseLvlQn(string key, CourseLvlQn courseLvlQn, PostLvlCallback callback)
     {
         RestClient.Put($"{databaseURL}courseLevelQns/"+key+".json", courseLvlQn);//.Then(response => { callback(); });
     }
 
-    //Retrieve all user details
+    ///<summary>
+    ///Retrieve all user details
+    ///</summary> 
+    ///<param name = "callback"></param>
     public static void GetUsers(GetUsersCallback callback)
     {
         RestClient.Get($"{databaseURL}students.json").Then(response =>

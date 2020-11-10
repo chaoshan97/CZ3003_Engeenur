@@ -7,6 +7,12 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using Debug = UnityEngine.Debug;
 
+
+/// <summary>
+/// Author : Ten simin <br/>
+/// Students can purchase items from the shop to assist him/her in the battle
+/// </summary>
+
 public class ShopViewModel : MonoBehaviour
 {
     public GameObject itemParent, item, formCreate, messageBox;
@@ -25,6 +31,7 @@ public class ShopViewModel : MonoBehaviour
         coinTxt.text = player.getCoin().ToString();
     }
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,7 +40,9 @@ public class ShopViewModel : MonoBehaviour
         Debug.Log("Coin Balance: "+ player.getCoin().ToString()); //Check for current coin balance
         Init();
     }
-
+    /// <summary>
+    /// method to create shopitem buttons
+    /// </summary>
     IEnumerator Read() {
         int count = itemParent.transform.childCount;
         if (count != null)
@@ -59,7 +68,7 @@ public class ShopViewModel : MonoBehaviour
         });
         yield return new WaitForSeconds(0.01f);
     }
-    //Creating shopitem buttons
+
     //public async Task Read()
     //{
     //    int count = itemParent.transform.childCount;
@@ -96,7 +105,10 @@ public class ShopViewModel : MonoBehaviour
     //    Debug.Log("Read elapsed milliseconds: {0}" + sec);
     //}
 
-    //When a shop item is clicked
+    /// <summary>
+    /// Select a shop item (When a shop item is clicked)
+    /// </summary>
+    /// <param name="item"></param>
     public void clickShopItem(GameObject item)
     {
         formCreate.transform.GetChild(1).GetComponent<Text>().text = item.name; //Shop Item Name
@@ -110,7 +122,9 @@ public class ShopViewModel : MonoBehaviour
         });
     }
 
-    //When click arrow up
+    /// <summary>
+    /// To increase the quantity of the item when the arrow up is selected (when click arrow up)
+    /// </summary>
     public void UpQty()
     {
         qty++;
@@ -118,8 +132,9 @@ public class ShopViewModel : MonoBehaviour
         totalCost = qty * buyCost;//Calculate total cost
         formCreate.transform.GetChild(6).GetComponent<Text>().text = totalCost.ToString(); // total cost
     }
-
-    // When clicked qty down
+    /// <summary>
+    /// To decrease the quantity of the item when the arrow down is selected (When clicked qty down)
+    /// </summary>
     public void DownQty()
     {
         if (qty == 1)
@@ -135,7 +150,11 @@ public class ShopViewModel : MonoBehaviour
             formCreate.transform.GetChild(6).GetComponent<Text>().text = totalCost.ToString(); // total cost
         }
     }
-
+    /// <summary>
+    /// When a student buy an item ,the method will check if the student have sufficient coins 
+    /// if the item bought exist in the student inventory, quantity of that item will be increased.
+    /// if the item bought does not exist in the student inventory, the item will be created in the inventory.
+    /// </summary>
     //Buy
     public void Buy()
     {

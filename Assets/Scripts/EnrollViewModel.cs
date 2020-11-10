@@ -7,7 +7,10 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using Debug = UnityEngine.Debug;
-
+///<summary>
+///Author: Lim Pei Yan <br/>
+///Enroll and unenroll student(s) in a course
+///</summary>
 public class EnrollViewModel : MonoBehaviour
 {
     public GameObject itemParent, item, formCreate, messageBox, delMsgBox, loader;
@@ -28,6 +31,9 @@ public class EnrollViewModel : MonoBehaviour
 
     }
 
+    ///<summary>
+    ///Create rows showing the list of enrolled students
+    ///</summary> 
     public async Task Read()
     {
         int count = itemParent.transform.childCount;
@@ -66,7 +72,9 @@ public class EnrollViewModel : MonoBehaviour
         Debug.Log("Read elapsed milliseconds: {0}" + sec);
     }
 
-    //create stud check
+    ///<summary>
+    ///Create Student Method
+    ///</summary> 
     public async void CreateStudEnroll()
     {
         created = false;
@@ -81,7 +89,9 @@ public class EnrollViewModel : MonoBehaviour
         formCreate.transform.GetChild(1).GetComponent<InputField>().text = "";
     }
 
-    //Basic Form Check
+    ///<summary>
+    ///Basic Form Checking 
+    ///</summary> 
     public bool Check(string studName)
     {
         string str = Regex.Replace(studName, @"\s", "");
@@ -94,7 +104,10 @@ public class EnrollViewModel : MonoBehaviour
         return true;
     }
 
-    // Stud Creation Check
+    ///<summary>
+    ///Student Creation Checks
+    ///</summary> 
+    ///<param name = "studName">Student's username</param>
     public async Task InvokeStudCheck(string studName)
     {
         Task<bool> task = CheckStudEnroll(studName);
@@ -129,7 +142,10 @@ public class EnrollViewModel : MonoBehaviour
         }
     }
 
-    //Check whether student is enrolled
+    ///<summary>
+    ///Check whether student is enrolled
+    ///</summary> 
+    ///<param name = "studName">Student's username</param>
     public async Task<bool> CheckStudEnroll(string studName)
     {
         DatabaseQAHandler.GetCourse(courseName, course =>
@@ -157,7 +173,10 @@ public class EnrollViewModel : MonoBehaviour
         return chk;
     }
 
-    //Check whether the student username is valid
+    ///<summary>
+    ///Check whether the student username is valid
+    ///</summary> 
+    ///<param name = "studName">Student's username</param>
     public async Task<bool> CheckStudValid(string studName)
     {
         DatabaseQAHandler.GetUsers(userDatas =>
@@ -184,7 +203,10 @@ public class EnrollViewModel : MonoBehaviour
         return chkStudValid;
     }
 
-    //Creating stud in DB
+    ///<summary>
+    ///Creating stud in Database
+    ///</summary> 
+    ///<param name = "studName">Student's username</param>
     public async Task PostingStud(string studName)
     {
         (currentCourse.students).Add(studName);
@@ -200,7 +222,10 @@ public class EnrollViewModel : MonoBehaviour
         Debug.Log("Enroll Student Elapsed milliseconds: {0}" + sec);
     }
 
-    //Check the name of the course to be deleted
+    ///<summary>
+    ///Check the name of the course to be deleted
+    ///</summary> 
+    ///<param name = "item">A GameObject</param>
     public int delName;
     public void CheckDelName(GameObject item)
     {
@@ -210,7 +235,9 @@ public class EnrollViewModel : MonoBehaviour
 
     }
 
-    //Deleting stud in DB
+    ///<summary>
+    ///Deleting stud in Database
+    ///</summary> 
     public async void DeleteStud()
     {
         loader.SetActive(true);
@@ -231,7 +258,9 @@ public class EnrollViewModel : MonoBehaviour
         messageBox.transform.GetChild(1).GetComponent<Text>().text = "Unenroll successfully.";
     }
 
-    //Wake up 
+    ///<summary>
+    /// Invoke the Read() Method
+    ///</summary> 
     public async void WakeUp()
     {
         Debug.Log("Course Name In enrollment: " + courseName);
@@ -241,14 +270,18 @@ public class EnrollViewModel : MonoBehaviour
         loader.SetActive(false);
     }
 
-    //When click Close
+    ///<summary>
+    ///Returns to Course Canvas
+    ///</summary> 
     public void CloseEnroll()
     {
         trCourseViewModel.WakeUp();
         UIController.EnrollmentToCourseCanvas();
     }
 
-    //When click Next
+    ///<summary>
+    ///Proceed to Special Level Canvas when clicked "Next"
+    ///</summary> 
     public void Next()
     {
         trSpecialLvlViewModel.courseName = courseName;

@@ -7,7 +7,10 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using Debug = UnityEngine.Debug;
-
+///<summary>
+///Author: Lim Pei Yan <br/>
+///Create, update and delete questions
+///</summary>
 public class TrQnViewModel : MonoBehaviour
 {
     public GameObject itemParent, item, formCreate, formUpdate, messageBox, delMsgBox, loader;
@@ -30,6 +33,9 @@ public class TrQnViewModel : MonoBehaviour
     {
     }
 
+    ///<summary>
+    ///Create rows for the list of questions and answers created
+    ///</summary> 
     public async Task Read()
     {
         count=0;
@@ -64,7 +70,9 @@ public class TrQnViewModel : MonoBehaviour
         Debug.Log("Read elapsed milliseconds: {0}" + sec +"Count:"+count);
     }
 
-    //create qns check
+    ///<summary>
+    ///Create question check
+    ///</summary> 
     public async void CreateQns()
     {
         string qn = qnInput.text;
@@ -79,7 +87,12 @@ public class TrQnViewModel : MonoBehaviour
         formCreate.transform.GetChild(2).GetComponent<InputField>().text = "";
     }
 
-    //Basic Form Check
+
+    ///<summary>
+    ///Basic Form Check
+    ///</summary> 
+    ///<param name = "qn">Question Input</param>
+    ///<param name = "ans">Answer Input</param>
     public bool Check(string qn, string ans)
     {
         string strQ = Regex.Replace(qn, @"\s", "");
@@ -99,7 +112,11 @@ public class TrQnViewModel : MonoBehaviour
         return true;
     }
 
-    // Qn Creation Check
+    ///<summary>
+    ///Question Creation Check
+    ///</summary> 
+    ///<param name = "qn">Question Input</param>
+    ///<param name = "ans">Answer Input</param>
     public async Task InvokeQnCheckExist(string qn, string ans)
     {
         Task<bool> task = CheckQnExist(qn);
@@ -122,7 +139,10 @@ public class TrQnViewModel : MonoBehaviour
         }
     }
 
-    //Check for existing qn
+    ///<summary>
+    ///Check for existing question
+    ///</summary> 
+    ///<param name = "qn">Question Input</param>
     public async Task<bool> CheckQnExist(string qn)
     {
         DatabaseQAHandler.GetCourseLvlQn(key, courseLvlQn =>
@@ -148,7 +168,11 @@ public class TrQnViewModel : MonoBehaviour
         return chk;
     }
 
-    //Creating qn in DB
+    ///<summary>
+    ///Creating question in Database
+    ///</summary> 
+    ///<param name = "qn">Question Input</param>
+    ///<param name = "ans">Answer Input</param>
     public async Task PostingQn(string qn, string ans)
     {
         int intAns = int.Parse(ans,System.Globalization.NumberStyles.Integer);
@@ -166,7 +190,10 @@ public class TrQnViewModel : MonoBehaviour
         Debug.Log("Creating Qn Elapsed milliseconds: {0}" + sec);
     }
 
-    //Check the name of the course to be deleted
+    ///<summary>
+    ///Check the name of the course to be deleted
+    ///</summary> 
+    ///<param name = "item">GameObject</param>
     public int delName;
     public void CheckDelName(GameObject item)
     {
@@ -176,7 +203,9 @@ public class TrQnViewModel : MonoBehaviour
 
     }
 
-    //Deleting qn in DB
+    ///<summary>
+    ///Deleting question in Database
+    ///</summary> 
     public async void DeleteQn()
     {
         loader.SetActive(true);
@@ -199,7 +228,9 @@ public class TrQnViewModel : MonoBehaviour
         //key = null;
     }
 
-    //Check the name of the course to be edited
+    ///<summary>
+    ///Check the name of the course to be edited
+    ///</summary> 
     public int editName;
     public void OpenUpdateForm(GameObject item)
     {
@@ -209,7 +240,9 @@ public class TrQnViewModel : MonoBehaviour
         formUpdate.transform.GetChild(2).GetComponent<InputField>().text = (courseLvlQnCreate.ans[editName]).ToString();
     }
     
-    // Edit qn basic check
+    ///<summary>
+    ///Edit question basic check
+    ///</summary> 
     public async void EditQn()
     {
         string qn = qnUpdateInput.text;
@@ -231,7 +264,11 @@ public class TrQnViewModel : MonoBehaviour
         formUpdate.transform.GetChild(2).GetComponent<InputField>().text = "";
     }
 
-    //Update qn in DB
+    ///<summary>
+    ///Update question in Database
+    ///</summary> 
+    ///<param name = "qn">Question Input</param>
+    ///<param name = "ans">Answer Input</param>
     public async Task UpdateQn(string qn, string ans)
     {
         loader.SetActive(true);
@@ -264,14 +301,18 @@ public class TrQnViewModel : MonoBehaviour
         loader.SetActive(false);
     }
 
-    //When click Close
+    ///<summary>
+    ///When click Close
+    ///</summary> 
     public void CloseTrQn()
     {
         trSpecialLvlViewModel.WakeUp();
         UIController.CloseTrQnCanvas();
     }
 
-    //When click Next
+    ///<summary>
+    ///When click Next
+    ///</summary> 
     public void Next()
     {
         trCourseViewModel.WakeUp();
