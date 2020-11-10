@@ -35,6 +35,7 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
     public GetDatabaseQuestions normal;
     public CourseSelectionController special;
     private bool isThisNormalLevel = false;
+    public TwitterShareController twitterShareController;
 
     [Binding]
     public int MonsterHealth
@@ -196,7 +197,6 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
 
     private void Awake()
     {
-        init();
     }
 
     public void init()
@@ -214,12 +214,18 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
         playerScript = player.GetComponent<PlayerScript>();
         // initialize the monster values TODO fetch from firebase
 
-        MonsterHealth = 30;
-        MonsterName = "Nyx";
-
-        monsterScript.init(1, MonsterHealth, 10, 20, 30);
-        PlayerName = "tanbp";
-        PlayerHealth = 100;
+        if (normal.question.Count != 0)
+        {
+            MonsterHealth = normal.monster["health"];
+            monsterScript.init(1, MonsterHealth, normal.monster["attack"], normal.monster["coin"], normal.monster["experience"]);
+        }
+        else if (special.question.Count != 0)
+        {
+            MonsterHealth = special.monster["health"];
+            monsterScript.init(1, MonsterHealth, special.monster["attack"], special.monster["coin"], special.monster["experience"]);
+        }
+        PlayerName = userData.getName();
+        PlayerHealth = userData.getHp();
         playerScript.init(PlayerName, PlayerHealth, 10, 1, 1, 1);
         levelLoaded = true;
     }
@@ -244,6 +250,7 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
 
     private void toggleResultScreen()
     {
+        twitterShareController.setResults(normal.levelNo, score);
         questionUI.SetActive(false);
         resultUIScript.gameObject.SetActive(true);
         userData.setCoin(userData.getCoin() + monsterScript.Coin);
@@ -267,8 +274,8 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
         mainMenuControllerScript.loadMainMenu();
         if (isThisNormalLevel)
             RestClient.Put($"https://engeenur-17baa.firebaseio.com/score/"+userData.getName()+"/levelScore/"+normal.levelNo+".json", score.ToString());
-        //else
-            //RestClient.Put($"{databaseURL}specialScore/{course}/{newUser}.json", newScore.ToString());
+        else
+            RestClient.Put($"https://engeenur-17baa.firebaseio.com/specialScore/"+special.courseName+"/"+userData.getName()+".json", score.ToString());
     }
 
     public void checkAnswer()
@@ -320,8 +327,7 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
     void Start()
     {
         userData = mainMenuControllerScript.getUserData();
-        PlayerName = userData.userName;
-        PlayerHealth = userData.hp;
+        init();
     }
 
     public void resetLevel()

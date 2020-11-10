@@ -217,6 +217,7 @@ public class CourseSelectionController : MonoBehaviour
         PopulateList();
         DefaultCanvas.SetActive(true);
         dbtn.SetBtnInvisible(StgCount(crsName[0]));
+        courseName = crsName[0];
     }
 
     //Update variables for passing to Battle System when stage selected
@@ -416,13 +417,12 @@ public class CourseSelectionController : MonoBehaviour
 
         dropdown.options.Clear();
         List<String> items = new List<String>();
-        userData = mainMenuControllerScript.getUserData();
         //check for student registered courses
         for (int i = 0; i < myKeys.Count; i++)
         {
             for(int k=0; k< course[myKeys[i]].students.Count; k++)
             {
-                if (course[myKeys[i]].students[k] == userData.userName) //change Tom to name from database
+                if (course[myKeys[i]].students[k].Equals(userData.userName)) //change Tom to name from database
                 {
                     items.Add(myKeys[i]);
                     break;
@@ -450,7 +450,6 @@ public class CourseSelectionController : MonoBehaviour
 
             fsData studentCourse = fsJsonParser.Parse(response.Text);
             serializer.TryDeserialize(studentCourse, ref course);
-            userData = mainMenuControllerScript.getUserData();
             myKeys = new List<String>(course.Keys);
             //Maybe try putting populateList method here to retrieve value as global for use
             crsName = new List<String>();
@@ -458,7 +457,7 @@ public class CourseSelectionController : MonoBehaviour
             {
                 for (int k = 0; k < course[myKeys[i]].students.Count; k++)
                 {
-                    if (course[myKeys[i]].students[k] == userData.userName) //change Tom to name from database
+                    if (course[myKeys[i]].students[k].Equals(userData.userName)) //change Tom to name from database
                     {
                         crsName.Add(myKeys[i]);
                     }
@@ -468,8 +467,8 @@ public class CourseSelectionController : MonoBehaviour
             }
 
 
+            courseName = crsName[0];
         });
-
         yield return null;
     }
 
@@ -508,13 +507,14 @@ public class CourseSelectionController : MonoBehaviour
 
     void Awake()
     {
-        StartCoroutine(GetStudentCourse());
-        StartCoroutine(GetSpecial());
-        StartCoroutine(GetMonsterData());
     }
 
     void Start()
     {
+        userData = mainMenuControllerScript.getUserData();
+        StartCoroutine(GetStudentCourse());
+        StartCoroutine(GetSpecial());
+        StartCoroutine(GetMonsterData());
         get1.onClick.AddListener(delegate { GetStageSelected(crsName[0], 1); });
         get2.onClick.AddListener(delegate { GetStageSelected(crsName[0], 2); });
         get3.onClick.AddListener(delegate { GetStageSelected(crsName[0], 3); });

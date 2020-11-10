@@ -19,10 +19,20 @@ public class Disable : MonoBehaviour
     //Get levels from db to disable stage
     public void getStg(int level)
     {
-        for (int i=10; i > level; i--)
+        for (int i = 10; i > 0; i--)
+        {
+            setEnable(i);
+        }
+
+        for (int i = 10; i > level; i--)
         {
             setDisable(i);
         }
+    }
+    public void setEnable(int lvl)
+    {
+        Button myBtn = GameObject.Find("Stg" + lvl).GetComponent<Button>();
+        myBtn.interactable = true;
     }
 
 
@@ -50,7 +60,7 @@ public class Disable : MonoBehaviour
 
 
 
-    void Awake()
+    void OnEnable()
     {
 
         StartCoroutine(GetStageCompleted());
