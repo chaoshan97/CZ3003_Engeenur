@@ -9,10 +9,12 @@ using FullSerializer; // External Library, drag the source folder in
 
 public class Disable : MonoBehaviour
 {
-    Dictionary<string, ScoreData> stgComplete = new Dictionary<string, ScoreData>();
-    public GetDatabaseQuestions ds;
-
+    private Dictionary<string, ScoreData> stgComplete = new Dictionary<string, ScoreData>();
     public static fsSerializer serializer = new fsSerializer();
+    public MainMenuControllerScript mainMenuControllerScript;
+    public UserData userData;
+
+    //Database link
     string database = "https://engeenur-17baa.firebaseio.com/";
     //Get levels from db to disable stage
     public void getStg(int level)
@@ -31,24 +33,16 @@ public class Disable : MonoBehaviour
         myBtn.interactable = false;
     }
 
-    //Use this to retrieve questions and answers
-    public void receive() {
-        ds = FindObjectOfType(typeof(GetDatabaseQuestions)) as GetDatabaseQuestions;
-        Debug.Log("Print this " + ds.question[0]);
-        //Debug.Log("Monster data " + ds.mons["S1"].health + ds.mons["S1"].attack);
-    }
-
-
-
+    //Retrieve stage completed from database
     //Replace tom with user ID
-    public IEnumerator GetStageCompleted()
+    private IEnumerator GetStageCompleted()
     {
         RestClient.Get(database + "score.json").Then(response =>
         {
+            userData = mainMenuControllerScript.getUserData();
             fsData questionData = fsJsonParser.Parse(response.Text);
             serializer.TryDeserialize(questionData, ref stgComplete);
-            //Debug.Log("Count this" + stgComplete["tom"].levelScore.Count);
-            getStg(stgComplete["tom"].levelScore.Count-1);
+            getStg(stgComplete[userData.userName].levelScore.Count-1);
         });
 
         yield return null;

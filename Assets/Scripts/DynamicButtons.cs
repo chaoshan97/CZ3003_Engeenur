@@ -9,8 +9,6 @@ using System.Globalization;
 
 public class DynamicButtons : MonoBehaviour
 {
-
-
     int count = 0;
 
     //Set button invisible for special stages

@@ -11,18 +11,20 @@ using System.Threading.Tasks;
 
 public class GetDatabaseQuestions : MonoBehaviour
 {
-
-    public Disable ds;
-    public Dictionary<string, StageQuestion> ques = new Dictionary<string, StageQuestion>();
-    public Dictionary<string, MonsterData> mons = new Dictionary<string, MonsterData>();
-    public Dictionary<string, CourseData> course = new Dictionary<string, CourseData>();
-    public string ts;
-    int stgAvail;
-
     //for battle system retrieval
     public List<String> question;
     public List<int> answer;
+    public Dictionary<string, int> monster;
     public int levelNo;
+
+
+    public Dictionary<string, StageQuestion> ques = new Dictionary<string, StageQuestion>();
+    private Dictionary<string, MonsterData> mons = new Dictionary<string, MonsterData>();
+    private Dictionary<string, CourseData> course = new Dictionary<string, CourseData>();
+    private string ts;
+    private int stgAvail;
+    private List<String> key;
+
 
     public Button get1;
     public Button get2;
@@ -37,10 +39,11 @@ public class GetDatabaseQuestions : MonoBehaviour
 
     public static fsSerializer serializer = new fsSerializer();
 
+    //Database link
     string database = "https://engeenur-17baa.firebaseio.com/";
 
     //count number of questions in a stage. Input stage: e.g. 1 for stage 1
-    public int CountKey(int n)
+    private int CountKey(int n)
     {
         int key = 0;
         int i = 1;
@@ -56,18 +59,15 @@ public class GetDatabaseQuestions : MonoBehaviour
 
 
     //Get all Questions from database
-    public IEnumerator GetStageQuestions()
+    private IEnumerator GetStageQuestions()
     {
-        //database + @"?orderBy=""$key""&startAt=""" + key + "Q" + k + @"""&endAt=""" + key + "Q" + k + @""""
-        //database + @"?orderBy=""$key""&startAt=""" + key + @"""&endAt=""" + key + @"\uf8ff"""
-        //RestClient.Get(database + @"?orderBy=""$key""&startAt="""+ key +"Q"+ k +@"""&endAt="""+key+"Q"+ k +@"""").Then(response =>
+
         RestClient.Get(database + "QuestionData.json").Then(response =>
         {
            
 
                 fsData questionData = fsJsonParser.Parse(response.Text);
                 serializer.TryDeserialize(questionData, ref ques);
-           
                 //callback(ques);
           
 
@@ -77,23 +77,34 @@ public class GetDatabaseQuestions : MonoBehaviour
     }
 
     //For monster data, only uncomment when database is done
-   /* public IEnumerator GetMonsterData()
+     private IEnumerator GetMonsterData()
+     {
+         RestClient.Get(database + "monster.json").Then(response =>
+         {
+
+
+             fsData monsterData = fsJsonParser.Parse(response.Text);
+             serializer.TryDeserialize(monsterData, ref mons);
+       
+         });
+         yield return null;
+     }
+
+    //Store monster data from into dictionary to pass data
+    private void MonsData(int stage)
     {
-        RestClient.Get(database + "monsters.json").Then(response =>
-        {
+        monster = new Dictionary<string, int>();
+        monster.Add("attack", mons["S" + stage.ToString()].attack);
+        monster.Add("health", mons["S"+ stage.ToString()].health);
+        monster.Add("coin", mons["S" + stage.ToString()].coin);
+        monster.Add("experience", mons["S" + stage.ToString()].experience);
+        Debug.Log("Get data " + monster["attack"]);
 
+    }
 
-            fsData monsterData = fsJsonParser.Parse(response.Text);
-            serializer.TryDeserialize(monsterData, ref mons);
-
-        });
-        yield return null;
-    }*/
-
-    
 
     //OnClickListener Events, update question and answer list according to stage selected
-    public void GetStageSelected(string course, int stage)
+    private void GetStageSelected(string course, int stage)
     {
         levelNo = stage;
         switch (stage)
@@ -107,6 +118,7 @@ public class GetDatabaseQuestions : MonoBehaviour
                     answer.Add(ques[course + "Q" + i.ToString()].Answer);
                 }
                 Debug.Log("Ques " + question[0]);
+                MonsData(stage);
                 break;
 
             case 2:
@@ -118,6 +130,7 @@ public class GetDatabaseQuestions : MonoBehaviour
                     answer.Add(ques[course + "Q" + i.ToString()].Answer);
                 }
                 Debug.Log("Ques " + question[0]);
+                MonsData(stage);
                 break;
 
             case 3:
@@ -129,6 +142,7 @@ public class GetDatabaseQuestions : MonoBehaviour
                     answer.Add(ques[course + "Q" + i.ToString()].Answer);
                 }
                 Debug.Log("Ques " + question[0]);
+                MonsData(stage);
                 break;
             case 4:
                 question.Clear();
@@ -139,6 +153,7 @@ public class GetDatabaseQuestions : MonoBehaviour
                     answer.Add(ques[course + "Q" + i.ToString()].Answer);
                 }
                 Debug.Log("Ques " + question[0]);
+                MonsData(stage);
                 break;
 
             case 5:
@@ -150,6 +165,7 @@ public class GetDatabaseQuestions : MonoBehaviour
                     answer.Add(ques[course + "Q" + i.ToString()].Answer);
                 }
                 Debug.Log("Ques " + question[0]);
+                MonsData(stage);
                 break;
 
             case 6:
@@ -161,6 +177,7 @@ public class GetDatabaseQuestions : MonoBehaviour
                     answer.Add(ques[course + "Q" + i.ToString()].Answer);
                 }
                 Debug.Log("Ques " + question[0]);
+                MonsData(stage);
                 break;
 
             case 7:
@@ -172,6 +189,7 @@ public class GetDatabaseQuestions : MonoBehaviour
                     answer.Add(ques[course + "Q" + i.ToString()].Answer);
                 }
                 Debug.Log("Ques " + question[0]);
+                MonsData(stage);
                 break;
 
             case 8:
@@ -183,6 +201,7 @@ public class GetDatabaseQuestions : MonoBehaviour
                     answer.Add(ques[course + "Q" + i.ToString()].Answer);
                 }
                 Debug.Log("Ques " + question[0]);
+                MonsData(stage);
                 break;
 
             case 9:
@@ -194,6 +213,7 @@ public class GetDatabaseQuestions : MonoBehaviour
                     answer.Add(ques[course + "Q" + i.ToString()].Answer);
                 }
                 Debug.Log("Ques " + question[0]);
+                MonsData(stage);
                 break;
 
             case 10:
@@ -205,6 +225,7 @@ public class GetDatabaseQuestions : MonoBehaviour
                     answer.Add(ques[course + "Q" + i.ToString()].Answer);
                 }
                 Debug.Log("Ques " + question[0]);
+                MonsData(stage);
                 break;
         }
     }
@@ -228,7 +249,7 @@ public class GetDatabaseQuestions : MonoBehaviour
     {
         
         StartCoroutine(GetStageQuestions());
-        //StartCoroutine(GetMonsterData());
+        StartCoroutine(GetMonsterData());
     }
 
 }
