@@ -4,6 +4,7 @@ using FullSerializer;
 using System;
 
 /// <summary>
+/// Author: Tan Soo Yong <br/>
 /// Database Handler class for SpecialScore
 /// </summary>
 public static class SpecialScoreDBHandler {

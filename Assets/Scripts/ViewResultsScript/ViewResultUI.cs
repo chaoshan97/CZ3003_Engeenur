@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
+/// Author: Tan Soo Yong <br/>
 /// UI Handler class for Viewing Special Level Results
 /// </summary>
 public class ViewResultUI : MonoBehaviour

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
+/// Author: Tan Soo Yong <br/>
 /// Controller class for Viewing Special Level Results
 /// </summary>
 public class ViewResultController : MonoBehaviour {
