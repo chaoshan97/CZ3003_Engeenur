@@ -10,6 +10,9 @@ using System.Linq;
 
 namespace Tests
 {
+    /// <summary>
+    /// Test Script for View Special Level Results
+    /// </summary>
     public class ViewResultsTestScript {
         string databaseURL = $"https://engeenur-17baa.firebaseio.com/";
 
@@ -26,8 +29,11 @@ namespace Tests
             this.newScore = RandomNumber(0, 100);
         }
 
+        /// <summary>
+        /// TC-23 ViewLevelResults
+        /// </summary>
         [UnityTest]
-        public IEnumerator TC16ViewLevelResults() {
+        public IEnumerator TC23ViewLevelResults() {
             GameObject canvas = MonoBehaviour.Instantiate(Resources.Load<GameObject>("Prefabs/ViewResultsCanvas"));
             // simulate enter viewResults
             canvas.SetActive(true);
