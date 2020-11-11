@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIControllerScript : MonoBehaviour
-{
+public class UIControllerScript : MonoBehaviour {
     public GameObject loginCanvas;
     public GameObject loginTrCanvas;
     public GameObject createAccountCanvas;
@@ -32,299 +31,351 @@ public class UIControllerScript : MonoBehaviour
     public GameObject stageSelectSpecialCanvas;
     public GameObject stageSelectedCanvas;
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
 
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
 
     }
-
-    public void loginButton()
-    {
+    /// <summary>
+    /// To switch form login page to main menu page
+    /// </summary>
+    public void loginButton() {
         loginCanvas.SetActive(false);
         townCanvas.SetActive(true);
 
     }
-
-    public void teacherLoginButton()
-    {
+    /// <summary>
+    /// To switch from teacher login page to main menu page
+    /// </summary>
+    public void teacherLoginButton() {
         loginTrCanvas.SetActive(false);
         teacherTownCanvas.SetActive(true);
 
     }
-
-    public void gotoCreateAccountButton()
-    {
+    /// <summary>
+    /// To switch from login page to create account page
+    /// </summary>
+    public void gotoCreateAccountButton() {
         loginCanvas.SetActive(false);
         createAccountCanvas.SetActive(true);
 
     }
-
-    public void createAccount()
-    {
+    /// <summary>
+    /// To switch from create account page to main menu page
+    /// </summary>
+    public void createAccount() {
         createAccountCanvas.SetActive(false);
         townCanvas.SetActive(true);
 
     }
-
-    public void OpenInventoryButton()
-    {
+    /// <summary>
+    /// To switch from main menu page to inventory page
+    /// </summary>
+    public void OpenInventoryButton() {
         townCanvas.SetActive(false);
         inventoryCanvas.SetActive(true);
     }
-
-    public void CloseInventoryButton()
-    {
+    /// <summary>
+    /// To switch from inventory page to main menu page
+    /// </summary>
+    public void CloseInventoryButton() {
         inventoryCanvas.SetActive(false);
         townCanvas.SetActive(true);
     }
-
-    public void OpenLevelSelectButton()
-    {
+    /// <summary>
+    /// To switch from main menu page to level selection page
+    /// </summary>
+    public void OpenLevelSelectButton() {
         townCanvas.SetActive(false);
         levelSelectCanvas.SetActive(true);
     }
-
-    public void CloseLevelSelectButton()
-    {
+    /// <summary>
+    /// To switch from level selection page to main menu page
+    /// </summary>
+    public void CloseLevelSelectButton() {
         levelSelectCanvas.SetActive(false);
         townCanvas.SetActive(true);
     }
-
-    public void OpenShopButton()
-    {
+    /// <summary>
+    /// To switch from main menu page to shop page
+    /// </summary>
+    public void OpenShopButton() {
         townCanvas.SetActive(false);
         shopItemCanvas.SetActive(true);
     }
-
-    public void CloseShopButton()
-    {
+    /// <summary>
+    /// To switch from shop page to main menu page
+    /// </summary>
+    public void CloseShopButton() {
         shopItemCanvas.SetActive(false);
         townCanvas.SetActive(true);
     }
-
-    public void OpenFriendListButton()
-    {
+    /// <summary>
+    /// To switch from main menu page to friend list page
+    /// </summary>
+    public void OpenFriendListButton() {
         townCanvas.SetActive(false);
         friendCanvas.SetActive(true);
     }
-
-    public void CloseFriendListButton()
-    {
+    /// <summary>
+    /// To switch from friend list page to main menu page
+    /// </summary>
+    public void CloseFriendListButton() {
         friendCanvas.SetActive(false);
         townCanvas.SetActive(true);
     }
-
-    public void OpenTeacherFriendListButton()
-    {
+    /// <summary>
+    /// To switch from teacher main menu page to friend list page
+    /// </summary>
+    public void OpenTeacherFriendListButton() {
         teacherTownCanvas.SetActive(false);
         friendCanvas.SetActive(true);
     }
-
-    public void CloseTeacherFriendListButton()
-    {
+    /// <summary>
+    /// To switch from friend list page to teacher main menu page
+    /// </summary>
+    public void CloseTeacherFriendListButton() {
         friendCanvas.SetActive(false);
         teacherTownCanvas.SetActive(true);
     }
-
-    public void OpenLeadershipBoardButton()
-    {
+    /// <summary>
+    /// To switch from main menu page to leadership board page
+    /// </summary>
+    public void OpenLeadershipBoardButton() {
         townCanvas.SetActive(false);
         leadershipBoardCanvas.SetActive(true);
     }
-
-    public void OpenTeacherLeadershipBoardButton()
-    {
+    /// <summary>
+    /// To switch from main menu page to leadership board page
+    /// </summary>
+    public void OpenTeacherLeadershipBoardButton() {
         teacherTownCanvas.SetActive(false);
         leadershipBoardCanvas.SetActive(true);
     }
-
-    public void CloseTeacherLeadershipBoardButton()
-    {
+    /// <summary>
+    /// To switch from leadership board page to teacher main menu page
+    /// </summary>
+    public void CloseTeacherLeadershipBoardButton() {
         leadershipBoardCanvas.SetActive(false);
         teacherTownCanvas.SetActive(true);
     }
-
-    public void CloseLeadershipBoardButton()
-    {
+    /// <summary>
+    /// To switch from leadership board page to main menu page
+    /// </summary>
+    public void CloseLeadershipBoardButton() {
         leadershipBoardCanvas.SetActive(false);
         townCanvas.SetActive(true);
 
     }
-
-    public void OpenShopScrollView()
-    {
+    /// <summary>
+    /// To switch from inventory page to shop page
+    /// </summary>
+    public void OpenShopScrollView() {
         inventoryScrollView.SetActive(false);
         shopScrollView.SetActive(true);
     }
-
-    public void OpenInventoryScrollView()
-    {
+    /// <summary>
+    /// To switch from shop page to inventory page
+    /// </summary>
+    public void OpenInventoryScrollView() {
         inventoryScrollView.SetActive(true);
         shopScrollView.SetActive(false);
     }
-
-    public void OpenQuestionUI()
-    {
+    /// <summary>
+    /// To switch from battle menu page to the question page
+    /// </summary>
+    public void OpenQuestionUI() {
         questionUI.SetActive(true);
         battleMenu.SetActive(false);
     }
-
-    public void OpenBattleCanvas()
-    {
+    /// <summary>
+    /// To switch to the battle system page
+    /// </summary>
+    public void OpenBattleCanvas() {
         battleCanvas.SetActive(true);
         townCanvas.SetActive(false);
         stageSelectedCanvas.SetActive(false);
     }
-
-    public void OpenCreateLevelCanvas()
-    {
+    /// <summary>
+    /// to switch from teacher main menu page to question page
+    /// </summary>
+    public void OpenCreateLevelCanvas() {
         questionCanvas.SetActive(true);
         teacherTownCanvas.SetActive(false);
     }
-
-    public void OpenViewResultsCanvas()
-    {
+    /// <summary>
+    /// To switch from teacher main menu page to view results page
+    /// </summary>
+    public void OpenViewResultsCanvas() {
         viewResultsCanvas.SetActive(true);
         teacherTownCanvas.SetActive(false);
     }
-    public void CloseViewResultsCanvas() 
-    {
+    /// <summary>
+    /// To switch from view results page to teacher main menu page
+    /// </summary>
+    public void CloseViewResultsCanvas() {
         viewResultsCanvas.SetActive(false);
         teacherTownCanvas.SetActive(true);
     }
-    public void EnrollmentToCourseCanvas()
-    {
+    /// <summary>
+    /// To switch from enrollment page to course page
+    /// </summary>
+    public void EnrollmentToCourseCanvas() {
         enrollCanvas.SetActive(false);
         courseCanvas.SetActive(true);
     }
-
-    public void CourseToEnrollmentCanvas()
-    {
+    /// <summary>
+    /// To switch from course page to enrollment page
+    /// </summary>
+    public void CourseToEnrollmentCanvas() {
         courseCanvas.SetActive(false);
         enrollCanvas.SetActive(true);
 
     }
-    public void EnrollmentToSpecialLevelCanvas()
-    {
+    /// <summary>
+    /// To switch from enrollment page to special level selection page
+    /// </summary>
+    public void EnrollmentToSpecialLevelCanvas() {
         enrollCanvas.SetActive(false);
         specialLevelCanvas.SetActive(true);
     }
-
-    public void SpecialLevelToEnrollmentCanvas()
-    {
+    /// <summary>
+    /// To switch from special level selection page to enrollment page
+    /// </summary>
+    public void SpecialLevelToEnrollmentCanvas() {
         specialLevelCanvas.SetActive(false);
         enrollCanvas.SetActive(true);
     }
-    public void OpenTrQnCanvas()
-    {
+    /// <summary>
+    /// To switch from special level page to teacher questions page
+    /// </summary>
+    public void OpenTrQnCanvas() {
         specialLevelCanvas.SetActive(false);
         trQnCanvas.SetActive(true);
     }
-    public void CloseTrQnCanvas()
-    {
+    /// <summary>
+    /// To switch from teacher questions page to special level page
+    /// </summary>
+    public void CloseTrQnCanvas() {
         trQnCanvas.SetActive(false);
         specialLevelCanvas.SetActive(true);
     }
-    public void TrQnToCourseCanvas()
-    {
+    /// <summary>
+    /// To switch from teacher questions page to the course page
+    /// </summary>
+    public void TrQnToCourseCanvas() {
         trQnCanvas.SetActive(false);
         courseCanvas.SetActive(true);
     }
-
-    public void CloseBattleCanvas()
-    {
+    /// <summary>
+    /// To switch from the battle system page to the main menu page
+    /// </summary>
+    public void CloseBattleCanvas() {
         battleCanvas.SetActive(false);
         townCanvas.SetActive(true);
     }
-
-    public void ProceedToLoginCanvas()
-    {
+    /// <summary>
+    /// To switch from main page to login page
+    /// </summary>
+    public void ProceedToLoginCanvas() {
         mainCanvas.SetActive(false);
         loginCanvas.SetActive(true);
     }
-
-    public void ProceedToCreateAccCanvas()
-    {
+    /// <summary>
+    /// To switch from main page to create account page
+    /// </summary>
+    public void ProceedToCreateAccCanvas() {
         mainCanvas.SetActive(false);
         createAccountCanvas.SetActive(true);
     }
-
-    public void LoginToMainCanvas()
-    {
+    /// <summary>
+    /// To switch from login page to main page
+    /// </summary>
+    public void LoginToMainCanvas() {
         loginCanvas.SetActive(false);
         mainCanvas.SetActive(true);
     }
-    public void LoginTrToMainCanvas()
-    {
+    /// <summary>
+    /// To switch from teacher login page to main page
+    /// </summary>
+    public void LoginTrToMainCanvas() {
         loginTrCanvas.SetActive(false);
         mainCanvas.SetActive(true);
     }
-
-    public void CreateAccToMainCanvas()
-    {
+    /// <summary>
+    /// To switch from create account page to main menu page
+    /// </summary>
+    public void CreateAccToMainCanvas() {
         createAccountCanvas.SetActive(false);
         mainCanvas.SetActive(true);
     }
-
-    public void SelectIAmATeacher()
-    {
+    /// <summary>
+    /// To switch from login page to teacher login page
+    /// </summary>
+    public void SelectIAmATeacher() {
         loginTrCanvas.SetActive(true);
         loginCanvas.SetActive(false);
 
     }
-
-    public void SelectIAmAStudent()
-    {
+    /// <summary>
+    /// To switch from teacher login page to login page
+    /// </summary>
+    public void SelectIAmAStudent() {
         loginCanvas.SetActive(true);
         loginTrCanvas.SetActive(false);
 
     }
-
-    public void StageSpecialCanvas()
-    {
+    /// <summary>
+    /// To switch to special stages page
+    /// </summary>
+    public void StageSpecialCanvas() {
         stageSelectionNormalCanvas.SetActive(false);
         stageSelectSpecialCanvas.SetActive(true);
         stageSelectionCloseCanvas.SetActive(true);
     }
-
-    public void StageNormalCanvas()
-    {
+    /// <summary>
+    /// To switch to normal stages page
+    /// </summary>
+    public void StageNormalCanvas() {
         stageSelectSpecialCanvas.SetActive(false);
         stageSelectionNormalCanvas.SetActive(true);
         stageSelectionCloseCanvas.SetActive(true);
     }
-
-    public void StageSelectionCloseCanvas()
-    {
+    /// <summary>
+    /// To close stages page
+    /// </summary>
+    public void StageSelectionCloseCanvas() {
         stageSelectedCanvas.SetActive(false);
     }
-
-    public void StageSelectedCanvas()
-    {
+    /// <summary>
+    /// To switch to battle system page
+    /// </summary>
+    public void StageSelectedCanvas() {
         stageSelectedCanvas.SetActive(false);
         townCanvas.SetActive(false);
         battleCanvas.SetActive(true);
     }
-
-    public void StageSelectionCanvasOpen()
-    {
+    /// <summary>
+    /// To switch the stage selection page
+    /// </summary>
+    public void StageSelectionCanvasOpen() {
         stageSelectedCanvas.SetActive(true);
     }
-
-    public void TrTownToCourse()
-    {
+    /// <summary>
+    /// To switch from teacher main menu page to courses page
+    /// </summary>
+    public void TrTownToCourse() {
 
         teacherTownCanvas.SetActive(false);
         courseCanvas.SetActive(true);
     }
-
-    public void CourseToTrTown()
-    {
+    /// <summary>
+    /// To switch from courses page to teacher main menu page
+    /// </summary>
+    public void CourseToTrTown() {
         courseCanvas.SetActive(false);
         teacherTownCanvas.SetActive(true);
     }

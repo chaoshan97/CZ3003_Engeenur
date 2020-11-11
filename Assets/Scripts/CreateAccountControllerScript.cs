@@ -12,8 +12,11 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using Debug = UnityEngine.Debug;
 
-public class CreateAccountControllerScript : MonoBehaviour
-{
+/// <summary>
+/// Author: Lee Chong Yu <br></br>
+/// This class is used as a controller for handling account creation
+/// </summary>
+public class CreateAccountControllerScript : MonoBehaviour {
 
     [SerializeField]
     private InputField emailInput = null;
@@ -75,8 +78,10 @@ public class CreateAccountControllerScript : MonoBehaviour
     public bool wrongPasswordFormat = false;
     public bool emptyCfmPassword = false;
 
-    public async void createAccount()
-    {
+    /// <summary>
+    /// Function for creating account upon clicking on the "Create" button in the Create Account page
+    /// </summary>
+    public async void createAccount() {
         email = emailInput.text.Trim().ToLower();
         Debug.Log(email);
         string username = UserName.text.Trim().ToLower();
@@ -89,9 +94,7 @@ public class CreateAccountControllerScript : MonoBehaviour
             check = false;
             emailEmptyflag = true;
             StartCoroutine(ShowEmailNotFillMessage());
-        }
-        else
-        {
+        } else {
             bool isEmail = Regex.IsMatch(email, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase);
             if (!isEmail) //Checking if email format is correct
             {
@@ -99,14 +102,11 @@ public class CreateAccountControllerScript : MonoBehaviour
                 emailFormatWrong = true;
                 Debug.Log("Not email");
                 StartCoroutine(ShowEmailWrongMessage());
-            }
-            else
-            {
+            } else {
                 await CheckEmailAccExist(email);
                 //StartCoroutine(CheckEmailAccExist(email)); //Check if this email already has an account
 
-                if (chkEmailResult)
-                {
+                if (chkEmailResult) {
                     check = false;
                     emailExistflag = true;
                     Debug.Log("Email acc exist");
@@ -122,13 +122,10 @@ public class CreateAccountControllerScript : MonoBehaviour
             emptyUsername = true;
             Debug.Log("Empty name");
             StartCoroutine(ShowUsernameNotFillMessage());
-        }
-        else
-        {
+        } else {
             await CheckUsernameExist(username); //Check if this username already has an account 
             Debug.Log(chkUsernameResult.ToString());
-            if (chkUsernameResult)
-            {
+            if (chkUsernameResult) {
                 check = false;
                 nameExistflag = true;
                 Debug.Log("Name exist");
@@ -142,13 +139,10 @@ public class CreateAccountControllerScript : MonoBehaviour
             check = false;
             passwordEmpty = true;
             StartCoroutine(ShowPasswordNotFillMessage());
-        }
-        else
-        {
+        } else {
             // Checking if password format is correct(8-50 characters,One Uppercase letter, One lowercase letter and One Digit)
             bool passwordChk = Regex.IsMatch(password, @"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$");
-            if (!passwordChk)
-            {
+            if (!passwordChk) {
                 check = false;
                 wrongPasswordFormat = true;
                 Debug.Log("Invalid password");
@@ -163,11 +157,8 @@ public class CreateAccountControllerScript : MonoBehaviour
             emptyCfmPassword = true;
             Debug.Log("Password not filled");
             StartCoroutine(ShowCfmPassNotFillMessage());
-        }
-        else
-        {
-            if (password != confirmPassword)
-            {
+        } else {
+            if (password != confirmPassword) {
                 check = false;
                 pwMismatchflag = true;
                 Debug.Log("Not same password");
@@ -176,8 +167,7 @@ public class CreateAccountControllerScript : MonoBehaviour
         }
 
         //Create acc if it pass all checks
-        if (check == true)
-        {
+        if (check == true) {
             Debug.Log("checks are ok");
             Debug.Log("email" + email);
             Debug.Log(username);
@@ -186,17 +176,17 @@ public class CreateAccountControllerScript : MonoBehaviour
             UIController.CreateAccToMainCanvas();
         }
     }
-
-    public async Task CheckEmailAccExist(string email)
-    {
+    /// <summary>
+    /// Function to check the existence of the email in the database
+    /// </summary>
+    /// <param name="email"></param>
+    /// <returns></returns>
+    public async Task CheckEmailAccExist(string email) {
         chkEmailResult = false;
-        LoginDbHandler.GetUsers(userDatas =>
-        {
-            foreach (var userData in userDatas)
-            {
+        LoginDbHandler.GetUsers(userDatas => {
+            foreach (var userData in userDatas) {
                 Debug.Log($"{userData.Key}");
-                if (userData.Value.email == email)
-                {
+                if (userData.Value.email == email) {
                     chkEmailResult = true;
                     break;
                 }
@@ -204,25 +194,25 @@ public class CreateAccountControllerScript : MonoBehaviour
         });
         Stopwatch sw = Stopwatch.StartNew();
         var delay = Task.Delay(1000).ContinueWith(_ =>
-                                   {
-                                       sw.Stop();
-                                       return sw.ElapsedMilliseconds;
-                                   });
+        {
+            sw.Stop();
+            return sw.ElapsedMilliseconds;
+        });
         await delay;
         int sec = (int)delay.Result;
         Debug.Log("Email check elapsed milliseconds: {0}" + sec);
     }
-
-    public async Task CheckUsernameExist(string userName)
-    {
+    /// <summary>
+    /// Function for checking the existence of the username in the database
+    /// </summary>
+    /// <param name="userName"></param>
+    /// <returns></returns>
+    public async Task CheckUsernameExist(string userName) {
         chkUsernameResult = false;
-        LoginDbHandler.GetUsers(userDatas =>
-        {
-            foreach (var userData in userDatas)
-            {
+        LoginDbHandler.GetUsers(userDatas => {
+            foreach (var userData in userDatas) {
                 Debug.Log($"{userData.Key}");
-                if (userData.Value.userName == userName)
-                {
+                if (userData.Value.userName == userName) {
                     chkUsernameResult = true;
                     break;
                 }
@@ -230,70 +220,96 @@ public class CreateAccountControllerScript : MonoBehaviour
         });
         Stopwatch sw = Stopwatch.StartNew();
         var delay = Task.Delay(1000).ContinueWith(_ =>
-                                   {
-                                       sw.Stop();
-                                       return sw.ElapsedMilliseconds;
-                                   });
+        {
+            sw.Stop();
+            return sw.ElapsedMilliseconds;
+        });
         await delay;
         int sec = (int)delay.Result;
         Debug.Log("Username check elapsed milliseconds: {0}" + sec);
     }
-
-    IEnumerator ShowEmailWrongMessage()
-    {
+    /// <summary>
+    /// Popup alert when email is incorrect
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator ShowEmailWrongMessage() {
         WrongEmailPopUp.SetActive(true);
         yield return new WaitForSeconds(2);
         WrongEmailPopUp.SetActive(false);
 
     }
-    IEnumerator ShowEmailExistMessage()
-    {
+    /// <summary>
+    /// Popup alert when the email has already been used before
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator ShowEmailExistMessage() {
         EmailExistPopUp.SetActive(true);
         yield return new WaitForSeconds(2);
         EmailExistPopUp.SetActive(false);
 
     }
-    IEnumerator ShowUsernameExistMessage()
-    {
+    /// <summary>
+    /// Popup alert when username has already been used before
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator ShowUsernameExistMessage() {
         UsernameExistPopUp.SetActive(true);
         yield return new WaitForSeconds(2);
         UsernameExistPopUp.SetActive(false);
 
     }
-    IEnumerator ShowInvalidPasswordWrongMessage()
-    {
+    /// <summary>
+    /// Popup alert when password complexity is in not following requirements
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator ShowInvalidPasswordWrongMessage() {
         InvalidPasswordPopUp.SetActive(true);
         yield return new WaitForSeconds(2);
         InvalidPasswordPopUp.SetActive(false);
 
     }
-    IEnumerator ShowPasswordWrongMessage()
-    {
+    /// <summary>
+    /// Popup alert when password and confirm password is not the same
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator ShowPasswordWrongMessage() {
         WrongPasswordPopUp.SetActive(true);
         yield return new WaitForSeconds(2);
         WrongPasswordPopUp.SetActive(false);
 
     }
-    IEnumerator ShowEmailNotFillMessage()
-    {
+    /// <summary>
+    /// Popup alert when email field is empty
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator ShowEmailNotFillMessage() {
         EmailNotFillPopUp.SetActive(true);
         yield return new WaitForSeconds(2);
         EmailNotFillPopUp.SetActive(false);
     }
-    IEnumerator ShowUsernameNotFillMessage()
-    {
+    /// <summary>
+    /// Popup alert when username field is empty
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator ShowUsernameNotFillMessage() {
         NameNotFillPopUp.SetActive(true);
         yield return new WaitForSeconds(2);
         NameNotFillPopUp.SetActive(false);
     }
-    IEnumerator ShowPasswordNotFillMessage()
-    {
+    /// <summary>
+    /// Popup alert when password field is empty
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator ShowPasswordNotFillMessage() {
         PasswordNotFillPopUp.SetActive(true);
         yield return new WaitForSeconds(2);
         PasswordNotFillPopUp.SetActive(false);
     }
-    IEnumerator ShowCfmPassNotFillMessage()
-    {
+    /// <summary>
+    /// Popup alert when confirm password field is empty
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator ShowCfmPassNotFillMessage() {
         CfmPassNotFillPopUp.SetActive(true);
         yield return new WaitForSeconds(2);
         CfmPassNotFillPopUp.SetActive(false);

@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
-public class MainMenuControllerScript : MonoBehaviour
-{
+/// <summary>
+/// Author: Lee Chong Yu <br></br>
+/// A class for handling the Main Menu page and for obtaining and modifying the user information on the client end
+/// </summary>
+public class MainMenuControllerScript : MonoBehaviour {
     [SerializeField]
     private UnityEngine.UI.Text Name = null;
 
@@ -30,30 +31,34 @@ public class MainMenuControllerScript : MonoBehaviour
     public TrCourseViewModel trCourseViewModel;
 
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
 
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
 
     }
-
-    public UserData getUserData()
-    {
+    /// <summary>
+    /// To obtain the student information
+    /// </summary>
+    /// <returns></returns>
+    public UserData getUserData() {
         return data;
     }
-
-    public TeacherData getTeacherData()
-    {
+    /// <summary>
+    /// To obtain the teacher information
+    /// </summary>
+    /// <returns></returns>
+    public TeacherData getTeacherData() {
         Debug.Log("1 MainController: " + teacherData.userName);
         return teacherData;
     }
-
-    public void setUserData(UserData user)
-    {
+    /// <summary>
+    /// To modify the student information
+    /// </summary>
+    /// <param name="user"></param>
+    public void setUserData(UserData user) {
         Debug.Log("SET USER DATA: " + user.userName);
         /* UserData userData = new UserData();
          userData.coin = user.coin;
@@ -70,9 +75,10 @@ public class MainMenuControllerScript : MonoBehaviour
 
         data = user; //Object reference not set to instance error 
     }
-
-    public void loadMainMenu()
-    {
+    /// <summary>
+    /// To load into the Main Menu page
+    /// </summary>
+    public void loadMainMenu() {
         Name.text = data.userName;
         LevelValue.text = data.level.ToString();
         ExpValue.text = data.experience.ToString() + "/" + data.maxExperience.ToString();
@@ -84,20 +90,26 @@ public class MainMenuControllerScript : MonoBehaviour
         HealthValue.text = data.getHp().ToString();
         CoinValue.text = data.getCoin().ToString();*/
     }
- 
-    public void setTeacherData(TeacherData teacher)
-    {
+    /// <summary>
+    /// To modify the teacher information
+    /// </summary>
+    /// <param name="teacher"></param>
+    public void setTeacherData(TeacherData teacher) {
         Debug.Log("SET teacher DATA: " + teacher.userName);
         teacherData = teacher;
     }
-    public void loadTeacherMainMenu()
-    {
+    /// <summary>
+    /// To load into the Teacher Main Menu page
+    /// </summary>
+    public void loadTeacherMainMenu() {
         TeacherName.text = teacherData.userName;//teacherData.getName();
         trCourseViewModel.userName = teacherData.userName;
     }
-
-    public string getTeacherUserNameData()
-    {
+    /// <summary>
+    /// To obtain teacher username
+    /// </summary>
+    /// <returns></returns>
+    public string getTeacherUserNameData() {
         //Debug.Log("2 MainController: " + teacherUserName);
         return teacherData.userName;
     }
