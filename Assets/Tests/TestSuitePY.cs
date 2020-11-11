@@ -17,12 +17,13 @@ using Debug = UnityEngine.Debug;
 using System.Runtime.ExceptionServices;
 using UnityEngine.SceneManagement;
 using System;
-///<summary>
-///Author: Lim Pei Yan <br/>
-///Unit Test<br/>
-///</summary>
+
 namespace Tests
 {
+    /// <summary>
+    /// Author: Lim Pei Yan <br/>
+    /// Unit Test
+    /// </summary>
     public class TestSuite
     {
 
