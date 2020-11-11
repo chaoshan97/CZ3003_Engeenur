@@ -11,6 +11,7 @@ using System.Linq;
 namespace Tests
 {
     /// <summary>
+    /// Author: Tan Soo Yong <br/>
     /// Test Script for View Special Level Results
     /// </summary>
     public class ViewResultsTestScript {

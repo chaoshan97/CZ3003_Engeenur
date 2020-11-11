@@ -14,6 +14,10 @@ using System;
 
 namespace Tests
 {
+    /// <summary>
+    /// Author: Lee Chong Yu <br/>
+    /// Test Script for Login & Account Creation
+    /// </summary>
     public class PlayModeTestSuite : MonoBehaviour
     {
         // A Test behaves as an ordinary method
@@ -41,6 +45,9 @@ namespace Tests
             
         }
 
+        /// <summary>
+        /// TC-1 Correct Login
+        /// </summary>
         [UnityTest]
         public IEnumerator TC1CorrectLogin()
         {
@@ -62,6 +69,9 @@ namespace Tests
 
         }
 
+        /// <summary>
+        /// TC-2 Incorrect Login
+        /// </summary>
         [UnityTest]
         public IEnumerator TC2IncorrectLogin()
         {
@@ -81,6 +91,9 @@ namespace Tests
             
         }
 
+        /// <summary>
+        /// TC-3 Correct Registration Procedure
+        /// </summary>
         [UnityTest]
         public IEnumerator TC3CorrectRegistration()
         {
@@ -108,7 +121,9 @@ namespace Tests
 
         }
 
-
+        /// <summary>
+        /// TC-4 Repeated Email Registration
+        /// </summary>
         [UnityTest]
         public IEnumerator TC4RepeatedEmailRegistration()
         {
@@ -136,6 +151,9 @@ namespace Tests
 
         }
 
+        /// <summary>
+        /// TC-5 Password Mismatched Registration Procedure
+        /// </summary>
         [UnityTest]
         public IEnumerator TC5PasswordMismatchedRegistration()
         {
@@ -162,6 +180,9 @@ namespace Tests
 
         }
 
+        /// <summary>
+        /// TC-6 No Email Input Registration Procedure
+        /// </summary>
         [UnityTest]
         public IEnumerator TC6NoEmailInputRegistration()
         {
@@ -188,6 +209,9 @@ namespace Tests
 
         }
 
+        /// <summary>
+        /// TC-7 Wrong Email Format Input Registration Procedure
+        /// </summary>
         [UnityTest]
         public IEnumerator TC7WrongEmailFormatInputRegistration()
         {
@@ -214,6 +238,9 @@ namespace Tests
 
         }
 
+        /// <summary>
+        /// TC-8 No Name Input Input Registration Procedure
+        /// </summary>
         [UnityTest]
         public IEnumerator TC8NoNameInputRegistration()
         {
@@ -240,6 +267,9 @@ namespace Tests
 
         }
 
+        /// <summary>
+        /// TC-9 No Password Input Registration Procedure
+        /// </summary>
         [UnityTest]
         public IEnumerator TC9NoPasswordInputRegistration()
         {
@@ -266,6 +296,9 @@ namespace Tests
 
         }
 
+        /// <summary>
+        /// TC-10 Repeated Name Registration Procedure
+        /// </summary>
         [UnityTest]
         public IEnumerator TC10RepeatedNameRegistration()
         {
@@ -293,6 +326,9 @@ namespace Tests
 
         }
 
+        /// <summary>
+        /// TC-11 Wrong Password Format Registration Procedure
+        /// </summary>
         [UnityTest]
         public IEnumerator TC11WrongPasswordFormatRegistration()
         {
@@ -320,6 +356,9 @@ namespace Tests
 
         }
 
+        /// <summary>
+        /// TC-12 No Confirm Password Input Registration Procedure
+        /// </summary>
         [UnityTest]
         public IEnumerator TC12NoConfirmPasswordInputRegistration()
         {
