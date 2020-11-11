@@ -15,12 +15,20 @@ using Proyecto26;
 
 namespace Tests
 {
+    /// <summary>
+    /// Author: Ang Hao Jie <br/>
+    /// Test cases for Leadership Board UI
+    /// </summary>
     public class LeadershipTestScript
     {
         string databaseURL = $"https://engeenur-17baa.firebaseio.com/";
 
+        /// <summary>
+        /// Test case for TC16 Update of leadership board details (User).
+        /// </summary>
+        /// <returns></returns>
         [UnityTest]
-        public IEnumerator TC9UpdateLeadershipboardDetails_User()
+        public IEnumerator TC16UpdateLeadershipboardDetails_User()
         {
             bool foundUser = false;
             int userOriginalLevel = 1;
@@ -95,8 +103,12 @@ namespace Tests
             Assert.IsTrue(foundUser);
         }
 
+        /// <summary>
+        /// Test case for UC17 Update of leadership board details (Other user).
+        /// </summary>
+        /// <returns></returns>
         [UnityTest]
-        public IEnumerator TC10UpdateLeadershipboardDetails_OtherUser()
+        public IEnumerator TC17UpdateLeadershipboardDetails_OtherUser()
         {
             bool foundOtherUser = false;
             int otherUserOriginalLevel = 1;

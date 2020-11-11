@@ -14,44 +14,17 @@ using System;
 
 namespace Tests
 {
+    /// <summary>
+    /// Author: Ang Hao Jie <br/>
+    /// Test cases for Inventory UI.
+    /// </summary>
     public class InventoryTestScript
     {
-        [SetUp]
-        public void Setup()
-        {
-            UserData userData = new UserData();
-            userData.userName = "peter";
-            GameObject inventoryGameObject = MonoBehaviour.Instantiate(Resources.Load<GameObject>("Prefabs/InventoryCanvas"));
-            InventoryViewModel inventoryViewModel = inventoryGameObject.transform.Find("InventoryUI").Find("Inbag ScrollView").Find("Viewport").Find("In-bagContent").GetComponent<InventoryViewModel>();
-            inventoryViewModel.setUserData(userData);
-        }
-
-        // A UnityTest behaves like a coroutine in Play Mode. In Edit Mode you can use
-        // `yield return null;` to skip a frame.
-        [UnityTest]
-        public IEnumerator InventoryTestScriptWithEnumeratorPasses()
-        {
-            UserData userData = new UserData();
-            userData.userName = "tom";
-            GameObject mainMenuGameObject = MonoBehaviour.Instantiate(Resources.Load<GameObject>("Prefabs/MainMenuController"));
-            MainMenuControllerScript mainMenuControllerScript = mainMenuGameObject.GetComponent<MainMenuControllerScript>();
-            mainMenuControllerScript.setUserData(userData);
-
-            GameObject inventoryGameObject = MonoBehaviour.Instantiate(Resources.Load<GameObject>("Prefabs/InventoryCanvas"));
-            InventoryViewModel inventoryViewModel = inventoryGameObject.transform.Find("InventoryUI").Find("Inbag ScrollView").Find("Viewport").Find("In-bagContent").GetComponent<InventoryViewModel>();
-            inventoryViewModel.mainMenuControllerScript = mainMenuControllerScript;
-            inventoryViewModel.Init();
-
-            yield return new WaitForSeconds(2);
-            
-            foreach (Button item in inventoryViewModel.getInstantiatedUI())
-            {
-                Debug.Log(item.transform.GetChild(0).GetComponent<Text>().text);
-            }
-        }
-
+        /// <summary>
+        /// For test case TC14 Equip weapon.
+        /// </summary>
         [Test]
-        public void TC7EquipWeaponTest()
+        public void TC14EquipWeaponTest()
         {
             UserData userData = new UserData();
             userData.userName = "peter";
@@ -90,8 +63,11 @@ namespace Tests
             Assert.AreNotEqual("Iron Sword", inventoryViewModel.getInstantiatedUI()[0].transform.GetChild(0).GetComponent<Text>().text);
         }
 
+        /// <summary>
+        /// For test case TC15 Equip potion.
+        /// </summary>
         [Test]
-        public void TC8EquipPotionTest()
+        public void TC15EquipPotionTest()
         {
             UserData userData = new UserData();
             userData.userName = "peter";
