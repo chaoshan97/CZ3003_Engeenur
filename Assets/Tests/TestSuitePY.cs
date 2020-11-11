@@ -17,7 +17,10 @@ using Debug = UnityEngine.Debug;
 using System.Runtime.ExceptionServices;
 using UnityEngine.SceneManagement;
 using System;
-
+///<summary>
+///Author: Lim Pei Yan <br/>
+///Unit Test<br/>
+///</summary>
 namespace Tests
 {
     public class TestSuite
@@ -43,8 +46,9 @@ namespace Tests
         public static GameObject courseCanvas = MonoBehaviour.Instantiate(Resources.Load<GameObject>("Prefabs/CourseCanvas"));
         // public TrCourseViewModel trCourseViewModel = courseCanvas.transform.Find("CourseViewModel").GetComponent<TrCourseViewModel>();
 
-
-
+        ///<summary>
+        ///Load the scene
+        ///</summary> 
         [OneTimeSetUp]
 
         public void LoadScene()
@@ -52,6 +56,9 @@ namespace Tests
             SceneManager.LoadScene("MainSceneIntergated2");
         }
 
+        ///<summary>
+        ///Test whether the course can be sucessfully created when the course does not exist in the database
+        ///</summary> 
         [UnityTest]
         public IEnumerator CreateCourseNotExist()
         {
@@ -64,6 +71,9 @@ namespace Tests
             Assert.IsTrue(trCourseViewModel.created);
         }
 
+        ///<summary>
+        ///Test whether the course cannot be created when the course exist in the database
+        ///</summary> 
         [UnityTest]
         public IEnumerator CreateCourseAlrExist()
         {   //GameObject loader = courseCanvas.transform.Find("loader").GetComponent<GameObject>();
@@ -75,7 +85,10 @@ namespace Tests
             yield return new WaitForSeconds(30);
             Assert.IsFalse(trCourseViewModel.created);
         }
- 
+
+        ///<summary>
+        ///Test whether the a student can be enroll into the course if the student is a valid user
+        ///</summary> 
         [UnityTest]
         public IEnumerator EnrollValidStud()
         {
@@ -90,6 +103,9 @@ namespace Tests
             Assert.IsTrue(enrollViewModel.created);
         }
 
+        ///<summary>
+        ///Test whether the a student cannot be enroll into the course if the student is an invalid user
+        ///</summary> 
         [UnityTest]
         public IEnumerator EnrollInvalidStud()
         {
@@ -104,6 +120,9 @@ namespace Tests
             Assert.IsFalse(enrollViewModel.created);
         }
 
+        ///<summary>
+        ///Test whether the a student can be enroll into the course if the student is already enrolled in the course
+        ///</summary> 
         [UnityTest]
         public IEnumerator EnrollEnrolledStud()
         {
@@ -118,6 +137,9 @@ namespace Tests
             Assert.IsFalse(enrollViewModel.created);
         }
 
+        ///<summary>
+        ///Test whether a level can be created successfully
+        ///</summary> 
         [UnityTest]
         public IEnumerator CreateLvl()
         {
@@ -132,6 +154,9 @@ namespace Tests
             Assert.IsTrue(trSpecialLvlViewModel.created);
         }
 
+        ///<summary>
+        ///Test whether the a level cannot be created if the level already exit in the course
+        ///</summary> 
         [UnityTest]
         public IEnumerator CreateLvlAlrExist()
         {
