@@ -7,7 +7,10 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using Debug = UnityEngine.Debug;
-
+/// <summary>
+/// <br>Author: Heng Fuwei, Esmond</br> 
+/// 
+/// </summary>
 public class TrFriendViewModel : MonoBehaviour
 {
     public GameObject itemParent, item, formCreate, messageBox, delMsgBox, loader, specialLevelCanvas;

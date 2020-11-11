@@ -3,6 +3,10 @@ using FullSerializer;
 using Proyecto26;
 using UnityEngine;
 
+/// <summary>
+/// Author: Ang Hao Jie <br/>
+/// Database handler for inventory to conduct CRUD.
+/// </summary>
 public static class InventoryDBHandler
 {
     private static readonly string databaseURL = $"https://engeenur-17baa.firebaseio.com/";
@@ -12,6 +16,11 @@ public static class InventoryDBHandler
     public delegate void GetEquippedItemCallback(EquippedItems itemsObj);
     public delegate void GetInventoryCallback(Dictionary<string, Item> itemDict);
 
+    /// <summary>
+    /// Read currently equipped item by the user from the database.
+    /// </summary>
+    /// <param name="studentUsername">Student's username used as the key for JSON.</param>
+    /// <param name="callback">The callback method to be called after obtaining the data from database due to coroutine.</param>
     public static void GetEquippedItem(string studentUsername, GetEquippedItemCallback callback)
     {
         EquippedItems equippedItems = new EquippedItems();
@@ -40,18 +49,30 @@ public static class InventoryDBHandler
         });
     }
 
+    /// <summary>
+    /// Update or Create new equipped item by the user in the database.
+    /// </summary>
+    /// <param name="studentUsername">The username of the student as the JSON key.</param>
+    /// <param name="equippedItems">The item that is newly equipped.</param>
     public static void PutEquippedItem(string studentUsername, EquippedItems equippedItems)
     {
         RestClient.Put($"{databaseURL}equipment/{studentUsername}.json", "\"" + equippedItems.weapon.name + "\"");
     }
 
-    // delete item in inventory based on the item's key in the inventory
+    /// <summary>
+    /// Delete item in inventory based on the item's key in the inventory in the databasse.
+    /// </summary>
+    /// <param name="key">Key to the JSON that is created by "student's username" + "Item name" which results in a unique key.</param>
     public static void DeleteInventory(string key)
     {
         RestClient.Delete($"{databaseURL}inventory/{key}.json");
     }
 
-    // get all dictionary of items the user has in his/her inventory
+    /// <summary>
+    /// Read all dictionary of items the user has in his/her inventory from the database.
+    /// </summary>
+    /// <param name="studentUsername">The username of the student value to filter.</param>
+    /// <param name="callback">The callback method to be executed once complete fetching of data from database due to coroutine.</param>
     public static void GetInventory(string studentUsername, GetInventoryCallback callback) 
     {
         Dictionary<string, Item> itemsDict;
@@ -86,7 +107,10 @@ public static class InventoryDBHandler
         });
     }
 
-    // create/update each item to inventory on Database one by one
+    /// <summary>
+    /// Create/Update each item to inventory on Database one by one in the database.
+    /// </summary>
+    /// <param name="itemsDict">The dictionary of items the user owns to be updated in database.</param>
     public static void PutInventory(Dictionary<string, Item> itemsDict)
     {
         foreach (KeyValuePair<string, Item> item in itemsDict)

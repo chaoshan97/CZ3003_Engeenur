@@ -3,29 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI; 
 
+/// <summary>
+/// Author: Ang Hao Jie <br/>
+/// Controller for Leadershipboard UI
+/// </summary>
 public class LeadershipViewModel : MonoBehaviour
 {
-    public LeadershipInterface leadershipInt;
     private List<KeyValuePair<string, TheScore>> scoreList;
     private List<GameObject> instantiatedUI = new List<GameObject>();
     public MainMenuControllerScript mainMenuControllerScript;
     public GameObject scoreRowTemplate;
     private UserData userData;
 
+    /// <summary>
+    /// Executes whenever user navigates to the Inventory page.
+    /// </summary>
     void OnEnable() 
     {
         Init();
     }
 
+    /// <summary>
+    /// Fetch required data from database and set the values on the UI.
+    /// </summary>
     public void Init() 
     {
-        // StartCoroutine(leadershipInt.getLeadershipBoardDetails((success, allResults) => {
-        //     if (success) {
-        //         this.scoreList = allResults;
-        //         this.populateLeadershipboardRows();
-        //     }
-        // }));
-
         this.userData = this.mainMenuControllerScript.getUserData();
 
         LeadershipDBHandler.GetLeadershipRanking(scoreList => {
@@ -36,6 +38,9 @@ public class LeadershipViewModel : MonoBehaviour
         });
     }
 
+    /// <summary>
+    /// Display rows of best ranking details and in ranking order on the UI.
+    /// </summary>
     private void populateLeadershipboardRows() 
     {
         uint ranking = 1;
@@ -72,7 +77,11 @@ public class LeadershipViewModel : MonoBehaviour
         }
     }
 
-    // for test suite
+    /// <summary>
+    /// To get the rows of ranking details in the leadership board. <br/>
+    /// For test suite.
+    /// </summary>
+    /// <returns>Instances of the ranking details in the leadership board.</returns>
     public List<GameObject> getInstantiatedUI()
     {
         return this.instantiatedUI;

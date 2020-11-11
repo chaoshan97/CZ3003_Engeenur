@@ -1,5 +1,9 @@
 using System;
 
+/// <summary>
+/// Author: Ang Hao Jie <br/>
+/// Item Entity.
+/// </summary>
 [Serializable]
 public class Item
 {
@@ -45,8 +49,18 @@ public class Item
     public uint quantity;
     public string property;
 
+    /// <summary>
+    /// Default constructor of Item.
+    /// </summary>
     public Item() {}
 
+    /// <summary>
+    /// Constructor of Item.
+    /// </summary>
+    /// <param name="name">Name of the item.</param>
+    /// <param name="property">Category of the item.</param>
+    /// <param name="quantity">Number of the item.</param>
+    /// <param name="studentUsername">The user's username</param>
     public Item(string name, string property, uint quantity, string studentUsername)
     {
         this.name = name;

@@ -5,6 +5,10 @@ using UnityWeld.Binding;
 using System.ComponentModel;
 using System;
 
+/// <summary>
+/// Author: Ang Hao Jie <br/>
+/// Controller class for Inventory UI
+/// </summary>
 [Binding]
 public class InventoryViewModel : MonoBehaviour, INotifyPropertyChanged
 {
@@ -20,23 +24,33 @@ public class InventoryViewModel : MonoBehaviour, INotifyPropertyChanged
 
     public Button inbagRowTemplate;
 
+    /// <summary>
+    /// Executes when the canvas is loaded.
+    /// </summary>
     void Start()
     {
 
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Update is called once per frame
+    /// </summary>
     void Update()
     {
 
     }
 
-    // triggers when Inventory UI's canvas is set active
+    /// <summary>
+    /// Executes whenever user navigates to the Inventory page.
+    /// </summary>
     void OnEnable() 
     {
         Init();
     }
 
+    /// <summary>
+    /// Fetch required data from database and set the values on the UI.
+    /// </summary>
     public void Init() 
     {
         // StartCoroutine(inventoryInt.getInventoryDetails((success, allResults) => {
@@ -81,7 +95,9 @@ public class InventoryViewModel : MonoBehaviour, INotifyPropertyChanged
         goldAmount.GetComponent<Text>().text = this.userData.getCoin().ToString();
     }
 
-    // display rows of items on the inventory
+    /// <summary>
+    /// Display rows of user owned items on the inventory on the UI.
+    /// </summary>
     private void populateInBagItems() 
     {
         // Clear Results from previously selected level
@@ -116,8 +132,10 @@ public class InventoryViewModel : MonoBehaviour, INotifyPropertyChanged
         }
     }
 
-    // event handlers
-
+    /// <summary>
+    /// Triggers when user select which item to equip from the list of items in inventory.
+    /// </summary>
+    /// <param name="itemClicked">The button object that was clicked by the user.</param>
     public void onInBagItemClick(Button itemClicked)
     {
         bool toAppendItem = true;
@@ -189,7 +207,11 @@ public class InventoryViewModel : MonoBehaviour, INotifyPropertyChanged
         InventoryDBHandler.PutInventory(this.inBagList);
     }
 
-    // clone item by item of inventory from dictionary to dictionary
+    /// <summary>
+    /// Clone item by item of inventory from dictionary to dictionary.
+    /// </summary>
+    /// <param name="original">The dictionary object to be cloned.</param>
+    /// <returns>The cloned dictionary object.</returns>
     public Dictionary<string, Item> CloneInventory(Dictionary<string, Item> original)
     {
         Dictionary<string, Item> ret = new Dictionary<string, Item>();
@@ -207,32 +229,52 @@ public class InventoryViewModel : MonoBehaviour, INotifyPropertyChanged
         return ret;
     }
 
-    // for test suite
+    /// <summary>
+    /// To get the rows of buttons of the list of items in the inventory. <br/>
+    /// For test suite.
+    /// </summary>
+    /// <returns>Instances of the buttons of the list of items in the inventory.</returns>
     public List<Button> getInstantiatedUI()
     {
         return this.instantiatedUI;
     }
 
-    // for test suite
+    /// <summary>
+    /// To set the items that the user is equipping. <br/>
+    /// For test suite.
+    /// </summary>
+    /// <param name="equippedItems">Items the user is currently equipping.</param>
     public void setEquippedItems(EquippedItems equippedItems)
     {
         this.equippedItems = equippedItems;
         this.equippedWeapon.GetComponent<Text>().text = equippedItems.weapon.name;
     }
 
-    // for test suite
+    /// <summary>
+    /// Set the list of items the user has. <br/>
+    /// For test suite.
+    /// </summary>
+    /// <param name="inBagList">Dictionary of items the user has.</param>
     public void setInBagList(Dictionary<string, Item> inBagList)
     {
         this.inBagList = inBagList;
         this.populateInBagItems();
     }
 
-    // for test suite
+    /// <summary>
+    /// Set the user's data.
+    /// </summary>
+    /// <param name="userData">The object that contains user's basic information.</param>
     public void setUserData(UserData userData)
     {
         this.userData = userData;
     }
 
+    /// <summary>
+    /// To be triggered when there is a change in property values. <br/>
+    /// For MVVM architecture.
+    /// </summary>
+    /// <param name="propertyName">The property name of the proprety whose value has just changed.</param>
     private void OnPropertyChanged(string propertyName)
     {
         if (PropertyChanged != null)
