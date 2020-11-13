@@ -224,6 +224,7 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
     /// </summary>
     public void init()
     {
+        userData = mainMenuControllerScript.getUserData();
         //instantiate monsterGameObject based on prefab
         questionUI.SetActive(true);
         monster = Instantiate(monsterPrefab);
@@ -237,16 +238,6 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
         playerScript = player.GetComponent<PlayerScript>();
         // initialize the monster values TODO fetch from firebase
 
-        if (normal.question.Count != 0)
-        {
-            MonsterHealth = normal.monster["health"];
-            monsterScript.init(1, MonsterHealth, normal.monster["attack"], normal.monster["coin"], normal.monster["experience"]);
-        }
-        else if (special.question.Count != 0)
-        {
-            MonsterHealth = special.monster["health"];
-            monsterScript.init(1, MonsterHealth, special.monster["attack"], special.monster["coin"], special.monster["experience"]);
-        }
         PlayerName = userData.getName();
         PlayerHealth = userData.getHp();
         playerScript.init(PlayerName, PlayerHealth, 10, 1, 1, 1);
@@ -352,7 +343,6 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
     // Start is called before the first frame update
     void Start()
     {
-        userData = mainMenuControllerScript.getUserData();
         init();
     }
 
@@ -370,8 +360,8 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
         timerBarScript.barDisplay = 1;
         score = 0;
         resultUIScript.reset();
-        init();
         isThisNormalLevel = false;
+        init();
     }
 
     /// <summary>
@@ -392,6 +382,9 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
                 QuestionString = listOfQuestions[0].Questions;
                 questionScript = listOfQuestions[0];
                 Answer = listOfQuestions[0].Answer;
+                MonsterHealth = normal.monster["health"];
+                monsterScript.init(1, MonsterHealth, normal.monster["attack"], normal.monster["coin"], normal.monster["experience"]);
+
                 normal.question.Clear();
                 normal.answer.Clear();
                 isThisNormalLevel = true;
@@ -406,6 +399,8 @@ public class BattleModelViewScript : MonoBehaviour, INotifyPropertyChanged
                 QuestionString = listOfQuestions[0].Questions;
                 questionScript = listOfQuestions[0];
                 Answer = listOfQuestions[0].Answer;
+                MonsterHealth = special.monster["health"];
+                monsterScript.init(1, MonsterHealth, special.monster["attack"], special.monster["coin"], special.monster["experience"]);
                 special.question.Clear();
                 special.answer.Clear();
             }
